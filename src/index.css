@@ -100,7 +100,7 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg;
+    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg dark:bg-black/20 dark:border-white/10;
   }
   
   .section-padding {
@@ -112,7 +112,7 @@
   }
   
   .btn-primary {
-    @apply rounded-full bg-primary text-primary-foreground px-6 py-3 font-medium transition-all duration-300 hover:shadow-md hover:translate-y-[-2px] active:translate-y-0 active:shadow-sm;
+    @apply inline-flex items-center rounded-full bg-primary text-primary-foreground px-6 py-3 font-medium transition-all duration-300 hover:shadow-md hover:translate-y-[-2px] active:translate-y-0 active:shadow-sm;
   }
   
   .btn-secondary {
@@ -120,7 +120,7 @@
   }
   
   .btn-outline {
-    @apply rounded-full bg-transparent border border-primary text-primary px-6 py-3 font-medium transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:translate-y-[-2px] active:translate-y-0 active:shadow-sm;
+    @apply inline-flex items-center rounded-full bg-transparent border border-primary text-primary px-6 py-3 font-medium transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:translate-y-[-2px] active:translate-y-0 active:shadow-sm dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black;
   }
 }
 
@@ -139,4 +139,26 @@ html {
 .revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Floating animation */
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.animate-reveal {
+  transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Dark mode transition */
+.dark body {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
+import Logo from './Logo';
+import DarkModeToggle from './DarkModeToggle';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,14 +26,12 @@ const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled 
-          ? "bg-white/80 backdrop-blur-md shadow-sm py-3" 
+          ? "bg-background/80 backdrop-blur-md shadow-sm py-3 dark:bg-background/90" 
           : "bg-transparent py-6"
       )}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <a href="#" className="flex items-center">
-          <span className="font-display text-2xl font-bold">Pixel<span className="text-primary">Wave</span></span>
-        </a>
+        <Logo />
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
@@ -49,34 +49,40 @@ const Navbar = () => {
               <a href="#testimonials" className="text-sm font-medium hover:text-primary transition-colors">Testimonials</a>
             </li>
           </ul>
-          <a href="#contact" className="btn-primary">Contact Us</a>
+          <div className="flex items-center gap-4">
+            <DarkModeToggle />
+            <a href="#contact" className="btn-primary">Contact Us</a>
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden focus:outline-none"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          <div className="w-6 flex flex-col gap-1.5">
-            <span className={cn(
-              "block h-0.5 bg-foreground transition-all duration-300 w-6",
-              isMobileMenuOpen && "transform rotate-45 translate-y-2"
-            )}></span>
-            <span className={cn(
-              "block h-0.5 bg-foreground transition-all duration-300",
-              isMobileMenuOpen ? "opacity-0" : "opacity-100"
-            )}></span>
-            <span className={cn(
-              "block h-0.5 bg-foreground transition-all duration-300 w-6",
-              isMobileMenuOpen && "transform -rotate-45 -translate-y-2"
-            )}></span>
-          </div>
-        </button>
+        <div className="md:hidden flex items-center gap-4">
+          <DarkModeToggle />
+          <button 
+            className="focus:outline-none"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <div className="w-6 flex flex-col gap-1.5">
+              <span className={cn(
+                "block h-0.5 bg-foreground transition-all duration-300 w-6",
+                isMobileMenuOpen && "transform rotate-45 translate-y-2"
+              )}></span>
+              <span className={cn(
+                "block h-0.5 bg-foreground transition-all duration-300",
+                isMobileMenuOpen ? "opacity-0" : "opacity-100"
+              )}></span>
+              <span className={cn(
+                "block h-0.5 bg-foreground transition-all duration-300 w-6",
+                isMobileMenuOpen && "transform -rotate-45 -translate-y-2"
+              )}></span>
+            </div>
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       <div className={cn(
-        "md:hidden absolute w-full bg-white/95 backdrop-blur-md transition-all duration-300 overflow-hidden shadow-lg",
+        "md:hidden absolute w-full bg-background/95 dark:bg-background/95 backdrop-blur-md transition-all duration-300 overflow-hidden shadow-lg",
         isMobileMenuOpen ? "max-h-[500px] border-b" : "max-h-0"
       )}>
         <div className="container mx-auto px-6 py-4">

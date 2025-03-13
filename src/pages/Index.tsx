@@ -11,7 +11,7 @@ import Footer from '@/components/Footer';
 
 const Index = () => {
   useEffect(() => {
-    // Intersection Observer for scroll animations
+    // Add scroll animations
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -27,13 +27,24 @@ const Index = () => {
     const revealElements = document.querySelectorAll('.reveal-on-scroll');
     revealElements.forEach((el) => observer.observe(el));
     
+    // Add animations to page elements
+    const addAnimations = () => {
+      document.querySelectorAll('.animate-reveal').forEach((el, index) => {
+        setTimeout(() => {
+          el.classList.add('scale-x-100');
+        }, 800 + (index * 200));
+      });
+    };
+    
+    addAnimations();
+    
     return () => {
       revealElements.forEach((el) => observer.unobserve(el));
     };
   }, []);
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden">
+    <div className="min-h-screen bg-background dark:bg-background overflow-hidden">
       <Navbar />
       <Hero />
       <Services />

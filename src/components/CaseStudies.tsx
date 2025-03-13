@@ -1,6 +1,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
+import { useTheme } from '@/context/ThemeContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const projects = [
   {
@@ -35,6 +37,8 @@ const CaseStudies = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [visibleProjects, setVisibleProjects] = useState(projects);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { isDarkMode } = useTheme();
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     if (activeCategory === "All") {
@@ -65,10 +69,10 @@ const CaseStudies = () => {
   }, []);
   
   return (
-    <section id="case-studies" className="section-padding" ref={sectionRef}>
+    <section id="case-studies" className={`section-padding ${isDarkMode ? 'bg-background' : 'bg-white'}`} ref={sectionRef}>
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
-          <span className="inline-block px-4 py-2 rounded-full bg-secondary text-sm font-medium mb-6">
+          <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary'} text-sm font-medium mb-6`}>
             Our Work
           </span>
           <h2 className="headline text-4xl md:text-5xl mb-6">
@@ -80,15 +84,19 @@ const CaseStudies = () => {
         </div>
         
         <div className="flex justify-center mb-12 reveal-on-scroll">
-          <div className="flex flex-wrap gap-2 bg-secondary/50 p-1.5 rounded-full">
+          <div className={`flex flex-wrap ${isMobile ? 'justify-center' : ''} gap-2 ${isDarkMode ? 'bg-secondary/30' : 'bg-secondary/50'} p-1.5 rounded-full`}>
             {categories.map((category, index) => (
               <button
                 key={index}
                 className={cn(
                   "px-6 py-2 rounded-full text-sm font-medium transition-all",
                   activeCategory === category
-                    ? "bg-white shadow-sm"
-                    : "hover:bg-white/50"
+                    ? isDarkMode 
+                      ? "bg-secondary text-secondary-foreground shadow-sm" 
+                      : "bg-white shadow-sm"
+                    : isDarkMode 
+                      ? "hover:bg-secondary/70" 
+                      : "hover:bg-white/50"
                 )}
                 onClick={() => setActiveCategory(category)}
               >
@@ -102,7 +110,7 @@ const CaseStudies = () => {
           {visibleProjects.map((project, index) => (
             <div 
               key={project.id}
-              className="rounded-2xl overflow-hidden bg-white shadow-lg reveal-on-scroll transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl"
+              className={`rounded-2xl overflow-hidden ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} shadow-lg reveal-on-scroll transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl`}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="relative h-64 overflow-hidden">
@@ -111,7 +119,7 @@ const CaseStudies = () => {
                   alt={project.title} 
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 />
-                <div className="absolute top-4 right-4 bg-black/70 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                <div className={`absolute top-4 right-4 ${isDarkMode ? 'bg-primary/70 text-primary-foreground' : 'bg-black/70 text-white'} text-xs font-semibold px-3 py-1 rounded-full`}>
                   {project.category}
                 </div>
               </div>

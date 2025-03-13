@@ -34,24 +34,24 @@ const Navbar = () => {
         <Logo />
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
-          <ul className="flex gap-6">
-            <li>
-              <a href="#services" className="text-sm font-medium hover:text-primary transition-colors">Services</a>
+        <div className="hidden md:flex items-center">
+          <ul className="flex mr-8">
+            <li className="px-3">
+              <a href="#services" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">Services</a>
             </li>
-            <li>
-              <a href="#case-studies" className="text-sm font-medium hover:text-primary transition-colors">Work</a>
+            <li className="px-3">
+              <a href="#case-studies" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">Work</a>
             </li>
-            <li>
-              <a href="#process" className="text-sm font-medium hover:text-primary transition-colors">Process</a>
+            <li className="px-3">
+              <a href="#process" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">Process</a>
             </li>
-            <li>
-              <a href="#testimonials" className="text-sm font-medium hover:text-primary transition-colors">Testimonials</a>
+            <li className="px-3">
+              <a href="#testimonials" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">Testimonials</a>
             </li>
           </ul>
           <div className="flex items-center gap-4">
             <DarkModeToggle />
-            <a href="#contact" className="btn-primary">Contact Us</a>
+            <a href="#contact" className="btn-primary whitespace-nowrap">Contact Us</a>
           </div>
         </div>
 

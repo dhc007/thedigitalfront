@@ -66,11 +66,11 @@ const Contact = () => {
   }, []);
   
   return (
-    <section id="contact" className="section-padding" ref={sectionRef}>
+    <section id="contact" className={`section-padding ${isDarkMode ? 'bg-background' : 'bg-white'}`} ref={sectionRef}>
       <div className="container mx-auto px-6">
         <div className={`max-w-5xl mx-auto ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} rounded-2xl shadow-xl overflow-hidden`}>
           <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="bg-primary text-white p-12 flex flex-col justify-center reveal-on-scroll">
+            <div className="bg-primary text-primary-foreground p-12 flex flex-col justify-center reveal-on-scroll">
               <h2 className="headline text-3xl md:text-4xl mb-6">Let's Create Something Amazing Together</h2>
               <p className="mb-8 text-primary-foreground/80">
                 Ready to transform your digital presence and boost your business? 
@@ -86,8 +86,8 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-medium text-white mb-1">Email</h3>
-                    <p className="text-primary-foreground/80">hello@thedigitalfront.com</p>
+                    <h3 className="font-medium text-primary-foreground mb-1">Email</h3>
+                    <a href="mailto:team@thedigitalfront.in" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">team@thedigitalfront.in</a>
                   </div>
                 </div>
                 
@@ -98,8 +98,15 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-medium text-white mb-1">Phone</h3>
-                    <p className="text-primary-foreground/80">+1 (555) 123-4567</p>
+                    <h3 className="font-medium text-primary-foreground mb-1">Phone</h3>
+                    <a 
+                      href="https://wa.me/9284613155?text=Hey!%20I'm%20interested%20in%20your%20Web%20Agency%20services" 
+                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      +91 9284613155
+                    </a>
                   </div>
                 </div>
                 
@@ -111,8 +118,8 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-medium text-white mb-1">Office</h3>
-                    <p className="text-primary-foreground/80">123 Innovation Street, San Francisco, CA 94103</p>
+                    <h3 className="font-medium text-primary-foreground mb-1">Office</h3>
+                    <p className="text-primary-foreground/80">Goa, India</p>
                   </div>
                 </div>
               </div>

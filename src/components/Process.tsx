@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from 'react';
+import { useTheme } from '@/context/ThemeContext';
 
 const steps = [
   {
@@ -10,7 +11,7 @@ const steps = [
   {
     number: "02",
     title: "Strategy",
-    description: "Based on our research, we develop a tailored strategy to create a landing page that will achieve your specific goals."
+    description: "Based on our research, we develop a tailored strategy to create a digital solution that will achieve your specific goals."
   },
   {
     number: "03",
@@ -20,22 +21,23 @@ const steps = [
   {
     number: "04",
     title: "Development",
-    description: "We transform the designs into a fully functional, responsive landing page with clean, optimized code."
+    description: "We transform the designs into a fully functional, responsive website or app with clean, optimized code."
   },
   {
     number: "05",
     title: "Testing",
-    description: "We conduct thorough testing to ensure your landing page works flawlessly across all devices and browsers."
+    description: "We conduct thorough testing to ensure your digital product works flawlessly across all devices and browsers."
   },
   {
     number: "06",
     title: "Launch & Optimize",
-    description: "After launch, we continuously monitor performance and make data-driven improvements to maximize conversions."
+    description: "After launch, we continuously monitor performance and make data-driven improvements to maximize user engagement."
   }
 ];
 
 const Process = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { isDarkMode } = useTheme();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -58,17 +60,17 @@ const Process = () => {
   }, []);
   
   return (
-    <section id="process" className="section-padding bg-white" ref={sectionRef}>
+    <section id="process" className={`section-padding ${isDarkMode ? 'bg-background' : 'bg-white'}`} ref={sectionRef}>
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
-          <span className="inline-block px-4 py-2 rounded-full bg-secondary text-sm font-medium mb-6">
+          <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary'} text-sm font-medium mb-6`}>
             Our Process
           </span>
           <h2 className="headline text-4xl md:text-5xl mb-6">
             How We <span className="text-primary">Deliver</span> Results
           </h2>
           <p className="text-muted-foreground">
-            Our proven six-step process ensures that we create landing pages that not only look great but also convert visitors into customers.
+            Our proven six-step process ensures that we create digital products that not only look great but also provide an exceptional user experience.
           </p>
         </div>
         
@@ -82,7 +84,7 @@ const Process = () => {
               <div className="absolute -top-5 -left-5 text-7xl font-display font-bold text-primary/10">
                 {step.number}
               </div>
-              <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 relative z-10">
+              <div className={`${isDarkMode ? 'bg-secondary/20 border-gray-700' : 'bg-white border-gray-100'} border rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 relative z-10`}>
                 <h3 className="headline text-xl mb-4">{step.title}</h3>
                 <p className="text-muted-foreground">{step.description}</p>
               </div>

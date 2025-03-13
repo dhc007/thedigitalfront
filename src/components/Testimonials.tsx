@@ -1,11 +1,12 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
+import { useTheme } from '@/context/ThemeContext';
 
 const testimonials = [
   {
     id: 1,
-    quote: "The team at PixelWave delivered beyond our expectations. Our conversion rate increased by 200% within the first month of launching our new landing page.",
+    quote: "The team at TheDigitalFront delivered beyond our expectations. Our conversion rate increased by 200% within the first month of launching our new digital platform.",
     author: "Sarah Johnson",
     position: "Marketing Director",
     company: "TechNova Solutions",
@@ -13,7 +14,7 @@ const testimonials = [
   },
   {
     id: 2,
-    quote: "Working with PixelWave was a game-changer for our business. Their attention to detail and focus on conversion optimization resulted in an incredible ROI.",
+    quote: "Working with TheDigitalFront was a game-changer for our business. Their attention to detail and focus on user experience resulted in an incredible ROI for our web app.",
     author: "Michael Chen",
     position: "CEO",
     company: "GrowthLab",
@@ -21,7 +22,7 @@ const testimonials = [
   },
   {
     id: 3,
-    quote: "I was blown away by the quality of work and the level of service provided by PixelWave. They truly understood our brand and delivered a landing page that perfectly captures our value proposition.",
+    quote: "I was blown away by the quality of work and the level of service provided by TheDigitalFront. They truly understood our brand and delivered a digital experience that perfectly captures our value proposition.",
     author: "Emily Wong",
     position: "Product Manager",
     company: "Innovate Health",
@@ -32,6 +33,7 @@ const testimonials = [
 const Testimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { isDarkMode } = useTheme();
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -62,10 +64,10 @@ const Testimonials = () => {
   }, []);
   
   return (
-    <section id="testimonials" className="section-padding bg-gradient-to-b from-secondary/50 to-white" ref={sectionRef}>
+    <section id="testimonials" className={`section-padding ${isDarkMode ? 'bg-gradient-to-b from-secondary/10 to-background' : 'bg-gradient-to-b from-secondary/50 to-white'}`} ref={sectionRef}>
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
-          <span className="inline-block px-4 py-2 rounded-full bg-white text-sm font-medium mb-6">
+          <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-white'} text-sm font-medium mb-6`}>
             Testimonials
           </span>
           <h2 className="headline text-4xl md:text-5xl mb-6">
@@ -82,7 +84,10 @@ const Testimonials = () => {
               <div
                 key={testimonial.id}
                 className={cn(
-                  "absolute inset-0 flex flex-col justify-center transition-all duration-500 glass-card rounded-2xl p-10",
+                  "absolute inset-0 flex flex-col justify-center transition-all duration-500",
+                  isDarkMode 
+                    ? "bg-secondary/20 backdrop-blur-sm border border-secondary/30 rounded-2xl p-10" 
+                    : "glass-card rounded-2xl p-10",
                   activeIndex === index 
                     ? "opacity-100 transform translate-x-0" 
                     : index < activeIndex 
@@ -115,7 +120,7 @@ const Testimonials = () => {
                 key={index}
                 className={cn(
                   "w-3 h-3 rounded-full transition-all",
-                  activeIndex === index ? "bg-primary" : "bg-gray-300"
+                  activeIndex === index ? "bg-primary" : isDarkMode ? "bg-gray-600" : "bg-gray-300"
                 )}
                 onClick={() => setActiveIndex(index)}
                 aria-label={`View testimonial ${index + 1}`}

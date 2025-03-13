@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
+import { useTheme } from '@/context/ThemeContext';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { isDarkMode } = useTheme();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -66,12 +68,12 @@ const Contact = () => {
   return (
     <section id="contact" className="section-padding" ref={sectionRef}>
       <div className="container mx-auto px-6">
-        <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className={`max-w-5xl mx-auto ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} rounded-2xl shadow-xl overflow-hidden`}>
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="bg-primary text-white p-12 flex flex-col justify-center reveal-on-scroll">
               <h2 className="headline text-3xl md:text-4xl mb-6">Let's Create Something Amazing Together</h2>
               <p className="mb-8 text-primary-foreground/80">
-                Ready to transform your landing page and boost your conversions? 
+                Ready to transform your digital presence and boost your business? 
                 Get in touch with us today to discuss your project.
               </p>
               
@@ -84,8 +86,8 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-medium mb-1">Email</h3>
-                    <p className="text-primary-foreground/80">hello@pixelwave.co</p>
+                    <h3 className="font-medium text-white mb-1">Email</h3>
+                    <p className="text-primary-foreground/80">hello@thedigitalfront.com</p>
                   </div>
                 </div>
                 
@@ -96,7 +98,7 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-medium mb-1">Phone</h3>
+                    <h3 className="font-medium text-white mb-1">Phone</h3>
                     <p className="text-primary-foreground/80">+1 (555) 123-4567</p>
                   </div>
                 </div>
@@ -109,24 +111,24 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-medium mb-1">Office</h3>
+                    <h3 className="font-medium text-white mb-1">Office</h3>
                     <p className="text-primary-foreground/80">123 Innovation Street, San Francisco, CA 94103</p>
                   </div>
                 </div>
               </div>
             </div>
             
-            <div className="p-12 reveal-on-scroll">
+            <div className={`p-12 reveal-on-scroll ${isDarkMode ? 'bg-background' : ''}`}>
               <h2 className="headline text-3xl mb-6">Get in Touch</h2>
               
               {isSubmitted ? (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 mx-auto text-green-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className={`${isDarkMode ? 'bg-green-900/20 border-green-800 text-green-100' : 'bg-green-50 border-green-200 text-green-800'} border rounded-lg p-6 text-center`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className={`w-12 h-12 mx-auto ${isDarkMode ? 'text-green-400' : 'text-green-500'} mb-4`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                   </svg>
-                  <h3 className="text-xl font-medium text-green-800 mb-2">Message Sent!</h3>
-                  <p className="text-green-700">We'll get back to you as soon as possible.</p>
+                  <h3 className="text-xl font-medium mb-2">Message Sent!</h3>
+                  <p>We'll get back to you as soon as possible.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -140,7 +142,7 @@ const Contact = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                        className={`w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 transition-colors`}
                         placeholder="Your name"
                       />
                     </div>
@@ -153,7 +155,7 @@ const Contact = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                        className={`w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 transition-colors`}
                         placeholder="your@email.com"
                       />
                     </div>
@@ -167,7 +169,7 @@ const Contact = () => {
                       type="text"
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                      className={`w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 transition-colors`}
                       placeholder="Your company"
                     />
                   </div>
@@ -181,7 +183,7 @@ const Contact = () => {
                       value={formData.message}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors resize-none"
+                      className={`w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 resize-none transition-colors`}
                       placeholder="Tell us about your project..."
                     />
                   </div>

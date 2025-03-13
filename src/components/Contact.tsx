@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { useTheme } from '@/context/ThemeContext';
@@ -23,55 +22,52 @@ const Contact = () => {
     }));
   };
   
-   const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    const hubspotEndpoint = `https://api.hsforms.com/submissions/v3/integration/submit/242259771/b603266c-d3be-4568-8686-80817a0f3b28`;
-
-    const payload = {
-      submittedAt: Date.now(),
-      fields: [
-        { name: "firstname", value: formData.name },
-        { name: "email", value: formData.email },
-        { name: "company", value: formData.company },
-        { name: "message", value: formData.message }
-      ],
-      context: {
-        pageUri: window.location.href,
-        pageName: document.title
-      }
-    };
-
-    try {
-      const response = await fetch(hubspotEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (response.ok) {
-        setIsSubmitted(true);
-        setTimeout(() => {
-          setFormData({ name: "", email: "", company: "", message: "" });
-          setIsSubmitted(false);
-        }, 3000);
-      } else {
-        console.error("HubSpot submission failed", await response.json());
-      }
-    } catch (error) {
-      console.error("Error submitting to HubSpot:", error);
-    } finally {
+    
+    // Simulate form submission
+    setTimeout(() => {
       setIsSubmitting(false);
-    }
+      setIsSubmitted(true);
+      
+      // Reset form after showing success message
+      setTimeout(() => {
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          message: ''
+        });
+        setIsSubmitted(false);
+      }, 3000);
+    }, 1500);
   };
   
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    
+    const elements = document.querySelectorAll('.reveal-on-scroll');
+    elements.forEach((el) => observer.observe(el));
+    
+    return () => {
+      elements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
+  
   return (
-    <section id="contact" className={`section-padding ${isDarkMode ? 'bg-background' : 'bg-white'}`} ref={sectionRef}>
+    <section id="contact" className={section-padding ${isDarkMode ? 'bg-background' : 'bg-white'}} ref={sectionRef}>
       <div className="container mx-auto px-6">
-        <div className={`max-w-5xl mx-auto ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} rounded-2xl shadow-xl overflow-hidden`}>
+        <div className={max-w-5xl mx-auto ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} rounded-2xl shadow-xl overflow-hidden}>
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="bg-primary text-primary-foreground p-12 flex flex-col justify-center reveal-on-scroll">
               <h2 className="headline text-3xl md:text-4xl mb-6">Let's Create Something Amazing Together</h2>
@@ -128,12 +124,12 @@ const Contact = () => {
               </div>
             </div>
             
-            <div className={`p-12 reveal-on-scroll ${isDarkMode ? 'bg-background' : ''}`}>
+            <div className={p-12 reveal-on-scroll ${isDarkMode ? 'bg-background' : ''}}>
               <h2 className="headline text-3xl mb-6">Get in Touch</h2>
               
               {isSubmitted ? (
-                <div className={`${isDarkMode ? 'bg-green-900/20 border-green-800 text-green-100' : 'bg-green-50 border-green-200 text-green-800'} border rounded-lg p-6 text-center`}>
-                  <svg xmlns="http://www.w3.org/2000/svg" className={`w-12 h-12 mx-auto ${isDarkMode ? 'text-green-400' : 'text-green-500'} mb-4`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className={${isDarkMode ? 'bg-green-900/20 border-green-800 text-green-100' : 'bg-green-50 border-green-200 text-green-800'} border rounded-lg p-6 text-center}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className={w-12 h-12 mx-auto ${isDarkMode ? 'text-green-400' : 'text-green-500'} mb-4} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                   </svg>
@@ -152,7 +148,7 @@ const Contact = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className={`w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 transition-colors`}
+                        className={w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 transition-colors}
                         placeholder="Your name"
                       />
                     </div>
@@ -165,7 +161,7 @@ const Contact = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className={`w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 transition-colors`}
+                        className={w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 transition-colors}
                         placeholder="your@email.com"
                       />
                     </div>
@@ -179,7 +175,7 @@ const Contact = () => {
                       type="text"
                       value={formData.company}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 transition-colors`}
+                      className={w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 transition-colors}
                       placeholder="Your company"
                     />
                   </div>
@@ -193,7 +189,7 @@ const Contact = () => {
                       value={formData.message}
                       onChange={handleChange}
                       required
-                      className={`w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 resize-none transition-colors`}
+                      className={w-full px-4 py-3 rounded-lg ${isDarkMode ? 'bg-secondary/50 border-gray-700 focus:border-primary focus:ring-primary/50' : 'border-gray-200 focus:border-primary focus:ring-primary/50'} focus:outline-none focus:ring-2 resize-none transition-colors}
                       placeholder="Tell us about your project..."
                     />
                   </div>

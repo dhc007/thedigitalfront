@@ -23,47 +23,50 @@ const Contact = () => {
     }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      
-      // Reset form after showing success message
-      setTimeout(() => {
-        setFormData({
-          name: '',
-          email: '',
-          company: '',
-          message: ''
-        });
-        setIsSubmitted(false);
-      }, 3000);
-    }, 1500);
-  };
-  
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    const elements = document.querySelectorAll('.reveal-on-scroll');
-    elements.forEach((el) => observer.observe(el));
-    
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
+
+    const hubspotEndpoint = `https://api.hsforms.com/submissions/v3/integration/submit/242259771/b603266c-d3be-4568-8686-80817a0f3b28`;
+
+    const payload = {
+      submittedAt: Date.now(),
+      fields: [
+        { name: "firstname", value: formData.name },
+        { name: "email", value: formData.email },
+        { name: "company", value: formData.company },
+        { name: "message", value: formData.message }
+      ],
+      context: {
+        pageUri: window.location.href,
+        pageName: document.title
+      }
     };
-  }, []);
+
+    try {
+      const response = await fetch(hubspotEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setFormData({ name: "", email: "", company: "", message: "" });
+          setIsSubmitted(false);
+        }, 3000);
+      } else {
+        console.error("HubSpot submission failed", await response.json());
+      }
+    } catch (error) {
+      console.error("Error submitting to HubSpot:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   
   return (
     <section id="contact" className={`section-padding ${isDarkMode ? 'bg-background' : 'bg-white'}`} ref={sectionRef}>

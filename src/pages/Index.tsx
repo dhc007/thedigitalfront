@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -23,32 +24,43 @@ const Index = () => {
     contact: null
   });
 
+  // Fix for sections disappearing when theme changes
+  // We'll use observer instead of manual scrolling
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-      
-      let currentVisible = null;
-      Object.entries(sectionRefs.current).forEach(([section, ref]) => {
-        if (!ref) return;
-        
-        const { top, bottom } = ref.getBoundingClientRect();
-        const sectionTop = top + window.scrollY;
-        const sectionBottom = bottom + window.scrollY;
-        
-        if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
-          currentVisible = section;
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const section = entry.target.id;
+          setCurrentSection(section);
         }
       });
-      
-      if (currentVisible) {
-        setCurrentSection(currentVisible);
-      }
     };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
     
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Observe all sections
+    Object.keys(sectionRefs.current).forEach(sectionKey => {
+      const sectionElement = document.getElementById(sectionKey === 'caseStudies' ? 'case-studies' : sectionKey);
+      if (sectionElement) {
+        observer.observe(sectionElement);
+        sectionRefs.current[sectionKey] = sectionElement;
+      }
+    });
+    
+    return () => {
+      Object.values(sectionRefs.current).forEach(section => {
+        if (section) observer.unobserve(section);
+      });
+    };
   }, []);
 
+  // Initialize section refs - but don't scroll on theme change
   useEffect(() => {
     sectionRefs.current = {
       hero: document.getElementById('hero'),
@@ -60,19 +72,6 @@ const Index = () => {
       contact: document.getElementById('contact')
     };
   }, []);
-
-  useEffect(() => {
-    if (currentSection && sectionRefs.current[currentSection]) {
-      const sectionElement = sectionRefs.current[currentSection];
-      if (sectionElement) {
-        setTimeout(() => {
-          const yOffset = -80;
-          const y = sectionElement.getBoundingClientRect().top + window.scrollY + yOffset;
-          window.scrollTo({ top: y, behavior: 'instant' });
-        }, 10);
-      }
-    }
-  }, [isDarkMode, currentSection]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

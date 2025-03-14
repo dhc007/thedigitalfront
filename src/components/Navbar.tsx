@@ -7,6 +7,7 @@ import DarkModeToggle from './DarkModeToggle';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +15,22 @@ const Navbar = () => {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
+      }
+
+      // Determine which section is currently in view
+      const sections = ['hero', 'services', 'case-studies', 'process', 'testimonials', 'contact'];
+      
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (!element) continue;
+        
+        const rect = element.getBoundingClientRect();
+        const offset = 100; // Adjust based on your navbar height
+        
+        if (rect.top <= offset && rect.bottom >= offset) {
+          setActiveSection(section);
+          break;
+        }
       }
     };
 
@@ -37,16 +54,56 @@ const Navbar = () => {
         <div className="hidden md:flex items-center">
           <ul className="flex mr-8">
             <li className="px-3">
-              <a href="#services" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">Services</a>
+              <a 
+                href="#services" 
+                className={cn(
+                  "text-sm font-medium transition-colors whitespace-nowrap relative",
+                  activeSection === 'services' ? 'text-primary' : 'hover:text-primary',
+                  "after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300",
+                  activeSection === 'services' ? "after:scale-x-100" : "hover:after:scale-x-100 hover:after:origin-bottom-left"
+                )}
+              >
+                Services
+              </a>
             </li>
             <li className="px-3">
-              <a href="#case-studies" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">Work</a>
+              <a 
+                href="#case-studies" 
+                className={cn(
+                  "text-sm font-medium transition-colors whitespace-nowrap relative",
+                  activeSection === 'case-studies' ? 'text-primary' : 'hover:text-primary',
+                  "after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300",
+                  activeSection === 'case-studies' ? "after:scale-x-100" : "hover:after:scale-x-100 hover:after:origin-bottom-left"
+                )}
+              >
+                Work
+              </a>
             </li>
             <li className="px-3">
-              <a href="#process" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">Process</a>
+              <a 
+                href="#process" 
+                className={cn(
+                  "text-sm font-medium transition-colors whitespace-nowrap relative",
+                  activeSection === 'process' ? 'text-primary' : 'hover:text-primary',
+                  "after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300",
+                  activeSection === 'process' ? "after:scale-x-100" : "hover:after:scale-x-100 hover:after:origin-bottom-left"
+                )}
+              >
+                Process
+              </a>
             </li>
             <li className="px-3">
-              <a href="#testimonials" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">Testimonials</a>
+              <a 
+                href="#testimonials" 
+                className={cn(
+                  "text-sm font-medium transition-colors whitespace-nowrap relative",
+                  activeSection === 'testimonials' ? 'text-primary' : 'hover:text-primary',
+                  "after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300",
+                  activeSection === 'testimonials' ? "after:scale-x-100" : "hover:after:scale-x-100 hover:after:origin-bottom-left"
+                )}
+              >
+                Testimonials
+              </a>
             </li>
           </ul>
           <div className="flex items-center gap-4">
@@ -90,37 +147,61 @@ const Navbar = () => {
             <li>
               <a 
                 href="#services" 
-                className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+                className={cn(
+                  "block py-2 text-sm font-medium transition-colors relative",
+                  activeSection === 'services' ? 'text-primary' : 'hover:text-primary'
+                )}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Services
+                {activeSection === 'services' && (
+                  <span className="absolute left-0 bottom-0 w-6 h-0.5 bg-primary"></span>
+                )}
               </a>
             </li>
             <li>
               <a 
                 href="#case-studies" 
-                className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+                className={cn(
+                  "block py-2 text-sm font-medium transition-colors relative",
+                  activeSection === 'case-studies' ? 'text-primary' : 'hover:text-primary'
+                )}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Work
+                {activeSection === 'case-studies' && (
+                  <span className="absolute left-0 bottom-0 w-6 h-0.5 bg-primary"></span>
+                )}
               </a>
             </li>
             <li>
               <a 
                 href="#process" 
-                className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+                className={cn(
+                  "block py-2 text-sm font-medium transition-colors relative",
+                  activeSection === 'process' ? 'text-primary' : 'hover:text-primary'
+                )}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Process
+                {activeSection === 'process' && (
+                  <span className="absolute left-0 bottom-0 w-6 h-0.5 bg-primary"></span>
+                )}
               </a>
             </li>
             <li>
               <a 
                 href="#testimonials" 
-                className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+                className={cn(
+                  "block py-2 text-sm font-medium transition-colors relative",
+                  activeSection === 'testimonials' ? 'text-primary' : 'hover:text-primary'
+                )}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Testimonials
+                {activeSection === 'testimonials' && (
+                  <span className="absolute left-0 bottom-0 w-6 h-0.5 bg-primary"></span>
+                )}
               </a>
             </li>
           </ul>

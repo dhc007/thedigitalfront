@@ -2,18 +2,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 
-// Counter animation component
-const AnimatedCounter = ({ end, duration = 2000, label, suffix = "" }: { end: number, duration?: number, label: string, suffix?: string }) => {
+// Counter animation component that triggers on scroll
+const AnimatedCounter = ({ end, duration = 2000, label, suffix = "", delay = 0 }: { end: number, duration?: number, label: string, suffix?: string, delay?: number }) => {
   const [count, setCount] = useState(0);
   const countRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsVisible(true);
+        if (entry.isIntersecting && !hasAnimated) {
+          setTimeout(() => {
+            setIsVisible(true);
+            setHasAnimated(true);
+          }, delay);
           observer.unobserve(entry.target);
         }
       },
@@ -29,7 +33,7 @@ const AnimatedCounter = ({ end, duration = 2000, label, suffix = "" }: { end: nu
         observer.unobserve(countRef.current);
       }
     };
-  }, []);
+  }, [delay, hasAnimated]);
 
   useEffect(() => {
     if (!isVisible) return;
@@ -104,6 +108,7 @@ const Hero = () => {
   
   return (
     <section 
+      id="hero"
       ref={heroRef}
       className="relative min-h-screen pt-32 pb-16 flex items-center overflow-hidden"
     >
@@ -166,11 +171,11 @@ const Hero = () => {
             </a>
           </div>
 
-          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 animate-fade-in-slow" style={{ animationDelay: '0.5s' }}>
-            <AnimatedCounter end={98} label="Client Satisfaction" suffix="%" />
-            <AnimatedCounter end={150} label="Projects Delivered" suffix="+" />
-            <AnimatedCounter end={12} label="Years Experience" suffix="+" />
-            <div className="text-center transform hover:scale-105 transition-transform duration-300">
+          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 reveal-on-scroll" id="stats-counter">
+            <AnimatedCounter end={98} label="Client Satisfaction" suffix="%" delay={100} />
+            <AnimatedCounter end={150} label="Projects Delivered" suffix="+" delay={200} />
+            <AnimatedCounter end={12} label="Years Experience" suffix="+" delay={300} />
+            <div className="text-center transform hover:scale-105 transition-transform duration-300 customer-rating">
               <h3 className="headline text-4xl md:text-5xl mb-2">4.9<span className="text-2xl">/5</span></h3>
               <p className="text-sm text-muted-foreground">Customer Rating</p>
             </div>

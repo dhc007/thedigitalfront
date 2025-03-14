@@ -91,7 +91,7 @@ const integrationTools = [
 ];
 
 const Integration = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
   const [hoveredTool, setHoveredTool] = useState<number | null>(null);
   const { isDarkMode } = useTheme();
 
@@ -162,12 +162,17 @@ const Integration = () => {
 
   return (
     <section id="integrations" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
+      {/* Custom cursor effect */}
+      <div className="fixed w-12 h-12 rounded-full bg-purple-500/30 pointer-events-none z-50 hidden md:block transition-transform duration-100" 
+        id="custom-cursor"
+        style={{transform: 'translate(-50%, -50%)', backdropFilter: 'blur(4px)'}}></div>
+      
       {/* Decorative floating icons */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {integrationTools.slice(0, 8).map((tool, index) => (
           <div 
             key={`floating-${tool.id}`}
-            className="absolute w-16 h-16 opacity-5 animate-float"
+            className="absolute w-16 h-16 opacity-10 animate-float"
             style={{
               ...getRandomPosition(index),
               animationDelay: `${index * 0.5}s`,
@@ -202,7 +207,7 @@ const Integration = () => {
             <div
               key={tool.id}
               className={cn(
-                "flex flex-col items-center justify-center p-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg reveal-on-scroll border",
+                "flex flex-col items-center justify-center p-6 rounded-xl transition-all duration-300 transform cursor-pointer hover:scale-105 hover:shadow-lg reveal-on-scroll border integration-item",
                 getBgColor(tool, hoveredTool === tool.id),
                 hoveredTool === tool.id ? 'text-white border-transparent' : isDarkMode ? 'border-secondary/50' : 'border-gray-100 shadow'
               )}
@@ -229,7 +234,7 @@ const Integration = () => {
           ))}
         </div>
         
-        {/* Featured Integration CTA */}
+        {/* Featured Integration CTA - one of the 3 CTAs */}
         <div className={`max-w-4xl mx-auto rounded-2xl p-10 reveal-on-scroll overflow-hidden relative ${
           isDarkMode 
             ? 'border border-purple-800/30' 
@@ -280,6 +285,40 @@ const Integration = () => {
           </div>
         </div>
       </div>
+
+      {/* Add JavaScript for custom cursor effect */}
+      <script dangerouslySetInnerHTML={{ __html: `
+        document.addEventListener('DOMContentLoaded', () => {
+          const cursor = document.getElementById('custom-cursor');
+          const items = document.querySelectorAll('.integration-item');
+          
+          if(!cursor) return;
+          
+          window.addEventListener('mousemove', (e) => {
+            if(cursor.style.display === 'none') {
+              cursor.style.display = 'block';
+            }
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+          });
+          
+          items.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+              cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+              cursor.style.backgroundColor = 'rgba(168, 85, 247, 0.2)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+              cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+              cursor.style.backgroundColor = 'rgba(168, 85, 247, 0.3)';
+            });
+          });
+          
+          document.addEventListener('mouseleave', () => {
+            cursor.style.display = 'none';
+          });
+        });
+      ` }} />
     </section>
   );
 };

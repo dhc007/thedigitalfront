@@ -11,7 +11,6 @@ const testimonials = [
     position: "Founder",
     company: "Protein Box",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
-    tag: "Recent Buyer",
     highlight: "It was a great experience!"
   },
   {
@@ -21,7 +20,6 @@ const testimonials = [
     position: "CEO",
     company: "Kisai Technologies",
     avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
-    tag: "Top Client",
     highlight: "Looking forward to another project"
   },
   {
@@ -31,7 +29,6 @@ const testimonials = [
     position: "Co-Founder",
     company: "Travelite",
     avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
-    tag: "Recent Project",
     highlight: "The best in the industry!"
   }
 ];
@@ -40,6 +37,12 @@ const Testimonials = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  
+  // Set mounted to true when component mounts
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,6 +51,19 @@ const Testimonials = () => {
     
     return () => clearInterval(interval);
   }, []);
+  
+  // This will run every time isDarkMode changes to force a re-render
+  useEffect(() => {
+    if (mounted) {
+      const section = document.getElementById('testimonials');
+      if (section) {
+        section.style.display = 'none';
+        setTimeout(() => {
+          section.style.display = 'block';
+        }, 0);
+      }
+    }
+  }, [isDarkMode, mounted]);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -72,10 +88,10 @@ const Testimonials = () => {
   return (
     <section id="testimonials" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/10 to-background' : 'bg-gradient-to-b from-white via-purple-50/80 to-white'}`} ref={sectionRef}>
       {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-60 h-60 bg-purple-400/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-40 -right-20 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '8s'}}></div>
-        <div className="absolute top-40 left-1/2 w-40 h-40 bg-pink-400/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '10s'}}></div>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-20 -left-20 w-60 h-60 bg-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-40 -right-20 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl animate-pulse" style={{animationDuration: '8s'}}></div>
+        <div className="absolute top-40 left-1/2 w-40 h-40 bg-pink-400/20 rounded-full blur-3xl animate-pulse" style={{animationDuration: '10s'}}></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
@@ -131,16 +147,6 @@ const Testimonials = () => {
                         <h4 className="font-medium text-base">{testimonial.author}</h4>
                         <p className="text-xs text-muted-foreground">{testimonial.position}, {testimonial.company}</p>
                       </div>
-                      {testimonial.tag && (
-                        <span className={cn(
-                          "px-2 py-1 text-xs rounded-full ml-auto",
-                          index === 0 ? "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400" : 
-                          index === 1 ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" : 
-                          "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400"
-                        )}>
-                          {testimonial.tag}
-                        </span>
-                      )}
                     </div>
                   </div>
                 ))}
@@ -236,6 +242,7 @@ const Testimonials = () => {
             </div>
           </div>
           
+          {/* CTA - Second of the 3 CTAs */}
           <div className={`mt-16 p-10 rounded-2xl reveal-on-scroll ${
             isDarkMode 
               ? 'bg-secondary/20 border border-secondary/30 backdrop-blur-sm' 

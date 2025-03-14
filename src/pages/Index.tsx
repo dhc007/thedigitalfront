@@ -14,6 +14,8 @@ import { useTheme } from '@/context/ThemeContext';
 const Index = () => {
   const { isDarkMode } = useTheme();
   const [currentSection, setCurrentSection] = useState<string | null>(null);
+  const [isThemeChanging, setIsThemeChanging] = useState(false);
+  
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({
     hero: null,
     services: null,
@@ -24,8 +26,17 @@ const Index = () => {
     contact: null
   });
 
-  // Fix for sections disappearing when theme changes
-  // We'll use observer instead of manual scrolling
+  // Track theme changes and set flag to prevent section disappearance
+  useEffect(() => {
+    setIsThemeChanging(true);
+    const timer = setTimeout(() => {
+      setIsThemeChanging(false);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [isDarkMode]);
+
+  // Setup intersection observer
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -73,6 +84,7 @@ const Index = () => {
     };
   }, []);
 
+  // Animation for scroll reveal
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -104,7 +116,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background dark:bg-background overflow-hidden">
+    <div className={`min-h-screen bg-background dark:bg-background overflow-hidden ${isThemeChanging ? 'opacity-100' : ''}`}>
       <Navbar />
       <Hero />
       <Services />

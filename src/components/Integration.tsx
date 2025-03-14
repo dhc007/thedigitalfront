@@ -92,7 +92,9 @@ const integrationTools = [
 
 const Integration = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
+  const cursorRef = useRef<HTMLDivElement | null>(null);
   const [hoveredTool, setHoveredTool] = useState<number | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { isDarkMode } = useTheme();
 
   useEffect(() => {
@@ -112,6 +114,32 @@ const Integration = () => {
     
     return () => {
       elements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
+
+  // Track mouse position for custom cursor
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (cursorRef.current) {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+        cursorRef.current.style.left = `${e.clientX}px`;
+        cursorRef.current.style.top = `${e.clientY}px`;
+        cursorRef.current.style.opacity = '1';
+      }
+    };
+
+    const handleMouseLeave = () => {
+      if (cursorRef.current) {
+        cursorRef.current.style.opacity = '0';
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, []);
 
@@ -160,19 +188,43 @@ const Integration = () => {
     return 'bg-white hover:bg-gray-50';
   };
 
+  const handleToolHover = (id: number | null) => {
+    setHoveredTool(id);
+    if (cursorRef.current) {
+      if (id !== null) {
+        cursorRef.current.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        const tool = integrationTools.find(t => t.id === id);
+        if (tool) {
+          cursorRef.current.style.background = `radial-gradient(circle, rgba(${tool.color === 'blue' ? '59, 130, 246' : tool.color === 'green' ? '34, 197, 94' : tool.color === 'purple' ? '168, 85, 247' : '147, 51, 234'}, 0.3) 0%, rgba(${tool.color === 'blue' ? '59, 130, 246' : tool.color === 'green' ? '34, 197, 94' : tool.color === 'purple' ? '168, 85, 247' : '147, 51, 234'}, 0.1) 70%)`;
+        }
+      } else {
+        cursorRef.current.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursorRef.current.style.background = 'rgba(168, 85, 247, 0.2)';
+      }
+    }
+  };
+
   return (
     <section id="integrations" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
       {/* Custom cursor effect */}
-      <div className="fixed w-12 h-12 rounded-full bg-purple-500/30 pointer-events-none z-50 hidden md:block transition-transform duration-100" 
-        id="custom-cursor"
-        style={{transform: 'translate(-50%, -50%)', backdropFilter: 'blur(4px)'}}></div>
+      <div 
+        ref={cursorRef}
+        className="fixed w-12 h-12 rounded-full bg-purple-500/30 pointer-events-none z-50 transition-all duration-200" 
+        style={{
+          transform: 'translate(-50%, -50%)', 
+          backdropFilter: 'blur(4px)',
+          opacity: 0,
+          left: mousePosition.x,
+          top: mousePosition.y
+        }}
+      />
       
       {/* Decorative floating icons */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {integrationTools.slice(0, 8).map((tool, index) => (
           <div 
             key={`floating-${tool.id}`}
-            className="absolute w-16 h-16 opacity-10 animate-float"
+            className="absolute w-16 h-16 opacity-20 animate-float"
             style={{
               ...getRandomPosition(index),
               animationDelay: `${index * 0.5}s`,
@@ -195,7 +247,7 @@ const Integration = () => {
             Integrations
           </span>
           <h2 className="headline text-4xl md:text-5xl mb-6">
-            Seamless <span className="text-primary">Technology</span> Integration
+            Seamless <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">Technology</span> Integration
           </h2>
           <p className="text-muted-foreground">
             We integrate with the platforms and tools you already use, ensuring smooth operation and maximum efficiency for your digital products.
@@ -212,12 +264,12 @@ const Integration = () => {
                 hoveredTool === tool.id ? 'text-white border-transparent' : isDarkMode ? 'border-secondary/50' : 'border-gray-100 shadow'
               )}
               style={{ animationDelay: `${index * 0.05}s` }}
-              onMouseEnter={() => setHoveredTool(tool.id)}
-              onMouseLeave={() => setHoveredTool(null)}
+              onMouseEnter={() => handleToolHover(tool.id)}
+              onMouseLeave={() => handleToolHover(null)}
             >
               <div className={cn(
                 "w-14 h-14 mb-4 flex items-center justify-center rounded-full p-2 transition-colors duration-300",
-                hoveredTool === tool.id ? 'bg-white/20' : isDarkMode ? 'bg-white/5' : 'bg-gray-50'
+                hoveredTool === tool.id ? 'bg-white/20' : isDarkMode ? 'bg-white/10' : 'bg-gray-50'
               )}>
                 <img 
                   src={tool.icon} 
@@ -225,7 +277,7 @@ const Integration = () => {
                   className="w-10 h-10 object-contain" 
                 />
               </div>
-              <h3 className="text-sm font-medium">{tool.name}</h3>
+              <h3 className="text-sm font-medium text-center">{tool.name}</h3>
               <span className={cn(
                 "text-xs mt-1",
                 hoveredTool === tool.id ? 'text-white/80' : 'text-muted-foreground'
@@ -234,24 +286,12 @@ const Integration = () => {
           ))}
         </div>
         
-        {/* Featured Integration CTA - one of the 3 CTAs */}
+        {/* Integration CTA - one of the 3 CTAs */}
         <div className={`max-w-4xl mx-auto rounded-2xl p-10 reveal-on-scroll overflow-hidden relative ${
           isDarkMode 
-            ? 'border border-purple-800/30' 
-            : 'border border-purple-100'
+            ? 'border border-purple-800/30 bg-gradient-to-r from-purple-900/20 to-blue-900/20 backdrop-blur-md' 
+            : 'border border-purple-100 bg-gradient-to-r from-purple-50 to-blue-50'
         }`}>
-          {/* Background gradient */}
-          <div className="absolute inset-0 z-0">
-            <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-r from-purple-900/20 to-blue-900/20' : 'bg-gradient-to-r from-purple-50 to-blue-50'}`}></div>
-            <div className="absolute inset-0 backdrop-blur-md"></div>
-          </div>
-          
-          {/* Animated circles */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-0 right-0 w-36 h-36 rounded-full bg-blue-400/10 animate-pulse" style={{animationDuration: '4s'}}></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-purple-400/10 animate-pulse" style={{animationDuration: '6s'}}></div>
-          </div>
-          
           <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
             <div className="md:w-2/3">
               <h3 className="headline text-2xl md:text-3xl mb-4">Ready to integrate with your tech stack?</h3>
@@ -270,9 +310,9 @@ const Integration = () => {
             </div>
             <div className="md:w-1/3 flex items-center justify-center">
               <div className="relative w-32 h-32">
-                <div className="absolute inset-0 bg-blue-500/20 rounded-full animate-pulse"></div>
-                <div className="absolute inset-3 bg-purple-500/20 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
-                <div className="absolute inset-6 bg-pink-500/20 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+                <div className="absolute inset-0 bg-blue-500/30 rounded-full animate-pulse"></div>
+                <div className="absolute inset-3 bg-purple-500/30 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
+                <div className="absolute inset-6 bg-pink-500/30 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
                 <div className="absolute inset-0 w-full h-full flex items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M18 20V10"></path>
@@ -283,42 +323,46 @@ const Integration = () => {
               </div>
             </div>
           </div>
+          
+          {/* Animated particles */}
+          <div className="absolute bottom-0 left-1/4 w-full h-20">
+            {Array.from({ length: 15 }).map((_, i) => (
+              <div 
+                key={i}
+                className="absolute rounded-full bg-purple-500/20 animate-float"
+                style={{
+                  width: `${Math.random() * 10 + 5}px`,
+                  height: `${Math.random() * 10 + 5}px`,
+                  left: `${Math.random() * 100}%`,
+                  animationDuration: `${Math.random() * 5 + 3}s`,
+                  animationDelay: `${Math.random() * 5}s`
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Add JavaScript for custom cursor effect */}
-      <script dangerouslySetInnerHTML={{ __html: `
-        document.addEventListener('DOMContentLoaded', () => {
-          const cursor = document.getElementById('custom-cursor');
-          const items = document.querySelectorAll('.integration-item');
-          
-          if(!cursor) return;
-          
-          window.addEventListener('mousemove', (e) => {
-            if(cursor.style.display === 'none') {
-              cursor.style.display = 'block';
-            }
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-          });
-          
-          items.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-              cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-              cursor.style.backgroundColor = 'rgba(168, 85, 247, 0.2)';
-            });
-            
-            item.addEventListener('mouseleave', () => {
-              cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-              cursor.style.backgroundColor = 'rgba(168, 85, 247, 0.3)';
-            });
-          });
-          
-          document.addEventListener('mouseleave', () => {
-            cursor.style.display = 'none';
-          });
-        });
-      ` }} />
+      <style jsx>{`
+        @keyframes float {
+          0% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+          50% { transform: translateY(-20px) rotate(5deg); opacity: 0.8; }
+          100% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-gradient {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        
+        .integration-item:hover {
+          box-shadow: 0 10px 25px -5px rgba(var(--primary-rgb), 0.1), 
+                      0 10px 10px -5px rgba(var(--primary-rgb), 0.04);
+        }
+      `}</style>
     </section>
   );
 };

@@ -122,6 +122,20 @@
   .btn-outline {
     @apply inline-flex items-center rounded-full bg-transparent border border-primary text-primary px-6 py-3 font-medium transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:translate-y-[-2px] active:translate-y-0 active:shadow-sm dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black;
   }
+  
+  /* Navbar link hover effect */
+  .nav-link {
+    @apply relative py-2 transition-colors duration-300;
+  }
+  
+  .nav-link::after {
+    content: '';
+    @apply absolute left-0 bottom-0 w-0 h-0.5 bg-primary dark:bg-primary transition-all duration-300 ease-out;
+  }
+  
+  .nav-link:hover::after, .nav-link.active::after {
+    @apply w-full;
+  }
 }
 
 /* Smooth scrolling for the entire page */
@@ -159,6 +173,16 @@ html {
 }
 
 /* Dark mode transition */
-.dark body {
+body, section {
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Make sure content doesn't disappear during theme changes */
+.theme-transition * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Theme transition for specific components */
+section, .theme-transition-element {
+  transition: opacity 0.3s ease;
 }

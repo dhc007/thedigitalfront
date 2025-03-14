@@ -1,217 +1,144 @@
 
 import { useState, useEffect } from 'react';
-import { cn } from "@/lib/utils";
 import Logo from './Logo';
+import { useTheme } from '@/context/ThemeContext';
 import DarkModeToggle from './DarkModeToggle';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const { isDarkMode } = useTheme();
 
+  // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-
-      // Determine which section is currently in view
-      const sections = ['hero', 'services', 'case-studies', 'process', 'testimonials', 'contact'];
+      const scrollY = window.scrollY;
+      const sections = document.querySelectorAll('section[id]');
       
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (!element) continue;
+      // Determine active section
+      let currentSection = 'hero';
+      
+      sections.forEach(section => {
+        const sectionTop = (section as HTMLElement).offsetTop - 100;
+        const sectionHeight = (section as HTMLElement).offsetHeight;
         
-        const rect = element.getBoundingClientRect();
-        const offset = 100; // Adjust based on your navbar height
-        
-        if (rect.top <= offset && rect.bottom >= offset) {
-          setActiveSection(section);
-          break;
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+          currentSection = section.id;
         }
-      }
+      });
+      
+      setActiveSection(currentSection);
+      setScrolled(scrollY > 20);
     };
-
+    
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initialize on mount
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLinks = [
+    { text: 'Home', href: '#hero' },
+    { text: 'Services', href: '#services' },
+    { text: 'Work', href: '#case-studies' },
+    { text: 'Process', href: '#process' },
+    { text: 'Integrations', href: '#integrations' },
+    { text: 'Testimonials', href: '#testimonials' },
+    { text: 'Contact', href: '#contact' }
+  ];
+
   return (
     <nav 
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled 
-          ? "bg-background/80 backdrop-blur-md shadow-sm py-3 dark:bg-background/90" 
-          : "bg-transparent py-6"
-      )}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        scrolled 
+          ? isDarkMode 
+            ? 'bg-background/80 backdrop-blur-lg shadow-md border-b border-gray-800/30' 
+            : 'bg-white/80 backdrop-blur-lg shadow-md'
+          : 'bg-transparent'
+      }`}
     >
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        <Logo />
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center">
-          <ul className="flex mr-8">
-            <li className="px-3">
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo */}
+          <Logo />
+          
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
               <a 
-                href="#services" 
-                className={cn(
-                  "text-sm font-medium transition-colors whitespace-nowrap relative",
-                  activeSection === 'services' ? 'text-primary' : 'hover:text-primary',
-                  "after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300",
-                  activeSection === 'services' ? "after:scale-x-100" : "hover:after:scale-x-100 hover:after:origin-bottom-left"
-                )}
+                key={link.text} 
+                href={link.href} 
+                className={`nav-link text-sm font-medium ${
+                  activeSection === link.href.substring(1)
+                    ? 'text-primary dark:text-primary active'
+                    : 'text-foreground/80 hover:text-primary dark:text-foreground/80 dark:hover:text-primary'
+                }`}
               >
-                Services
+                {link.text}
               </a>
-            </li>
-            <li className="px-3">
-              <a 
-                href="#case-studies" 
-                className={cn(
-                  "text-sm font-medium transition-colors whitespace-nowrap relative",
-                  activeSection === 'case-studies' ? 'text-primary' : 'hover:text-primary',
-                  "after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300",
-                  activeSection === 'case-studies' ? "after:scale-x-100" : "hover:after:scale-x-100 hover:after:origin-bottom-left"
-                )}
-              >
-                Work
-              </a>
-            </li>
-            <li className="px-3">
-              <a 
-                href="#process" 
-                className={cn(
-                  "text-sm font-medium transition-colors whitespace-nowrap relative",
-                  activeSection === 'process' ? 'text-primary' : 'hover:text-primary',
-                  "after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300",
-                  activeSection === 'process' ? "after:scale-x-100" : "hover:after:scale-x-100 hover:after:origin-bottom-left"
-                )}
-              >
-                Process
-              </a>
-            </li>
-            <li className="px-3">
-              <a 
-                href="#testimonials" 
-                className={cn(
-                  "text-sm font-medium transition-colors whitespace-nowrap relative",
-                  activeSection === 'testimonials' ? 'text-primary' : 'hover:text-primary',
-                  "after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300",
-                  activeSection === 'testimonials' ? "after:scale-x-100" : "hover:after:scale-x-100 hover:after:origin-bottom-left"
-                )}
-              >
-                Testimonials
-              </a>
-            </li>
-          </ul>
-          <div className="flex items-center gap-4">
+            ))}
+          </div>
+          
+          {/* Right side elements */}
+          <div className="flex items-center">
             <DarkModeToggle />
-            <a href="#contact" className="btn-primary whitespace-nowrap">Contact Us</a>
+            
+            {/* Mobile menu button */}
+            <button
+              className="ml-4 p-2 rounded-md text-gray-500 md:hidden focus:outline-none"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <svg
+                className={`w-6 h-6 transition-transform duration-300 ${mobileMenuOpen ? 'rotate-90' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
           </div>
         </div>
-
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center gap-4">
-          <DarkModeToggle />
-          <button 
-            className="focus:outline-none"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <div className="w-6 flex flex-col gap-1.5">
-              <span className={cn(
-                "block h-0.5 bg-foreground transition-all duration-300 w-6",
-                isMobileMenuOpen && "transform rotate-45 translate-y-2"
-              )}></span>
-              <span className={cn(
-                "block h-0.5 bg-foreground transition-all duration-300",
-                isMobileMenuOpen ? "opacity-0" : "opacity-100"
-              )}></span>
-              <span className={cn(
-                "block h-0.5 bg-foreground transition-all duration-300 w-6",
-                isMobileMenuOpen && "transform -rotate-45 -translate-y-2"
-              )}></span>
-            </div>
-          </button>
-        </div>
       </div>
-
-      {/* Mobile Menu */}
-      <div className={cn(
-        "md:hidden absolute w-full bg-background/95 dark:bg-background/95 backdrop-blur-md transition-all duration-300 overflow-hidden shadow-lg",
-        isMobileMenuOpen ? "max-h-[500px] border-b" : "max-h-0"
-      )}>
+      
+      {/* Mobile menu */}
+      <div 
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileMenuOpen 
+            ? 'max-h-96 opacity-100 border-b' 
+            : 'max-h-0 opacity-0 border-b-0'
+        } ${
+          isDarkMode 
+            ? 'bg-background/90 backdrop-blur-lg border-gray-800/30' 
+            : 'bg-white/90 backdrop-blur-lg border-gray-100'
+        }`}
+      >
         <div className="container mx-auto px-6 py-4">
-          <ul className="flex flex-col gap-4 mb-6">
-            <li>
+          <div className="flex flex-col space-y-3">
+            {navLinks.map((link) => (
               <a 
-                href="#services" 
-                className={cn(
-                  "block py-2 text-sm font-medium transition-colors relative",
-                  activeSection === 'services' ? 'text-primary' : 'hover:text-primary'
-                )}
-                onClick={() => setIsMobileMenuOpen(false)}
+                key={link.text} 
+                href={link.href} 
+                className={`text-sm font-medium px-3 py-2 rounded-md transition-colors ${
+                  activeSection === link.href.substring(1)
+                    ? isDarkMode
+                      ? 'bg-secondary/60 text-primary'
+                      : 'bg-secondary/60 text-primary'
+                    : 'hover:bg-secondary/30'
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
               >
-                Services
-                {activeSection === 'services' && (
-                  <span className="absolute left-0 bottom-0 w-6 h-0.5 bg-primary"></span>
-                )}
+                {link.text}
               </a>
-            </li>
-            <li>
-              <a 
-                href="#case-studies" 
-                className={cn(
-                  "block py-2 text-sm font-medium transition-colors relative",
-                  activeSection === 'case-studies' ? 'text-primary' : 'hover:text-primary'
-                )}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Work
-                {activeSection === 'case-studies' && (
-                  <span className="absolute left-0 bottom-0 w-6 h-0.5 bg-primary"></span>
-                )}
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#process" 
-                className={cn(
-                  "block py-2 text-sm font-medium transition-colors relative",
-                  activeSection === 'process' ? 'text-primary' : 'hover:text-primary'
-                )}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Process
-                {activeSection === 'process' && (
-                  <span className="absolute left-0 bottom-0 w-6 h-0.5 bg-primary"></span>
-                )}
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#testimonials" 
-                className={cn(
-                  "block py-2 text-sm font-medium transition-colors relative",
-                  activeSection === 'testimonials' ? 'text-primary' : 'hover:text-primary'
-                )}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Testimonials
-                {activeSection === 'testimonials' && (
-                  <span className="absolute left-0 bottom-0 w-6 h-0.5 bg-primary"></span>
-                )}
-              </a>
-            </li>
-          </ul>
-          <a 
-            href="#contact" 
-            className="btn-primary block text-center"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Contact Us
-          </a>
+            ))}
+          </div>
         </div>
       </div>
     </nav>

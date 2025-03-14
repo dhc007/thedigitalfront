@@ -37,12 +37,6 @@ const Testimonials = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  
-  // Set mounted to true when component mounts
-  useEffect(() => {
-    setMounted(true);
-  }, []);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -51,19 +45,6 @@ const Testimonials = () => {
     
     return () => clearInterval(interval);
   }, []);
-  
-  // This will run every time isDarkMode changes to force a re-render
-  useEffect(() => {
-    if (mounted) {
-      const section = document.getElementById('testimonials');
-      if (section) {
-        section.style.display = 'none';
-        setTimeout(() => {
-          section.style.display = 'block';
-        }, 0);
-      }
-    }
-  }, [isDarkMode, mounted]);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -86,30 +67,30 @@ const Testimonials = () => {
   }, []);
   
   return (
-    <section id="testimonials" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/10 to-background' : 'bg-gradient-to-b from-white via-purple-50/80 to-white'}`} ref={sectionRef}>
+    <section id="testimonials" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/20 to-background' : 'bg-gradient-to-b from-white via-purple-50/80 to-white'}`} ref={sectionRef}>
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-60 h-60 bg-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-40 -right-20 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl animate-pulse" style={{animationDuration: '8s'}}></div>
-        <div className="absolute top-40 left-1/2 w-40 h-40 bg-pink-400/20 rounded-full blur-3xl animate-pulse" style={{animationDuration: '10s'}}></div>
+        <div className="absolute -top-20 -left-20 w-60 h-60 bg-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-40 -right-20 w-80 h-80 bg-blue-400/30 rounded-full blur-3xl animate-pulse" style={{animationDuration: '8s'}}></div>
+        <div className="absolute top-40 left-1/2 w-40 h-40 bg-pink-400/30 rounded-full blur-3xl animate-pulse" style={{animationDuration: '10s'}}></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-10 reveal-on-scroll">
+        <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
           <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
             Testimonials
           </span>
           <h2 className="headline text-4xl md:text-5xl mb-6">
-            What Our <span className="text-primary">Clients</span> Say
+            What Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">Clients</span> Say
           </h2>
           <p className="text-muted-foreground">
             Don't just take our word for it. Hear from some of the businesses we've helped achieve remarkable results.
           </p>
         </div>
         
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
-            <div className={`lg:col-span-1 rounded-2xl p-8 overflow-hidden reveal-on-scroll ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white/80 backdrop-blur-sm shadow-xl'}`}>
+            <div className={`lg:col-span-1 rounded-2xl p-8 overflow-hidden reveal-on-scroll ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white/90 backdrop-blur-sm shadow-xl'}`}>
               <div className="space-y-8">
                 {testimonials.map((testimonial, index) => (
                   <div
@@ -123,7 +104,7 @@ const Testimonials = () => {
                     <div className="flex items-center gap-4 cursor-pointer">
                       <div className="relative">
                         <div className={cn(
-                          "w-12 h-12 rounded-full overflow-hidden ring-2 transition-all duration-300",
+                          "w-14 h-14 rounded-full overflow-hidden ring-2 transition-all duration-300",
                           activeTestimonial === index ? 
                             (index === 0 ? "ring-orange-400" : index === 1 ? "ring-blue-400" : "ring-purple-400") : 
                             "ring-gray-200 dark:ring-gray-700"
@@ -153,7 +134,7 @@ const Testimonials = () => {
               </div>
             </div>
             
-            <div className={`lg:col-span-2 rounded-2xl p-8 reveal-on-scroll relative overflow-hidden ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white/80 backdrop-blur-sm shadow-xl'}`}>
+            <div className={`lg:col-span-2 rounded-2xl p-8 reveal-on-scroll relative overflow-hidden ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white/90 backdrop-blur-sm shadow-xl'}`}>
               {testimonials.map((testimonial, index) => (
                 <div 
                   key={testimonial.id}
@@ -164,7 +145,7 @@ const Testimonials = () => {
                   style={{ transitionDelay: activeTestimonial === index ? '0.2s' : '0s' }}
                 >
                   <div className={cn(
-                    "text-2xl md:text-3xl font-semibold mb-4 font-display",
+                    "text-2xl md:text-3xl font-semibold mb-6 font-display",
                     index === 0 ? "text-orange-500 dark:text-orange-400" : 
                     index === 1 ? "text-blue-500 dark:text-blue-400" : 
                     "text-purple-500 dark:text-purple-400"
@@ -172,9 +153,9 @@ const Testimonials = () => {
                     {testimonial.highlight}
                   </div>
                   
-                  <div className="relative mt-2 mb-6">
+                  <div className="relative mt-2 mb-8">
                     <svg className={cn(
-                      "absolute -top-3 -left-2 w-10 h-10 opacity-20",
+                      "absolute -top-3 -left-2 w-10 h-10 opacity-30",
                       index === 0 ? "text-orange-500" : index === 1 ? "text-blue-500" : "text-purple-500"
                     )} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16.036-.33.084-.507.144l.138-.182c.668-.878 1.43-1.652 2.286-2.32.857-.666 1.58-1.086 2.17-1.258V7.9c-1.06.238-2.1.78-3.122 1.626C7.568 10.378 6.792 11.414 6.262 12.64c-.53 1.226-.796 2.377-.796 3.453 0 1.258.32 2.347.26 3.247.426.91 1.083 1.362 1.972 1.362.85 0 1.54-.283 2.07-.85.53-.567.796-1.258.796-2.07 0-.776-.203-1.526-.61-2.25-.406-.724-.907-1.325-1.5-1.806L7.93 14.47c-.278-.216-.364-.502-.256-.856.107-.355.392-.6.854-.734l.793-.222h.793c.278 0 .538.037.78.113.244.076.43.226.56.447.13.222.194.478.194.767zm8.954 0c0-.88-.23-1.618-.69-2.217-.326-.412-.77-.683-1.327-.812-.56-.128-1.07-.137-1.54-.028-.16.036-.33.084-.507.144l.138-.182c.668-.878 1.43-1.652 2.286-2.32.857-.666 1.58-1.086 2.17-1.258V7.9c-1.06.238-2.1.78-3.122 1.626-1.02.847-1.796 1.883-2.327 3.11-.53 1.226-.796 2.377-.796 3.452 0 1.258.32 2.347.96 3.247.426.91 1.083 1.362 1.972 1.362.85 0 1.54-.283 2.07-.85.53-.567.796-1.258.796-2.07 0-.776-.203-1.526-.61-2.25-.406-.724-.907-1.325-1.5-1.806l-.3-.257c-.278-.216-.364-.502-.256-.856.107-.355.392-.6.854-.734l.793-.222h.793c.278 0 .538.037.78.113.244.076.43.226.56.447.13.222.194.478.194.767z" />
@@ -242,10 +223,27 @@ const Testimonials = () => {
             </div>
           </div>
           
+          {/* Testimonial Slider Indicators */}
+          <div className="flex justify-center gap-2 mt-4 mb-12">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                className={cn(
+                  "w-3 h-3 rounded-full transition-all duration-300",
+                  activeTestimonial === index 
+                    ? index === 0 ? "bg-orange-500 w-6" : index === 1 ? "bg-blue-500 w-6" : "bg-purple-500 w-6" 
+                    : "bg-gray-300 dark:bg-gray-700"
+                )}
+                onClick={() => setActiveTestimonial(index)}
+                aria-label={`Go to testimonial ${index + 1}`}
+              />
+            ))}
+          </div>
+          
           {/* CTA - Second of the 3 CTAs */}
           <div className={`mt-16 p-10 rounded-2xl reveal-on-scroll ${
             isDarkMode 
-              ? 'bg-secondary/20 border border-secondary/30 backdrop-blur-sm' 
+              ? 'bg-gradient-to-r from-purple-900/30 to-blue-900/30 border border-purple-800/30 backdrop-blur-sm' 
               : 'bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100/50 shadow-lg'
           }`}>
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">

@@ -1,16 +1,76 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 
+// Counter animation component
+const AnimatedCounter = ({ end, duration = 2000, label, suffix = "" }: { end: number, duration?: number, label: string, suffix?: string }) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (countRef.current) {
+      observer.observe(countRef.current);
+    }
+
+    return () => {
+      if (countRef.current) {
+        observer.unobserve(countRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number;
+    let animationFrame: number;
+    
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      setCount(Math.floor(progress * end));
+      
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(step);
+      }
+    };
+    
+    animationFrame = requestAnimationFrame(step);
+    
+    return () => cancelAnimationFrame(animationFrame);
+  }, [end, duration, isVisible]);
+
+  return (
+    <div className="text-center transform hover:scale-105 transition-transform duration-300" ref={countRef}>
+      <h3 className="headline text-4xl md:text-5xl mb-2">
+        {count}{suffix}
+      </h3>
+      <p className="text-sm text-muted-foreground">{label}</p>
+    </div>
+  );
+};
+
 const Hero = () => {
-  const heroRef = useRef(null);
+  const heroRef = useRef<HTMLElement>(null);
   const { isDarkMode } = useTheme();
   
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!heroRef.current) return;
       
-      const hero = heroRef.current as HTMLElement;
+      const hero = heroRef.current;
       const shapes = hero.querySelectorAll('.shape');
       
       shapes.forEach((shape: Element) => {
@@ -52,6 +112,14 @@ const Hero = () => {
         <div className="shape absolute top-[10%] left-[10%] w-64 h-64 rounded-full bg-blue-200/30 dark:bg-blue-500/10 blur-3xl" data-speed="2"></div>
         <div className="shape absolute bottom-[20%] right-[10%] w-80 h-80 rounded-full bg-purple-200/30 dark:bg-purple-500/10 blur-3xl" data-speed="3"></div>
         <div className="shape absolute top-[30%] right-[20%] w-40 h-40 rounded-full bg-pink-200/30 dark:bg-pink-500/10 blur-3xl" data-speed="1.5"></div>
+      </div>
+
+      {/* Enhanced Decorative Elements */}
+      <div className="absolute w-full h-full pointer-events-none">
+        <div className="absolute top-1/4 left-1/5 w-4 h-4 bg-purple-400 rounded-full animate-pulse"></div>
+        <div className="absolute top-3/4 left-1/3 w-3 h-3 bg-blue-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
+        <div className="absolute top-2/4 right-1/4 w-5 h-5 bg-pink-400 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-1/4 right-1/5 w-4 h-4 bg-yellow-400 rounded-full animate-pulse" style={{animationDelay: '1.5s'}}></div>
       </div>
 
       {/* Floating Devices */}
@@ -99,21 +167,12 @@ const Hero = () => {
           </div>
 
           <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 animate-fade-in-slow" style={{ animationDelay: '0.5s' }}>
+            <AnimatedCounter end={98} label="Client Satisfaction" suffix="%" />
+            <AnimatedCounter end={150} label="Projects Delivered" suffix="+" />
+            <AnimatedCounter end={12} label="Years Experience" suffix="+" />
             <div className="text-center transform hover:scale-105 transition-transform duration-300">
-              <h3 className="headline text-4xl md:text-5xl mb-2">98%</h3>
-              <p className="text-sm text-muted-foreground">Client Satisfaction</p>
-            </div>
-            <div className="text-center transform hover:scale-105 transition-transform duration-300">
-              <h3 className="headline text-4xl md:text-5xl mb-2">150+</h3>
-              <p className="text-sm text-muted-foreground">Projects Delivered</p>
-            </div>
-            <div className="text-center transform hover:scale-105 transition-transform duration-300">
-              <h3 className="headline text-4xl md:text-5xl mb-2">12+</h3>
-              <p className="text-sm text-muted-foreground">Years Experience</p>
-            </div>
-            <div className="text-center transform hover:scale-105 transition-transform duration-300">
-              <h3 className="headline text-4xl md:text-5xl mb-2">24/7</h3>
-              <p className="text-sm text-muted-foreground">Support Available</p>
+              <h3 className="headline text-4xl md:text-5xl mb-2">4.9<span className="text-2xl">/5</span></h3>
+              <p className="text-sm text-muted-foreground">Customer Rating</p>
             </div>
           </div>
         </div>

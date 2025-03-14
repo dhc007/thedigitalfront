@@ -97,13 +97,28 @@ const Contact = () => {
   }, []);
   
   return (
-    <section id="contact" className={`section-padding relative ${isDarkMode ? 'bg-background' : 'bg-white'}`} ref={sectionRef}>
+    <section id="contact" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
       {/* Decorative elements inspired by devgeeks.in */}
-      <div className="absolute top-0 left-0 w-24 h-24 bg-purple-500/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-xl"></div>
-      <div className="absolute bottom-0 right-0 w-36 h-36 bg-orange-500/10 rounded-full translate-x-1/3 translate-y-1/3 blur-xl"></div>
-      <div className="absolute top-1/3 right-0 w-16 h-16 bg-blue-500/10 rounded-full translate-x-1/2 blur-lg"></div>
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-20 w-24 h-24 bg-purple-500/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-xl"></div>
+        <div className="absolute bottom-0 right-0 w-36 h-36 bg-orange-500/10 rounded-full translate-x-1/3 translate-y-1/3 blur-xl"></div>
+        <div className="absolute top-1/3 right-0 w-16 h-16 bg-blue-500/10 rounded-full translate-x-1/2 blur-lg"></div>
+      </div>
       
       <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
+          <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
+            Contact Us
+          </span>
+          <h2 className="headline text-4xl md:text-5xl mb-6">
+            Let's Create Something <span className="text-primary">Amazing</span> Together
+          </h2>
+          <p className="text-muted-foreground">
+            Ready to transform your digital presence and boost your business? 
+            Get in touch with us today to discuss your project.
+          </p>
+        </div>
+        
         <div className={`max-w-5xl mx-auto ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} rounded-2xl shadow-xl overflow-hidden`}>
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="bg-gradient-to-br from-purple-600 to-blue-500 text-white p-12 flex flex-col justify-center reveal-on-scroll">

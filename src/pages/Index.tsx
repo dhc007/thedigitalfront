@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
-import Navbar from '@/components/Navbar';
+import TubeNavbar from '@/components/TubeNavbar';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import CaseStudies from '@/components/CaseStudies';
@@ -75,7 +75,7 @@ const Index = () => {
 
   return (
     <div className={`min-h-screen bg-background dark:bg-background overflow-hidden transition-colors`}>
-      <Navbar currentSection={currentSection} />
+      <TubeNavbar currentSection={currentSection} />
       <Hero />
       <Services />
       <CaseStudies />

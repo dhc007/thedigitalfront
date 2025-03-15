@@ -5,6 +5,7 @@ import { Phone, Menu, X } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import Logo from './Logo';
 import { cn } from '@/lib/utils';
+import DarkModeToggle from './DarkModeToggle';
 
 interface NavItem {
   name: string;
@@ -76,7 +77,10 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
             <Logo />
           </a>
           
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
+            
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="flex items-center gap-3 bg-background/5 border border-border py-1 px-1 rounded-full shadow-lg">
@@ -122,7 +126,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
             {/* Desktop WhatsApp Link */}
             <a 
               href="https://wa.me/9284613155?text=Hey!%20I'm%20interested%20in%20your%20Web%20Agency%20services"
-              className="ml-6 p-2 text-primary hover:text-opacity-80 transition-colors hidden md:block"
+              className="ml-2 p-2 text-primary hover:text-opacity-80 transition-colors hidden md:block"
               aria-label="WhatsApp"
               target="_blank"
               rel="noopener noreferrer"
@@ -132,7 +136,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
             
             {/* Mobile menu button */}
             <button
-              className="ml-4 p-2 rounded-md text-foreground md:hidden focus:outline-none"
+              className="ml-2 p-2 rounded-md text-foreground md:hidden focus:outline-none"
               onClick={toggleMenu}
               aria-label="Toggle menu"
             >

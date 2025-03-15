@@ -255,7 +255,8 @@ const Integration = () => {
         </div>
       </div>
       
-      <style jsx>{`
+      <style>
+        {`
         @keyframes float {
           0% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
           50% { transform: translateY(-20px) rotate(5deg); opacity: 1; }
@@ -266,7 +267,8 @@ const Integration = () => {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
         }
-      `}</style>
+        `}
+      </style>
     </section>
   );
 };

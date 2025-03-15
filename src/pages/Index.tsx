@@ -106,7 +106,7 @@ const Index = () => {
 
   return (
     <div className={`min-h-screen bg-background dark:bg-background overflow-hidden theme-transition`}>
-      <Navbar currentSection={currentSection} />
+      <Navbar />
       <Hero />
       <Services />
       <CaseStudies />

@@ -4,7 +4,11 @@ import Logo from './Logo';
 import { useTheme } from '@/context/ThemeContext';
 import DarkModeToggle from './DarkModeToggle';
 
-const Navbar = () => {
+interface NavbarProps {
+  currentSection?: string | null;
+}
+
+const Navbar = ({ currentSection }: NavbarProps = {}) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
@@ -17,18 +21,18 @@ const Navbar = () => {
       const sections = document.querySelectorAll('section[id]');
       
       // Determine active section
-      let currentSection = 'hero';
+      let currentSectionFromScroll = 'hero';
       
       sections.forEach(section => {
         const sectionTop = (section as HTMLElement).offsetTop - 100;
         const sectionHeight = (section as HTMLElement).offsetHeight;
         
         if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-          currentSection = section.id;
+          currentSectionFromScroll = section.id;
         }
       });
       
-      setActiveSection(currentSection);
+      setActiveSection(currentSectionFromScroll);
       setScrolled(scrollY > 20);
     };
     
@@ -37,6 +41,13 @@ const Navbar = () => {
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Update activeSection when currentSection prop changes
+  useEffect(() => {
+    if (currentSection) {
+      setActiveSection(currentSection);
+    }
+  }, [currentSection]);
 
   const navLinks = [
     { text: 'Home', href: '#hero' },

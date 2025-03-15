@@ -153,7 +153,7 @@ const Services = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{__html: `
         @keyframes float {
           0% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-10px) rotate(5deg); }
@@ -166,7 +166,7 @@ const Services = () => {
           background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
           background-size: 30px 30px;
         }
-      `}</style>
+      `}} />
 
       {/* Counter Animation Script */}
       <script dangerouslySetInnerHTML={{ __html: `

@@ -14,7 +14,6 @@ import { useTheme } from '@/context/ThemeContext';
 const Index = () => {
   const { isDarkMode } = useTheme();
   const [currentSection, setCurrentSection] = useState<string | null>(null);
-  const [isThemeChanging, setIsThemeChanging] = useState(false);
   
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({
     hero: null,
@@ -25,16 +24,6 @@ const Index = () => {
     testimonials: null,
     contact: null
   });
-
-  // Track theme changes and set flag to prevent section disappearance
-  useEffect(() => {
-    setIsThemeChanging(true);
-    const timer = setTimeout(() => {
-      setIsThemeChanging(false);
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, [isDarkMode]);
 
   // Setup intersection observer
   useEffect(() => {
@@ -71,7 +60,7 @@ const Index = () => {
     };
   }, []);
 
-  // Initialize section refs - but don't scroll on theme change
+  // Initialize section refs
   useEffect(() => {
     sectionRefs.current = {
       hero: document.getElementById('hero'),
@@ -116,8 +105,8 @@ const Index = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-background dark:bg-background overflow-hidden ${isThemeChanging ? 'opacity-100' : ''}`}>
-      <Navbar />
+    <div className={`min-h-screen bg-background dark:bg-background overflow-hidden theme-transition`}>
+      <Navbar currentSection={currentSection} />
       <Hero />
       <Services />
       <CaseStudies />

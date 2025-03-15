@@ -31,40 +31,39 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
-      // Create email content
-      const emailContent = `
-        Name: ${formData.name}
-        Email: ${formData.email}
-        Company: ${formData.company || 'Not provided'}
-        Message: ${formData.message}
-      `;
-      
-      // Create mailto link with pre-filled content
-      const mailtoLink = `mailto:team@thedigitalfront.in?subject=Contact Form Submission from ${formData.name}&body=${encodeURIComponent(emailContent)}`;
-      
-      // Open email client
-      window.open(mailtoLink);
-      
-      // Show success message
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      
-      toast({
-        title: "Message Sent!",
-        description: "We'll get back to you as soon as possible.",
-        duration: 3000,
+      // Submit to Basin form service
+      const response = await fetch('https://usebasin.com/f/your-form-id-here', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
       });
       
-      // Reset form after showing success message
-      setTimeout(() => {
-        setFormData({
-          name: '',
-          email: '',
-          company: '',
-          message: ''
+      if (response.ok) {
+        // Show success message
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        
+        toast({
+          title: "Message Sent!",
+          description: "We'll get back to you as soon as possible.",
+          duration: 3000,
         });
-        setIsSubmitted(false);
-      }, 3000);
+        
+        // Reset form after showing success message
+        setTimeout(() => {
+          setFormData({
+            name: '',
+            email: '',
+            company: '',
+            message: ''
+          });
+          setIsSubmitted(false);
+        }, 3000);
+      } else {
+        throw new Error('Failed to submit form');
+      }
     } catch (error) {
       setIsSubmitting(false);
       toast({
@@ -97,7 +96,7 @@ const Contact = () => {
   }, []);
   
   return (
-    <section id="contact" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
+    <section id="contact" className={`section-padding relative transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
       {/* Decorative elements inspired by devgeeks.in */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-24 h-24 bg-purple-500/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-xl"></div>
@@ -176,7 +175,7 @@ const Contact = () => {
               </div>
             </div>
             
-            <div className={`p-12 reveal-on-scroll ${isDarkMode ? 'bg-background' : 'bg-gray-50'}`}>
+            <div className={`p-12 reveal-on-scroll transition-all duration-300 ${isDarkMode ? 'bg-background' : 'bg-gray-50'}`}>
               <h2 className="headline text-3xl mb-6 text-gray-800 dark:text-gray-100">Get in Touch</h2>
               
               {isSubmitted ? (

@@ -123,7 +123,7 @@
     @apply inline-flex items-center rounded-full bg-transparent border border-primary text-primary px-6 py-3 font-medium transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:translate-y-[-2px] active:translate-y-0 active:shadow-sm dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black;
   }
   
-  /* Navbar link hover effect */
+  /* Improved Navbar link hover effect */
   .nav-link {
     @apply relative py-2 transition-colors duration-300;
   }
@@ -172,11 +172,6 @@ html {
   transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Dark mode transition */
-body, section {
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 /* Make sure content doesn't disappear during theme changes */
 .theme-transition * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -184,5 +179,33 @@ body, section {
 
 /* Theme transition for specific components */
 section, .theme-transition-element {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Floating icons for integration section */
+.floating-icon {
+  animation-name: float;
+  animation-duration: 5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* Add additional animations */
+@keyframes float-slow {
+  0% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-15px) rotate(3deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; filter: blur(1px); }
+  50% { opacity: 1; filter: blur(0); }
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }

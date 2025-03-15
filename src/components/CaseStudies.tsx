@@ -11,7 +11,7 @@ const projects = [
     category: "E-commerce",
     conversionIncrease: "120%",
     image: "https://images.unsplash.com/photo-1607083206968-13611e3d76db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
-    description: "A healthy meal subscription service providing nutritious food options for health-conscious consumers.",
+    description: "A healthy meal subscription service providing nutritious food options for health-conscious consumers. We aspire to motivate consumers and help them assess their food requirements.",
     url: "https://protein-box.com"
   },
   {
@@ -79,30 +79,44 @@ const projects = [
   }
 ];
 
-// Reduced categories
-const categories = ["All", "E-commerce", "SaaS", "Travel", "Mobile App", "Government", "Blockchain", "Hospitality"];
+// Simplified categories
+const categories = ["All", "E-commerce", "SaaS", "Travel", "Mobile App", "Blockchain"];
 
 const CaseStudies = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [visibleProjects, setVisibleProjects] = useState(projects);
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useTheme();
   const isMobile = useIsMobile();
   
+  // Preload project images to prevent loading flicker
+  useEffect(() => {
+    projects.forEach(project => {
+      const img = new Image();
+      img.src = project.image;
+    });
+  }, []);
+  
+  // Filter projects by category
   useEffect(() => {
     setIsLoading(true);
-    setTimeout(() => {
+    
+    const filterProjects = () => {
       if (activeCategory === "All") {
         setVisibleProjects(projects);
       } else {
         setVisibleProjects(projects.filter(project => project.category === activeCategory));
       }
       setIsLoading(false);
-    }, 300); // Short delay to show loading state
+    };
+    
+    // Short delay to show loading state
+    const timer = setTimeout(filterProjects, 300);
+    return () => clearTimeout(timer);
   }, [activeCategory]);
   
+  // Animation on scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -124,7 +138,7 @@ const CaseStudies = () => {
   }, []);
   
   return (
-    <section id="case-studies" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
+    <section id="case-studies" className={`section-padding relative transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-40 h-40 bg-blue-400/40 rounded-full blur-3xl"></div>
@@ -152,9 +166,9 @@ const CaseStudies = () => {
         
         <div className="flex justify-center mb-12 reveal-on-scroll overflow-x-auto pb-4">
           <div className={`flex flex-wrap ${isMobile ? 'justify-start' : 'justify-center'} gap-2 ${isDarkMode ? 'bg-secondary/30' : 'bg-secondary/50'} p-1.5 rounded-full`}>
-            {categories.map((category, index) => (
+            {categories.map((category) => (
               <button
-                key={index}
+                key={category}
                 className={cn(
                   "px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap",
                   activeCategory === category
@@ -180,23 +194,24 @@ const CaseStudies = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12">
             {visibleProjects.map((project, index) => (
-              <div 
+              <a 
                 key={project.id}
+                href={project.url}
+                target="_blank" 
+                rel="noopener noreferrer"
                 className={`rounded-2xl overflow-hidden ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} shadow-lg reveal-on-scroll transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl group`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <a href={project.url} target="_blank" rel="noopener noreferrer" className="block">
-                  <div className="relative h-56 overflow-hidden">
-                    <img 
-                      src={project.image} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                    />
-                    <div className={`absolute top-4 right-4 ${isDarkMode ? 'bg-primary/70 text-primary-foreground' : 'bg-black/70 text-white'} text-xs font-semibold px-3 py-1 rounded-full`}>
-                      {project.category}
-                    </div>
+                <div className="relative h-56 overflow-hidden">
+                  <img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                  />
+                  <div className={`absolute top-4 right-4 ${isDarkMode ? 'bg-primary/70 text-primary-foreground' : 'bg-black/70 text-white'} text-xs font-semibold px-3 py-1 rounded-full`}>
+                    {project.category}
                   </div>
-                </a>
+                </div>
                 
                 <div className="p-6">
                   <h3 className="headline text-xl mb-3">{project.title}</h3>
@@ -211,7 +226,7 @@ const CaseStudies = () => {
                     <span className="text-sm">conversion increase</span>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         )}

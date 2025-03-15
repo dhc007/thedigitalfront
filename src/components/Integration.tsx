@@ -1,6 +1,11 @@
 
 import { useRef, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 const integrationTools = [
   {
@@ -77,53 +82,76 @@ const integrationTools = [
   }
 ];
 
+// Split tools into top and bottom rows for different scroll directions
+const topRowTools = integrationTools.slice(0, 6);
+const bottomRowTools = integrationTools.slice(6, 12);
+
 const Integration = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
+  const topCarouselRef = useRef<HTMLDivElement | null>(null);
+  const bottomCarouselRef = useRef<HTMLDivElement | null>(null);
   const { isDarkMode } = useTheme();
   
   useEffect(() => {
+    // Animation for seamless scrolling on both carousels
+    let animationFrameId: number;
+    let topPosition = 0;
+    let bottomPosition = 0;
+    
+    const animateCarousels = () => {
+      if (topCarouselRef.current && bottomCarouselRef.current) {
+        // Top carousel scrolls from left to right
+        topPosition -= 0.5;
+        if (topPosition <= -topCarouselRef.current.scrollWidth / 2) {
+          topPosition = 0;
+        }
+        topCarouselRef.current.style.transform = `translateX(${topPosition}px)`;
+        
+        // Bottom carousel scrolls from right to left
+        bottomPosition += 0.5;
+        if (bottomPosition >= bottomCarouselRef.current.scrollWidth / 2) {
+          bottomPosition = 0;
+        }
+        bottomCarouselRef.current.style.transform = `translateX(${bottomPosition}px)`;
+      }
+      
+      animationFrameId = requestAnimationFrame(animateCarousels);
+    };
+
+    // Intersection Observer to start animation when section is in view
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
+            animationFrameId = requestAnimationFrame(animateCarousels);
+          } else {
+            cancelAnimationFrame(animationFrameId);
           }
         });
       },
       { threshold: 0.1 }
     );
     
-    const elements = document.querySelectorAll('.reveal-on-scroll');
-    elements.forEach((el) => observer.observe(el));
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
     
     return () => {
-      elements.forEach((el) => observer.unobserve(el));
+      observer.disconnect();
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
-  // Animation for the floating icons in the background
-  const getRandomPosition = (index: number) => {
-    // Create a grid of initial positions covering the entire section
-    const rows = 4;
-    const cols = 4;
-    const row = Math.floor(index / cols) % rows;
-    const col = index % cols;
-    
-    return {
-      top: `${10 + (row * 20)}%`,
-      left: `${10 + (col * 25)}%`,
-      animationDelay: `${index * 0.3}s`,
-      animationDuration: `${8 + index % 4}s`,
-      opacity: 0.8,
-      scale: `${0.7 + Math.random() * 0.5}`
-    };
-  };
-
   return (
     <section id="integrations" className={`section-padding relative overflow-hidden transition-colors ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
-      {/* Main content */}
+      {/* Background decoration */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-60 h-60 bg-blue-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-400/10 rounded-full blur-3xl"></div>
+      </div>
+      
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
             Integrations
           </span>
@@ -135,24 +163,56 @@ const Integration = () => {
           </p>
         </div>
         
-        {/* Floating tech icons */}
-        <div className="relative h-[60vh] md:h-[50vh] mb-12">
-          {integrationTools.map((tool, index) => (
-            <div
-              key={tool.id}
-              className="absolute transition-all duration-300 hover:scale-125 floating-icon cursor-pointer"
-              style={{
-                ...getRandomPosition(index),
-                transform: `scale(${getRandomPosition(index).scale})`,
-              }}
-            >
-              <img 
-                src={tool.icon} 
-                alt={tool.name}
-                className="w-16 h-16 md:w-20 md:h-20 drop-shadow-lg" 
-              />
-            </div>
-          ))}
+        {/* Top row - scrolling from left to right */}
+        <div className="overflow-hidden mb-12 py-8">
+          <div 
+            className="flex space-x-16 py-4 whitespace-nowrap"
+            style={{ width: "200%" }}
+            ref={topCarouselRef}
+          >
+            {[...topRowTools, ...topRowTools].map((tool, index) => (
+              <div 
+                key={`${tool.id}-${index}`} 
+                className="flex flex-col items-center group cursor-pointer"
+              >
+                <div className={`w-24 h-24 md:w-32 md:h-32 flex items-center justify-center rounded-2xl p-4 transition-all duration-300 group-hover:scale-110 ${isDarkMode ? 'bg-secondary/30' : 'bg-white/80 shadow-md'}`}>
+                  <img 
+                    src={tool.icon} 
+                    alt={tool.name} 
+                    className="w-16 h-16 md:w-20 md:h-20 object-contain" 
+                  />
+                </div>
+                <p className="mt-3 text-center font-medium">{tool.name}</p>
+                <span className="text-sm text-muted-foreground">{tool.category}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Bottom row - scrolling from right to left */}
+        <div className="overflow-hidden mb-16 py-8">
+          <div 
+            className="flex space-x-16 py-4 whitespace-nowrap"
+            style={{ width: "200%" }}
+            ref={bottomCarouselRef}
+          >
+            {[...bottomRowTools, ...bottomRowTools].map((tool, index) => (
+              <div 
+                key={`${tool.id}-${index}`} 
+                className="flex flex-col items-center group cursor-pointer"
+              >
+                <div className={`w-24 h-24 md:w-32 md:h-32 flex items-center justify-center rounded-2xl p-4 transition-all duration-300 group-hover:scale-110 ${isDarkMode ? 'bg-secondary/30' : 'bg-white/80 shadow-md'}`}>
+                  <img 
+                    src={tool.icon} 
+                    alt={tool.name} 
+                    className="w-16 h-16 md:w-20 md:h-20 object-contain" 
+                  />
+                </div>
+                <p className="mt-3 text-center font-medium">{tool.name}</p>
+                <span className="text-sm text-muted-foreground">{tool.category}</span>
+              </div>
+            ))}
+          </div>
         </div>
         
         {/* Integration CTA */}
@@ -192,47 +252,21 @@ const Integration = () => {
               </div>
             </div>
           </div>
-          
-          {/* Animated particles */}
-          <div className="absolute bottom-0 left-1/4 w-full h-20">
-            {Array.from({ length: 15 }).map((_, i) => (
-              <div 
-                key={i}
-                className="absolute rounded-full bg-purple-500/20 animate-float"
-                style={{
-                  width: `${Math.random() * 10 + 5}px`,
-                  height: `${Math.random() * 10 + 5}px`,
-                  left: `${Math.random() * 100}%`,
-                  animationDuration: `${Math.random() * 5 + 3}s`,
-                  animationDelay: `${Math.random() * 5}s`
-                }}
-              />
-            ))}
-          </div>
         </div>
       </div>
-
-      <style dangerouslySetInnerHTML={{__html: `
+      
+      <style jsx>{`
         @keyframes float {
           0% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
           50% { transform: translateY(-20px) rotate(5deg); opacity: 1; }
           100% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
         }
         
-        .floating-icon {
-          animation: float 8s ease-in-out infinite;
-          filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
-        }
-        
         @keyframes pulse-gradient {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
         }
-        
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}} />
+      `}</style>
     </section>
   );
 };

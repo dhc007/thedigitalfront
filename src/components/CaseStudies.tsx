@@ -10,7 +10,6 @@ const projects = [
     id: 1,
     title: "Protein Box",
     category: "E-commerce",
-    conversionIncrease: "120%",
     image: "https://images.unsplash.com/photo-1594502184342-2e12f877aa73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
     description: "A healthy meal subscription service providing nutritious food options for health-conscious consumers.",
     url: "https://protein-box.com"
@@ -19,7 +18,6 @@ const projects = [
     id: 2,
     title: "Flexibus",
     category: "Travel",
-    conversionIncrease: "85%",
     image: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "Designed and developed a modern travel booking platform with real-time tracking and scheduling features.",
     url: "https://flexibus.in"
@@ -28,7 +26,6 @@ const projects = [
     id: 3,
     title: "Kisai Technologies",
     category: "SaaS",
-    conversionIncrease: "160%",
     image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "Brand identity and website design for an AI-focused SaaS company, showcasing their platform seamlessly.",
     url: "https://kis.ai"
@@ -37,7 +34,6 @@ const projects = [
     id: 4,
     title: "Travelite",
     category: "Mobile App",
-    conversionIncrease: "92%",
     image: "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "Gen-Z, head-turning prototype for AI-driven personalized itinerary concept.",
     url: "#"
@@ -46,7 +42,6 @@ const projects = [
     id: 5,
     title: "BSRTC",
     category: "Government",
-    conversionIncrease: "75%",
     image: "https://images.unsplash.com/photo-1634462426237-15c15a88eeae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
     description: "Transport management and booking system for the Bihar State Road Transport Corporation.",
     url: "https://bsrtc.org"
@@ -55,7 +50,6 @@ const projects = [
     id: 6,
     title: "Hope Projects Scotland",
     category: "Non-Profit",
-    conversionIncrease: "110%",
     image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "Website for a charity organization focused on community development and supporting underprivileged communities.",
     url: "https://hopeprojectscotlandpreview.wpcomstaging.com"
@@ -64,7 +58,6 @@ const projects = [
     id: 7,
     title: "E-Zamindar",
     category: "Blockchain",
-    conversionIncrease: "95%",
     image: "https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "India's first blockchain-backed property ledger providing digital solutions for land records management.",
     url: "https://ezamindar.com"
@@ -73,7 +66,6 @@ const projects = [
     id: 8,
     title: "Souza Lopes Comforts",
     category: "Hospitality",
-    conversionIncrease: "88%",
     image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "Property booking and management system for a luxury Airbnb-style accommodations business.",
     url: "https://souzalopescomforts.com"
@@ -205,16 +197,7 @@ const CaseStudies = () => {
                 
                 <div className="p-6">
                   <h3 className="headline text-xl mb-3">{project.title}</h3>
-                  <p className="text-muted-foreground mb-4">{project.description}</p>
-                  <div className={cn(
-                    "flex items-center gap-2 font-semibold",
-                    project.id % 3 === 0 ? "text-purple-500 dark:text-purple-400" : 
-                    project.id % 3 === 1 ? "text-blue-500 dark:text-blue-400" : 
-                    "text-orange-500 dark:text-orange-400"
-                  )}>
-                    <span>{project.conversionIncrease}</span>
-                    <span className="text-sm">conversion increase</span>
-                  </div>
+                  <p className="text-muted-foreground">{project.description}</p>
                 </div>
               </a>
             ))}

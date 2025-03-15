@@ -1,100 +1,85 @@
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
-import { cn } from "@/lib/utils";
-import { useIsMobile } from '@/hooks/use-mobile';
 
 const integrationTools = [
   {
     id: 1,
     name: "WordPress",
     icon: "https://cdn-icons-png.flaticon.com/512/174/174881.png",
-    category: "CMS",
-    color: "blue"
+    category: "CMS"
   },
   {
     id: 2,
     name: "Shopify",
     icon: "https://cdn-icons-png.flaticon.com/512/825/825500.png",
-    category: "E-commerce",
-    color: "green"
+    category: "E-commerce"
   },
   {
     id: 3,
     name: "React",
     icon: "https://cdn-icons-png.flaticon.com/512/1126/1126012.png",
-    category: "Frontend",
-    color: "cyan"
+    category: "Frontend"
   },
   {
     id: 4,
     name: "Node.js",
     icon: "https://cdn-icons-png.flaticon.com/512/5968/5968322.png",
-    category: "Backend",
-    color: "green"
+    category: "Backend"
   },
   {
     id: 5,
     name: "Firebase",
     icon: "https://cdn-icons-png.flaticon.com/512/5968/5968705.png",
-    category: "Database",
-    color: "amber"
+    category: "Database"
   },
   {
     id: 6,
     name: "AWS",
     icon: "https://cdn-icons-png.flaticon.com/512/5968/5968312.png",
-    category: "Cloud",
-    color: "orange"
+    category: "Cloud"
   },
   {
     id: 7,
     name: "Stripe",
     icon: "https://cdn-icons-png.flaticon.com/512/5968/5968252.png",
-    category: "Payment",
-    color: "purple"
+    category: "Payment"
   },
   {
     id: 8,
     name: "Adobe XD",
     icon: "https://cdn-icons-png.flaticon.com/512/5968/5968573.png",
-    category: "Design",
-    color: "pink"
+    category: "Design"
   },
   {
     id: 9,
     name: "Figma",
     icon: "https://cdn-icons-png.flaticon.com/512/5968/5968701.png",
-    category: "Design",
-    color: "rose"
+    category: "Design"
   },
   {
     id: 10,
     name: "Google Analytics",
     icon: "https://cdn-icons-png.flaticon.com/512/2991/2991112.png",
-    category: "Analytics",
-    color: "yellow"
+    category: "Analytics"
   },
   {
     id: 11,
     name: "GitHub",
     icon: "https://cdn-icons-png.flaticon.com/512/733/733553.png",
-    category: "Version Control",
-    color: "gray"
+    category: "Version Control"
   },
   {
     id: 12,
     name: "Slack",
     icon: "https://cdn-icons-png.flaticon.com/512/5968/5968267.png",
-    category: "Communication",
-    color: "purple"
+    category: "Communication"
   }
 ];
 
 const Integration = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const { isDarkMode } = useTheme();
-  const isMobile = useIsMobile();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -134,27 +119,11 @@ const Integration = () => {
     };
   };
 
-  const getGradientByColor = (color: string) => {
-    const gradients = {
-      blue: 'from-blue-500 to-blue-600',
-      green: 'from-green-500 to-green-600',
-      cyan: 'from-cyan-500 to-cyan-600',
-      amber: 'from-amber-500 to-amber-600',
-      orange: 'from-orange-500 to-orange-600',
-      purple: 'from-purple-500 to-purple-600',
-      pink: 'from-pink-500 to-pink-600',
-      rose: 'from-rose-500 to-rose-600',
-      yellow: 'from-yellow-500 to-yellow-600',
-      gray: 'from-gray-500 to-gray-600'
-    };
-    return gradients[color as keyof typeof gradients] || 'from-purple-500 to-blue-600';
-  };
-
   return (
-    <section id="integrations" className={`section-padding relative overflow-hidden ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
+    <section id="integrations" className={`section-padding relative overflow-hidden transition-colors ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
       {/* Main content */}
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-12 reveal-on-scroll">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
             Integrations
           </span>
@@ -167,44 +136,27 @@ const Integration = () => {
         </div>
         
         {/* Floating tech icons */}
-        <div className="relative h-[50vh] md:h-[40vh] mb-12 reveal-on-scroll">
+        <div className="relative h-[60vh] md:h-[50vh] mb-12">
           {integrationTools.map((tool, index) => (
             <div
               key={tool.id}
-              className={cn(
-                "absolute flex flex-col items-center justify-center floating-icon transition-all duration-500 hover:scale-110",
-                isMobile ? "w-20 h-20" : "w-24 h-24"
-              )}
+              className="absolute transition-all duration-300 hover:scale-125 floating-icon cursor-pointer"
               style={{
                 ...getRandomPosition(index),
                 transform: `scale(${getRandomPosition(index).scale})`,
               }}
             >
-              <div className={cn(
-                "w-full h-full rounded-full bg-gradient-to-r p-1",
-                getGradientByColor(tool.color)
-              )}>
-                <div className={cn(
-                  "w-full h-full rounded-full flex items-center justify-center",
-                  isDarkMode ? "bg-background/80" : "bg-white"
-                )}>
-                  <img 
-                    src={tool.icon} 
-                    alt={tool.name}
-                    className="w-10 h-10 md:w-12 md:h-12 object-contain" 
-                  />
-                </div>
-              </div>
-              <span className={cn(
-                "mt-2 text-xs md:text-sm font-medium",
-                isDarkMode ? "text-white/90" : "text-gray-800"
-              )}>{tool.name}</span>
+              <img 
+                src={tool.icon} 
+                alt={tool.name}
+                className="w-16 h-16 md:w-20 md:h-20 drop-shadow-lg" 
+              />
             </div>
           ))}
         </div>
         
-        {/* Integration CTA - one of the 3 CTAs */}
-        <div className={`max-w-4xl mx-auto rounded-2xl p-10 reveal-on-scroll overflow-hidden relative ${
+        {/* Integration CTA */}
+        <div className={`max-w-4xl mx-auto rounded-2xl p-10 overflow-hidden relative ${
           isDarkMode 
             ? 'border border-purple-800/30 bg-gradient-to-r from-purple-900/20 to-blue-900/20 backdrop-blur-md' 
             : 'border border-purple-100 bg-gradient-to-r from-purple-50 to-blue-50'
@@ -260,8 +212,7 @@ const Integration = () => {
         </div>
       </div>
 
-      <style>
-        {`
+      <style dangerouslySetInnerHTML={{__html: `
         @keyframes float {
           0% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
           50% { transform: translateY(-20px) rotate(5deg); opacity: 1; }
@@ -281,8 +232,7 @@ const Integration = () => {
         .animate-float {
           animation: float 6s ease-in-out infinite;
         }
-        `}
-      </style>
+      `}} />
     </section>
   );
 };

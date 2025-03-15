@@ -46,28 +46,8 @@ const Testimonials = () => {
     return () => clearInterval(interval);
   }, []);
   
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    const elements = document.querySelectorAll('.reveal-on-scroll');
-    elements.forEach((el) => observer.observe(el));
-    
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
-    };
-  }, []);
-  
   return (
-    <section id="testimonials" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/20 to-background' : 'bg-gradient-to-b from-white via-purple-50/80 to-white'}`} ref={sectionRef}>
+    <section id="testimonials" className={`section-padding relative transition-colors ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/20 to-background' : 'bg-gradient-to-b from-white via-purple-50/80 to-white'}`} ref={sectionRef}>
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-20 -left-20 w-60 h-60 bg-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
@@ -76,7 +56,7 @@ const Testimonials = () => {
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
             Testimonials
           </span>
@@ -90,7 +70,7 @@ const Testimonials = () => {
         
         <div className="max-w-6xl mx-auto mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
-            <div className={`lg:col-span-1 rounded-2xl p-8 overflow-hidden reveal-on-scroll ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white/90 backdrop-blur-sm shadow-xl'}`}>
+            <div className={`lg:col-span-1 rounded-2xl p-8 overflow-hidden ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white/90 backdrop-blur-sm shadow-xl'}`}>
               <div className="space-y-8">
                 {testimonials.map((testimonial, index) => (
                   <div
@@ -134,12 +114,12 @@ const Testimonials = () => {
               </div>
             </div>
             
-            <div className={`lg:col-span-2 rounded-2xl p-8 reveal-on-scroll relative overflow-hidden ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white/90 backdrop-blur-sm shadow-xl'}`}>
+            <div className={`lg:col-span-2 rounded-2xl p-8 relative overflow-hidden ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white/90 backdrop-blur-sm shadow-xl'}`}>
               {testimonials.map((testimonial, index) => (
                 <div 
                   key={testimonial.id}
                   className={cn(
-                    "transition-all duration-700 absolute inset-0 p-8 flex flex-col",
+                    "transition-all duration-500 absolute inset-0 p-8 flex flex-col",
                     activeTestimonial === index ? "opacity-100 transform translate-x-0" : "opacity-0 transform translate-x-full"
                   )}
                   style={{ transitionDelay: activeTestimonial === index ? '0.2s' : '0s' }}
@@ -160,7 +140,7 @@ const Testimonials = () => {
                     )} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16.036-.33.084-.507.144l.138-.182c.668-.878 1.43-1.652 2.286-2.32.857-.666 1.58-1.086 2.17-1.258V7.9c-1.06.238-2.1.78-3.122 1.626C7.568 10.378 6.792 11.414 6.262 12.64c-.53 1.226-.796 2.377-.796 3.453 0 1.258.32 2.347.26 3.247.426.91 1.083 1.362 1.972 1.362.85 0 1.54-.283 2.07-.85.53-.567.796-1.258.796-2.07 0-.776-.203-1.526-.61-2.25-.406-.724-.907-1.325-1.5-1.806L7.93 14.47c-.278-.216-.364-.502-.256-.856.107-.355.392-.6.854-.734l.793-.222h.793c.278 0 .538.037.78.113.244.076.43.226.56.447.13.222.194.478.194.767zm8.954 0c0-.88-.23-1.618-.69-2.217-.326-.412-.77-.683-1.327-.812-.56-.128-1.07-.137-1.54-.028-.16.036-.33.084-.507.144l.138-.182c.668-.878 1.43-1.652 2.286-2.32.857-.666 1.58-1.086 2.17-1.258V7.9c-1.06.238-2.1.78-3.122 1.626-1.02.847-1.796 1.883-2.327 3.11-.53 1.226-.796 2.377-.796 3.452 0 1.258.32 2.347.96 3.247.426.91 1.083 1.362 1.972 1.362.85 0 1.54-.283 2.07-.85.53-.567.796-1.258.796-2.07 0-.776-.203-1.526-.61-2.25-.406-.724-.907-1.325-1.5-1.806l-.3-.257c-.278-.216-.364-.502-.256-.856.107-.355.392-.6.854-.734l.793-.222h.793c.278 0 .538.037.78.113.244.076.43.226.56.447.13.222.194.478.194.767z" />
                     </svg>
-                    <blockquote className="text-base md:text-lg leading-relaxed pl-8">
+                    <blockquote className="text-base md:text-lg leading-relaxed pl-8 max-h-[300px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-400 scrollbar-track-transparent">
                       {testimonial.quote}
                     </blockquote>
                   </div>
@@ -220,6 +200,9 @@ const Testimonials = () => {
                   </div>
                 </div>
               ))}
+              {/* Add a spacer div to ensure the container has height */}
+              <div style={{ height: "400px" }} className="hidden lg:block"></div>
+              <div style={{ height: "550px" }} className="block lg:hidden"></div>
             </div>
           </div>
           
@@ -241,7 +224,7 @@ const Testimonials = () => {
           </div>
           
           {/* CTA - Second of the 3 CTAs */}
-          <div className={`mt-16 p-10 rounded-2xl reveal-on-scroll ${
+          <div className={`mt-16 p-10 rounded-2xl ${
             isDarkMode 
               ? 'bg-gradient-to-r from-purple-900/30 to-blue-900/30 border border-purple-800/30 backdrop-blur-sm' 
               : 'bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100/50 shadow-lg'
@@ -263,6 +246,25 @@ const Testimonials = () => {
           </div>
         </div>
       </div>
+      
+      <style dangerouslySetInnerHTML={{__html: `
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+          background-color: rgba(155, 155, 155, 0.5);
+          border-radius: 10px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background-color: rgba(155, 155, 155, 0.7);
+        }
+      `}} />
     </section>
   );
 };

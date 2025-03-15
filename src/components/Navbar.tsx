@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Logo from './Logo';
 import { useTheme } from '@/context/ThemeContext';
 import DarkModeToggle from './DarkModeToggle';
+import { Phone } from 'lucide-react';
 
 interface NavbarProps {
   currentSection?: string | null;
@@ -50,7 +51,6 @@ const Navbar = ({ currentSection }: NavbarProps = {}) => {
   }, [currentSection]);
 
   const navLinks = [
-    { text: 'Home', href: '#hero' },
     { text: 'Services', href: '#services' },
     { text: 'Work', href: '#case-studies' },
     { text: 'Process', href: '#process' },
@@ -71,8 +71,10 @@ const Navbar = ({ currentSection }: NavbarProps = {}) => {
     >
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Logo />
+          {/* Logo - now clickable to go to hero section */}
+          <a href="#hero" className="focus:outline-none">
+            <Logo />
+          </a>
           
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
@@ -93,6 +95,17 @@ const Navbar = ({ currentSection }: NavbarProps = {}) => {
           
           {/* Right side elements */}
           <div className="flex items-center">
+            {/* WhatsApp Link */}
+            <a 
+              href="https://wa.me/9284613155?text=Hey!%20I'm%20interested%20in%20your%20Web%20Agency%20services"
+              className="mr-4 p-2 text-primary hover:text-opacity-80 transition-colors"
+              aria-label="WhatsApp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Phone className="w-5 h-5" />
+            </a>
+            
             <DarkModeToggle />
             
             {/* Mobile menu button */}

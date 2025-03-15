@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { useTheme } from '@/context/ThemeContext';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useQuery } from '@tanstack/react-query';
 
 const projects = [
   {
@@ -10,8 +11,8 @@ const projects = [
     title: "Protein Box",
     category: "E-commerce",
     conversionIncrease: "120%",
-    image: "https://images.unsplash.com/photo-1607083206968-13611e3d76db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
-    description: "A healthy meal subscription service providing nutritious food options for health-conscious consumers. We aspire to motivate consumers and help them assess their food requirements.",
+    image: "https://images.unsplash.com/photo-1594502184342-2e12f877aa73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
+    description: "A healthy meal subscription service providing nutritious food options for health-conscious consumers.",
     url: "https://protein-box.com"
   },
   {
@@ -19,7 +20,7 @@ const projects = [
     title: "Flexibus",
     category: "Travel",
     conversionIncrease: "85%",
-    image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
+    image: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "Designed and developed a modern travel booking platform with real-time tracking and scheduling features.",
     url: "https://flexibus.in"
   },
@@ -28,7 +29,7 @@ const projects = [
     title: "Kisai Technologies",
     category: "SaaS",
     conversionIncrease: "160%",
-    image: "https://images.unsplash.com/photo-1589149098258-3e9102cd63d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
+    image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "Brand identity and website design for an AI-focused SaaS company, showcasing their platform seamlessly.",
     url: "https://kis.ai"
   },
@@ -37,7 +38,7 @@ const projects = [
     title: "Travelite",
     category: "Mobile App",
     conversionIncrease: "92%",
-    image: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
+    image: "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "Gen-Z, head-turning prototype for AI-driven personalized itinerary concept.",
     url: "#"
   },
@@ -46,7 +47,7 @@ const projects = [
     title: "BSRTC",
     category: "Government",
     conversionIncrease: "75%",
-    image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
+    image: "https://images.unsplash.com/photo-1634462426237-15c15a88eeae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
     description: "Transport management and booking system for the Bihar State Road Transport Corporation.",
     url: "https://bsrtc.org"
   },
@@ -64,7 +65,7 @@ const projects = [
     title: "E-Zamindar",
     category: "Blockchain",
     conversionIncrease: "95%",
-    image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
+    image: "https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "India's first blockchain-backed property ledger providing digital solutions for land records management.",
     url: "https://ezamindar.com"
   },
@@ -73,50 +74,39 @@ const projects = [
     title: "Souza Lopes Comforts",
     category: "Hospitality",
     conversionIncrease: "88%",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
+    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80",
     description: "Property booking and management system for a luxury Airbnb-style accommodations business.",
     url: "https://souzalopescomforts.com"
   }
 ];
 
 // Simplified categories
-const categories = ["All", "E-commerce", "SaaS", "Travel", "Mobile App", "Blockchain"];
+const categories = ["All", "E-commerce", "SaaS", "Travel", "Mobile App", "Blockchain", "Government"];
+
+const fetchProjects = (category: string) => {
+  return new Promise<typeof projects>((resolve) => {
+    setTimeout(() => {
+      if (category === 'All') {
+        resolve(projects);
+      } else {
+        resolve(projects.filter(project => project.category === category));
+      }
+    }, 300);
+  });
+};
 
 const CaseStudies = () => {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [visibleProjects, setVisibleProjects] = useState(projects);
-  const [isLoading, setIsLoading] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useTheme();
   const isMobile = useIsMobile();
+
+  const { data: visibleProjects, isLoading } = useQuery({
+    queryKey: ['projects', activeCategory],
+    queryFn: () => fetchProjects(activeCategory),
+    initialData: projects
+  });
   
-  // Preload project images to prevent loading flicker
-  useEffect(() => {
-    projects.forEach(project => {
-      const img = new Image();
-      img.src = project.image;
-    });
-  }, []);
-  
-  // Filter projects by category
-  useEffect(() => {
-    setIsLoading(true);
-    
-    const filterProjects = () => {
-      if (activeCategory === "All") {
-        setVisibleProjects(projects);
-      } else {
-        setVisibleProjects(projects.filter(project => project.category === activeCategory));
-      }
-      setIsLoading(false);
-    };
-    
-    // Short delay to show loading state
-    const timer = setTimeout(filterProjects, 300);
-    return () => clearTimeout(timer);
-  }, [activeCategory]);
-  
-  // Animation on scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -138,7 +128,7 @@ const CaseStudies = () => {
   }, []);
   
   return (
-    <section id="case-studies" className={`section-padding relative transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
+    <section id="case-studies" className={`section-padding relative transition-colors ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-40 h-40 bg-blue-400/40 rounded-full blur-3xl"></div>
@@ -152,7 +142,7 @@ const CaseStudies = () => {
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
             Our Work
           </span>
@@ -164,7 +154,7 @@ const CaseStudies = () => {
           </p>
         </div>
         
-        <div className="flex justify-center mb-12 reveal-on-scroll overflow-x-auto pb-4">
+        <div className="flex justify-center mb-12 overflow-x-auto pb-4">
           <div className={`flex flex-wrap ${isMobile ? 'justify-start' : 'justify-center'} gap-2 ${isDarkMode ? 'bg-secondary/30' : 'bg-secondary/50'} p-1.5 rounded-full`}>
             {categories.map((category) => (
               <button
@@ -199,7 +189,7 @@ const CaseStudies = () => {
                 href={project.url}
                 target="_blank" 
                 rel="noopener noreferrer"
-                className={`rounded-2xl overflow-hidden ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} shadow-lg reveal-on-scroll transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl group`}
+                className={`rounded-2xl overflow-hidden ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} shadow-lg transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl group`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="relative h-56 overflow-hidden">
@@ -231,7 +221,7 @@ const CaseStudies = () => {
           </div>
         )}
         
-        <div className="text-center mt-8 reveal-on-scroll">
+        <div className="text-center mt-8">
           <a href="#contact" className="btn-primary group relative overflow-hidden">
             <span className="relative z-10">Start Your Project</span>
             <span className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full transition-transform duration-700 ease-in-out group-hover:translate-x-full"></span>

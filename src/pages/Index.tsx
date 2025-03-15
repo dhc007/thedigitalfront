@@ -73,40 +73,9 @@ const Index = () => {
     };
   }, []);
 
-  // Animation for scroll reveal
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
-    revealElements.forEach((el) => observer.observe(el));
-    
-    const addAnimations = () => {
-      document.querySelectorAll('.animate-reveal').forEach((el, index) => {
-        setTimeout(() => {
-          el.classList.add('scale-x-100');
-        }, 800 + (index * 200));
-      });
-    };
-    
-    addAnimations();
-    
-    return () => {
-      revealElements.forEach((el) => observer.unobserve(el));
-    };
-  }, []);
-
   return (
-    <div className={`min-h-screen bg-background dark:bg-background overflow-hidden theme-transition`}>
-      <Navbar />
+    <div className={`min-h-screen bg-background dark:bg-background overflow-hidden transition-colors`}>
+      <Navbar currentSection={currentSection} />
       <Hero />
       <Services />
       <CaseStudies />

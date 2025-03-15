@@ -31,8 +31,8 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
-      // Submit to Basin form service
-      const response = await fetch('https://usebasin.com/f/your-form-id-here', {
+      // Using a real Basin form ID
+      const response = await fetch('https://usebasin.com/f/bdb1a89dc768', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,28 +75,8 @@ const Contact = () => {
     }
   };
   
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    const elements = document.querySelectorAll('.reveal-on-scroll');
-    elements.forEach((el) => observer.observe(el));
-    
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
-    };
-  }, []);
-  
   return (
-    <section id="contact" className={`section-padding relative transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
+    <section id="contact" className={`section-padding relative transition-colors ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
       {/* Decorative elements inspired by devgeeks.in */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-24 h-24 bg-purple-500/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-xl"></div>
@@ -105,7 +85,7 @@ const Contact = () => {
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
             Contact Us
           </span>
@@ -120,7 +100,7 @@ const Contact = () => {
         
         <div className={`max-w-5xl mx-auto ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} rounded-2xl shadow-xl overflow-hidden`}>
           <div className="grid grid-cols-1 md:grid-cols-2">
-            <div className="bg-gradient-to-br from-purple-600 to-blue-500 text-white p-12 flex flex-col justify-center reveal-on-scroll">
+            <div className="bg-gradient-to-br from-purple-600 to-blue-500 text-white p-12 flex flex-col justify-center">
               <h2 className="headline text-3xl md:text-4xl mb-6">Let's Create Something Amazing Together</h2>
               <p className="mb-8 text-white/90">
                 Ready to transform your digital presence and boost your business? 
@@ -175,7 +155,7 @@ const Contact = () => {
               </div>
             </div>
             
-            <div className={`p-12 reveal-on-scroll transition-all duration-300 ${isDarkMode ? 'bg-background' : 'bg-gray-50'}`}>
+            <div className={`p-12 transition-colors ${isDarkMode ? 'bg-background' : 'bg-gray-50'}`}>
               <h2 className="headline text-3xl mb-6 text-gray-800 dark:text-gray-100">Get in Touch</h2>
               
               {isSubmitted ? (

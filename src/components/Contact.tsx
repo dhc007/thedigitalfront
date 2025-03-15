@@ -6,11 +6,24 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 
+const countryCodes = [
+  { code: "+91", country: "India" },
+  { code: "+1", country: "USA" },
+  { code: "+44", country: "UK" },
+  { code: "+61", country: "Australia" },
+  { code: "+33", country: "France" },
+  { code: "+49", country: "Germany" },
+  { code: "+81", country: "Japan" },
+  { code: "+971", country: "UAE" }
+];
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
+    countryCode: '+91', // Default country code
+    phone: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,7 +32,7 @@ const Contact = () => {
   const { isDarkMode } = useTheme();
 
   // Handle Input Change
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
       ...prevData,
@@ -38,6 +51,7 @@ const Contact = () => {
     formDataToSend.append("name", formData.name);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("company", formData.company);
+    formDataToSend.append("phone", `${formData.countryCode} ${formData.phone}`); // Send phone with country code
     formDataToSend.append("message", formData.message);
 
     try {
@@ -60,7 +74,7 @@ const Contact = () => {
 
       // Reset form after submission
       setTimeout(() => {
-        setFormData({ name: "", email: "", company: "", message: "" });
+        setFormData({ name: "", email: "", company: "", countryCode: "+91", phone: "", message: "" });
         setIsSubmitted(false);
       }, 5000);
 
@@ -100,13 +114,6 @@ const Contact = () => {
 
   return (
     <section id="contact" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-24 h-24 bg-purple-500/10 rounded-full blur-xl"></div>
-        <div className="absolute bottom-0 right-0 w-36 h-36 bg-orange-500/10 rounded-full blur-xl"></div>
-        <div className="absolute top-1/3 right-0 w-16 h-16 bg-blue-500/10 rounded-full blur-lg"></div>
-      </div>
-
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
           <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
@@ -133,10 +140,6 @@ const Contact = () => {
 
               {isSubmitted ? (
                 <div className={`border rounded-lg p-6 text-center ${isDarkMode ? 'bg-green-900/20 border-green-800 text-green-100' : 'bg-green-50 border-green-200 text-green-800'}`}>
-                  <svg className={`w-12 h-12 mx-auto ${isDarkMode ? 'text-green-400' : 'text-green-500'} mb-4`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
                   <h3 className="text-xl font-medium mb-2">Message Sent!</h3>
                   <p>We’ll get back to you soon.</p>
                 </div>
@@ -145,7 +148,21 @@ const Contact = () => {
                   <Input id="name" name="name" type="text" value={formData.name} onChange={handleChange} required placeholder="Your Name" />
                   <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="Your Email" />
                   <Input id="company" name="company" type="text" value={formData.company} onChange={handleChange} placeholder="Your Company (Optional)" />
+
+                  {/* Phone Number with Country Code */}
+                  <div className="grid grid-cols-4 gap-2">
+                    <select name="countryCode" value={formData.countryCode} onChange={handleChange} className="col-span-1 border p-2 rounded-lg">
+                      {countryCodes.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.country} ({country.code})
+                        </option>
+                      ))}
+                    </select>
+                    <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} required className="col-span-3" placeholder="Your Phone Number" />
+                  </div>
+
                   <Textarea id="message" name="message" rows={4} value={formData.message} onChange={handleChange} required placeholder="Your Message" />
+
                   <button type="submit" className={cn("btn-primary w-full flex items-center justify-center", isSubmitting && "opacity-70 cursor-not-allowed")} disabled={isSubmitting}>
                     {isSubmitting ? "Sending..." : "Send Message"}
                   </button>

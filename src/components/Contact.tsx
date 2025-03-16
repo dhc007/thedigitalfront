@@ -5,6 +5,8 @@ import { useTheme } from '@/context/ThemeContext';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
+import { GradientButton } from '@/components/ui/gradient-button';
+import { ChevronDown } from 'lucide-react';
 
 const countryCodes = [
   { code: "+91", country: "India" },
@@ -28,8 +30,24 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useTheme();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
+        setIsCountryDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Handle Input Change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -38,6 +56,15 @@ const Contact = () => {
       ...prevData,
       [name]: value
     }));
+  };
+
+  // Set country code
+  const selectCountryCode = (code: string) => {
+    setFormData(prevData => ({
+      ...prevData,
+      countryCode: code
+    }));
+    setIsCountryDropdownOpen(false);
   };
 
   // Handle Form Submission
@@ -113,10 +140,10 @@ const Contact = () => {
   }, []);
 
   return (
-    <section id="contact" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
+    <section id="contact" className="section-padding relative bg-gradient-to-b from-background via-purple-900/5 to-background" ref={sectionRef}>
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
-          <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
+          <span className="inline-block px-4 py-2 rounded-full bg-secondary text-sm font-medium mb-6">
             Contact Us
           </span>
           <h2 className="headline text-4xl md:text-5xl mb-6">
@@ -128,20 +155,20 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className={`max-w-5xl mx-auto ${isDarkMode ? 'bg-secondary/20 border border-secondary/30' : 'bg-white'} rounded-2xl shadow-xl overflow-hidden`}>
+        <div className="max-w-5xl mx-auto bg-secondary/20 border border-secondary/30 rounded-2xl shadow-xl overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="bg-gradient-to-br from-purple-600 to-blue-500 text-white p-12 flex flex-col justify-center">
-              <h2 className="headline text-3xl md:text-4xl mb-6">Let’s Work Together</h2>
+              <h2 className="headline text-3xl md:text-4xl mb-6">Let's Work Together</h2>
               <p className="mb-8 text-white/90">Reach out to us to discuss your project.</p>
             </div>
 
-            <div className={`p-12 transition-colors ${isDarkMode ? 'bg-background' : 'bg-gray-50'}`}>
-              <h2 className="headline text-3xl mb-6 text-gray-800 dark:text-gray-100">Get in Touch</h2>
+            <div className="p-12 transition-colors bg-background">
+              <h2 className="headline text-3xl mb-6 text-primary">Get in Touch</h2>
 
               {isSubmitted ? (
-                <div className={`border rounded-lg p-6 text-center ${isDarkMode ? 'bg-green-900/20 border-green-800 text-green-100' : 'bg-green-50 border-green-200 text-green-800'}`}>
+                <div className="border rounded-lg p-6 text-center bg-green-900/20 border-green-800 text-green-100">
                   <h3 className="text-xl font-medium mb-2">Message Sent!</h3>
-                  <p>We’ll get back to you soon.</p>
+                  <p>We'll get back to you soon.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -149,23 +176,49 @@ const Contact = () => {
                   <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="Your Email" />
                   <Input id="company" name="company" type="text" value={formData.company} onChange={handleChange} placeholder="Your Company (Optional)" />
 
-                  {/* Phone Number with Country Code */}
-                  <div className="grid grid-cols-4 gap-2">
-                    <select name="countryCode" value={formData.countryCode} onChange={handleChange} className="col-span-1 border p-2 rounded-lg">
-                      {countryCodes.map((country) => (
-                        <option key={country.code} value={country.code}>
-                          {country.country} ({country.code})
-                        </option>
-                      ))}
-                    </select>
-                    <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} required className="col-span-3" placeholder="Your Phone Number" />
+                  {/* Phone Number with Country Code - Improved dropdown */}
+                  <div className="grid grid-cols-12 gap-2">
+                    <div className="col-span-4 sm:col-span-3 relative" ref={countryDropdownRef}>
+                      <div 
+                        className="flex items-center justify-between h-10 px-3 border border-input rounded-md bg-background cursor-pointer"
+                        onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
+                      >
+                        <span>{formData.countryCode}</span>
+                        <ChevronDown className="h-4 w-4 opacity-50" />
+                      </div>
+                      
+                      {isCountryDropdownOpen && (
+                        <div className="absolute z-10 w-full mt-1 bg-background border border-input rounded-md shadow-lg max-h-60 overflow-auto">
+                          {countryCodes.map((country) => (
+                            <div 
+                              key={country.code} 
+                              className="px-3 py-2 hover:bg-secondary cursor-pointer"
+                              onClick={() => selectCountryCode(country.code)}
+                            >
+                              <div className="font-medium">{country.code}</div>
+                              <div className="text-xs text-muted-foreground">{country.country}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <Input 
+                      id="phone" 
+                      name="phone" 
+                      type="tel" 
+                      value={formData.phone} 
+                      onChange={handleChange} 
+                      required 
+                      className="col-span-8 sm:col-span-9" 
+                      placeholder="Your Phone Number" 
+                    />
                   </div>
 
                   <Textarea id="message" name="message" rows={4} value={formData.message} onChange={handleChange} required placeholder="Your Message" />
 
-                  <button type="submit" className={cn("btn-primary w-full flex items-center justify-center", isSubmitting && "opacity-70 cursor-not-allowed")} disabled={isSubmitting}>
-                    {isSubmitting ? "Sending..." : "Send Message"}
-                  </button>
+                  <GradientButton type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? "Sending..." : "Let's Connect"}
+                  </GradientButton>
                 </form>
               )}
             </div>

@@ -6,6 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import Logo from './Logo';
 import { cn } from '@/lib/utils';
 import DarkModeToggle from './DarkModeToggle';
+import { GradientButton } from './ui/gradient-button';
 
 interface NavItem {
   name: string;
@@ -65,9 +66,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
   return (
     <nav className={cn(
       "fixed top-0 left-0 w-full z-50 transition-all duration-300",
-      isDarkMode 
-        ? 'bg-background/80 backdrop-blur-lg border-b border-gray-800/30' 
-        : 'bg-white/80 backdrop-blur-lg shadow-md',
+      'bg-background/80 backdrop-blur-lg border-b border-gray-800/30',
       className
     )}>
       <div className="container mx-auto px-6">
@@ -123,15 +122,15 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
               </div>
             </div>
 
-            {/* Desktop WhatsApp Link */}
+            {/* Desktop CTA Button */}
             <a 
-              href="https://wa.me/9284613155?text=Hey!%20I'm%20interested%20in%20your%20Web%20Agency%20services"
-              className="ml-2 p-2 text-primary hover:text-opacity-80 transition-colors hidden md:block"
-              aria-label="WhatsApp"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#contact"
+              className="hidden md:block ml-2"
             >
-              <Phone className="w-5 h-5" />
+              <GradientButton className="py-2">
+                <Phone className="w-4 h-4 mr-2" />
+                Let's Talk
+              </GradientButton>
             </a>
             
             {/* Mobile menu button */}
@@ -151,10 +150,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className={cn(
-          "fixed inset-0 top-16 bg-background/95 dark:bg-background/95 backdrop-blur-md z-40 md:hidden transition-all duration-300",
-          isDarkMode ? 'bg-background/95 text-white' : 'bg-white/95 text-foreground'
-        )}>
+        <div className="fixed inset-0 top-16 bg-background/95 backdrop-blur-md z-40 md:hidden transition-all duration-300">
           <div className="container mx-auto px-6 py-8">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (
@@ -176,16 +172,15 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
                 </a>
               ))}
               
-              {/* WhatsApp Link in Mobile Menu */}
+              {/* CTA in Mobile Menu */}
               <a 
-                href="https://wa.me/9284613155?text=Hey!%20I'm%20interested%20in%20your%20Web%20Agency%20services"
-                className="py-3 px-4 text-lg rounded-lg transition-colors flex items-center gap-2 text-primary hover:bg-secondary/50"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#contact"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Phone className="w-5 h-5" />
-                <span>Contact Us</span>
+                <GradientButton className="w-full mt-4">
+                  <Phone className="w-4 h-4 mr-2" />
+                  Let's Talk
+                </GradientButton>
               </a>
             </div>
           </div>

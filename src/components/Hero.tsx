@@ -67,10 +67,10 @@ const Hero = () => {
       {/* Floating Devices */}
       <div className="absolute right-5 md:right-20 top-1/3 transform -translate-y-1/2 hidden md:block">
         <div className="relative w-64 h-64">
-          <div className="floating-device absolute w-24 h-48 bg-secondary dark:bg-secondary/30 rounded-xl shadow-lg transform rotate-12 z-10 border-4 border-white dark:border-gray-800">
+          <div className="floating-device absolute w-24 h-48 bg-secondary dark:bg-secondary/30 rounded-xl shadow-lg transform rotate-12 z-10 border-4 border-gray-800">
             <div className="h-2 w-8 bg-gray-300 dark:bg-gray-600 rounded absolute top-2 left-1/2 transform -translate-x-1/2"></div>
           </div>
-          <div className="floating-device absolute w-36 h-28 bg-white dark:bg-gray-800 rounded-lg shadow-lg transform -rotate-6 left-20 top-32 z-0">
+          <div className="floating-device absolute w-36 h-28 bg-gray-800 rounded-lg shadow-lg transform -rotate-6 left-20 top-32 z-0">
             <div className="h-2 w-8 bg-gray-300 dark:bg-gray-600 rounded absolute top-2 left-1/2 transform -translate-x-1/2"></div>
           </div>
         </div>
@@ -95,13 +95,13 @@ const Hero = () => {
           </p>
           
           <div className="flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            <a href="#contact" className="btn-primary group relative overflow-hidden">
-              <GradientButton>
+            <a href="#contact">
+              <GradientButton className="py-3 px-8 text-base">
                 Let's Connect
               </GradientButton>
             </a>
             
-            <a href="#case-studies" className="btn-outline group">
+            <a href="#case-studies" className="inline-flex items-center rounded-full bg-transparent text-primary px-6 py-3 font-medium transition-all duration-300 hover:bg-primary/5 hover:shadow-md hover:translate-y-[-2px] active:translate-y-0 active:shadow-sm">
               <span>Explore Our Work</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14"></path>

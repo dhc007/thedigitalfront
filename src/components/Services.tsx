@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { cn } from "@/lib/utils";
 import { useTheme } from '@/context/ThemeContext';
+import { motion } from 'framer-motion';
 
 // Counter animation component that only triggers when visible
 const AnimatedCounter = ({ 
@@ -75,24 +76,25 @@ const AnimatedCounter = ({
   );
 };
 
+// More premium service icons and descriptions
 const services = [
   {
-    icon: "🎨",
+    icon: "/services/ui-design.svg", // Replace with your uploaded icon paths
     title: "UI/UX Design",
     description: "Intuitive, beautiful interfaces that guide users to take action while delighting them at every step."
   },
   {
-    icon: "🌐",
+    icon: "/services/web-dev.svg", // Replace with your uploaded icon paths
     title: "Web Development",
     description: "Fast, responsive, and accessible websites and web applications built with the latest technologies."
   },
   {
-    icon: "📱",
+    icon: "/services/app-dev.svg", // Replace with your uploaded icon paths
     title: "Mobile App Development",
     description: "Native and cross-platform mobile applications that provide seamless experiences across all devices."
   },
   {
-    icon: "🚀",
+    icon: "/services/digital-transform.svg", // Replace with your uploaded icon paths
     title: "Digital Transformation",
     description: "End-to-end digital solutions that help businesses adapt, evolve, and thrive in the digital landscape."
   }
@@ -147,13 +149,16 @@ const Services = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {services.map((service, index) => (
-            <div 
+            <motion.div 
               key={index} 
               className={cn(
-                "p-8 rounded-2xl transition-all duration-500 hover:translate-y-[-8px] reveal-on-scroll group relative overflow-hidden",
+                "p-8 rounded-2xl transition-all duration-500 reveal-on-scroll group relative overflow-hidden",
                 "bg-secondary/40 backdrop-blur-md border border-secondary/30 hover:shadow-lg hover:shadow-purple-500/30"
               )}
-              style={{ animationDelay: `${index * 0.1}s` }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               {/* Gradient background that appears on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -162,17 +167,21 @@ const Services = () => {
               <div className="absolute inset-0 bg-grid-pattern opacity-5 group-hover:opacity-10 transition-opacity"></div>
               
               {/* Service icon with gradient background */}
-              <div className={cn(
-                "w-16 h-16 rounded-xl flex items-center justify-center mb-6 text-2xl relative z-10",
-                index % 2 === 0 
-                  ? "bg-gradient-to-br from-purple-500/40 to-blue-500/40 text-purple-600 dark:text-purple-300"
-                  : "bg-gradient-to-br from-blue-500/40 to-pink-500/40 text-blue-600 dark:text-blue-300"
-              )}>
-                {service.icon}
+              <motion.div 
+                className={cn(
+                  "w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative z-10",
+                  index % 2 === 0 
+                    ? "bg-gradient-to-br from-purple-500/40 to-blue-500/40"
+                    : "bg-gradient-to-br from-blue-500/40 to-pink-500/40"
+                )}
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <img src={service.icon} alt={service.title} className="w-8 h-8 object-contain" />
                 
-                {/* Animated ring */}
-                <div className="absolute inset-0 border-2 border-dashed rounded-xl opacity-0 group-hover:opacity-100 group-hover:animate-spin transition-opacity duration-300" style={{ animationDuration: '10s' }}></div>
-              </div>
+                {/* Animated glow effect */}
+                <div className="absolute inset-0 rounded-xl bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </motion.div>
               
               <h3 className="headline text-2xl mb-4 relative z-10 group-hover:text-primary">{service.title}</h3>
               <p className="text-muted-foreground relative z-10">{service.description}</p>
@@ -191,11 +200,35 @@ const Services = () => {
                 </a>
               </div>
               
-              {/* Floating particles */}
-              <div className="absolute top-1/2 left-1/4 w-2 h-2 rounded-full bg-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity animate-float"></div>
-              <div className="absolute top-1/4 right-1/4 w-2 h-2 rounded-full bg-blue-500/30 opacity-0 group-hover:opacity-100 transition-opacity animate-float" style={{animationDelay: "1s"}}></div>
-              <div className="absolute bottom-1/4 left-1/3 w-2 h-2 rounded-full bg-pink-500/30 opacity-0 group-hover:opacity-100 transition-opacity animate-float" style={{animationDelay: "2s"}}></div>
-            </div>
+              {/* Floating particles - animated with framer-motion */}
+              <motion.div 
+                className="absolute top-1/2 left-1/4 w-2 h-2 rounded-full bg-purple-500/30 opacity-0 group-hover:opacity-100"
+                animate={{ 
+                  y: [-10, 10, -10],
+                  x: [-5, 5, -5],
+                  opacity: [0, 1, 0] 
+                }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 3,
+                  ease: "easeInOut"
+                }}
+              />
+              <motion.div 
+                className="absolute top-1/4 right-1/4 w-2 h-2 rounded-full bg-blue-500/30 opacity-0 group-hover:opacity-100"
+                animate={{ 
+                  y: [10, -10, 10],
+                  x: [5, -5, 5],
+                  opacity: [0, 1, 0] 
+                }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 4,
+                  ease: "easeInOut",
+                  delay: 1
+                }}
+              />
+            </motion.div>
           ))}
         </div>
 

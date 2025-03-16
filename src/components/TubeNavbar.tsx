@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Phone, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import Logo from './Logo';
 import { cn } from '@/lib/utils';
@@ -24,10 +24,10 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isDarkMode } = useTheme();
 
-  // Updated nav items - removed Work and Process
+  // Updated nav items to match requested structure
   const navItems: NavItem[] = [
     { name: 'Services', href: '#services' },
-    { name: 'Integrations', href: '#integrations' },
+    { name: 'Our Work', href: '#case-studies' },
     { name: 'Testimonials', href: '#testimonials' },
     { name: 'Contact', href: '#contact' }
   ];
@@ -46,9 +46,9 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
   useEffect(() => {
     if (currentSection) {
       if (currentSection === 'case-studies') {
-        setActiveTab('Work');
+        setActiveTab('Our Work');
       } else if (currentSection === 'integrations') {
-        setActiveTab('Integrations');
+        setActiveTab('Services');
       } else {
         // Capitalize first letter
         const capitalizedSection = currentSection.charAt(0).toUpperCase() + currentSection.slice(1);
@@ -116,17 +116,6 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
                 })}
               </div>
             </div>
-
-            {/* Desktop CTA Button */}
-            <a 
-              href="#contact"
-              className="hidden md:block ml-2"
-            >
-              <GradientButton className="py-2">
-                <Phone className="w-4 h-4 mr-2" />
-                Let's Talk
-              </GradientButton>
-            </a>
             
             {/* Mobile menu button */}
             <button
@@ -174,8 +163,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
                 className="mt-4"
               >
                 <GradientButton className="w-full py-3">
-                  <Phone className="w-4 h-4 mr-2" />
-                  Let's Talk
+                  Let's Connect
                 </GradientButton>
               </a>
             </div>

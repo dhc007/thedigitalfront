@@ -12,7 +12,7 @@ const projects = [
     id: 1,
     title: "Protein Box",
     category: "E-commerce",
-    image: "/projects/protein-box.jpg", // Using uploaded image
+    image: "/media/ProteinBox.png", // Using uploaded image
     description: "We helped Protein Box, a startup providing healthy protein meals, achieve its goals by capturing leads and increasing profitability.",
     url: "https://protein-box.com"
   },
@@ -20,7 +20,7 @@ const projects = [
     id: 2,
     title: "Flexibus",
     category: "Travel",
-    image: "/projects/flexibus.jpg", // Using uploaded image
+    image: "/media/cover.png", // Using uploaded image
     description: "We developed a stunning app and website for Flexibus, a startup in Goa aiming to enhance the experience of people traveling via public transport.",
     url: "https://flexibus.in"
   },
@@ -28,7 +28,7 @@ const projects = [
     id: 3,
     title: "Kisai Technologies",
     category: "SaaS",
-    image: "/projects/kisai.jpg", // Using uploaded image
+    image: "/media/Kisai.png", // Using uploaded image
     description: "Brand identity and website design for an AI-focused SaaS company, showcasing their platform seamlessly.",
     url: "https://kis.ai"
   },
@@ -36,7 +36,7 @@ const projects = [
     id: 4,
     title: "Travelite",
     category: "Mobile App",
-    image: "/projects/travelite.jpg", // Using uploaded image
+    image: "/media/Travelite.png", // Using uploaded image
     description: "We crafted a Gen-Z, head-turning prototype for Travlite, a startup aiming to provide personalized itineraries using AI.",
     url: "#"
   },
@@ -44,15 +44,15 @@ const projects = [
     id: 5,
     title: "BSRTC",
     category: "Government",
-    image: "/projects/bsrtc.jpg", // Using uploaded image
+    image: "/media/BSRTC_Logo.jpg", // Using uploaded image
     description: "Transport management and booking system for the Bihar State Road Transport Corporation.",
     url: "https://bsrtc.org"
   },
   {
     id: 6,
-    title: "Hope Projects Scotland",
+    title: "Hope Project Scotland",
     category: "Non-Profit",
-    image: "/projects/hope-projects.jpg", // Using uploaded image
+    image: "/media/HopeProjectScotland.png", // Using uploaded image
     description: "Website for a charity organization focused on community development and supporting underprivileged communities.",
     url: "https://hopeprojectscotlandpreview.wpcomstaging.com"
   },
@@ -68,7 +68,7 @@ const projects = [
     id: 8,
     title: "Souza Lopes Comforts",
     category: "Hospitality",
-    image: "/projects/souza-lopes.jpg", // Using uploaded image
+    image: "/media/SouzaLopesComforts.jpg", // Using uploaded image
     description: "Property booking and management system for a luxury Airbnb-style accommodations business.",
     url: "https://souzalopescomforts.com"
   }

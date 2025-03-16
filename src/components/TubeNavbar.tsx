@@ -5,7 +5,6 @@ import { Phone, Menu, X } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import Logo from './Logo';
 import { cn } from '@/lib/utils';
-import DarkModeToggle from './DarkModeToggle';
 import { GradientButton } from './ui/gradient-button';
 
 interface NavItem {
@@ -25,10 +24,9 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isDarkMode } = useTheme();
 
+  // Updated nav items - removed Work and Process
   const navItems: NavItem[] = [
     { name: 'Services', href: '#services' },
-    { name: 'Work', href: '#case-studies' },
-    { name: 'Process', href: '#process' },
     { name: 'Integrations', href: '#integrations' },
     { name: 'Testimonials', href: '#testimonials' },
     { name: 'Contact', href: '#contact' }
@@ -77,9 +75,6 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
           </a>
           
           <div className="flex items-center gap-2">
-            {/* Dark Mode Toggle */}
-            <DarkModeToggle />
-            
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="flex items-center gap-3 bg-background/5 border border-border py-1 px-1 rounded-full shadow-lg">
@@ -176,8 +171,9 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
               <a 
                 href="#contact"
                 onClick={() => setIsMenuOpen(false)}
+                className="mt-4"
               >
-                <GradientButton className="w-full mt-4">
+                <GradientButton className="w-full py-3">
                   <Phone className="w-4 h-4 mr-2" />
                   Let's Talk
                 </GradientButton>

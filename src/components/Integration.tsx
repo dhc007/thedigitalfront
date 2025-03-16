@@ -1,11 +1,112 @@
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import { motion, useMotionValue, animate } from 'framer-motion';
+import useMeasure from 'react-use-measure';
+
+// Define types for InfiniteSlider props
+type InfiniteSliderProps = {
+  children: React.ReactNode;
+  gap?: number;
+  duration?: number;
+  durationOnHover?: number;
+  direction?: 'horizontal' | 'vertical';
+  reverse?: boolean;
+  className?: string;
+};
+
+// InfiniteSlider component for smooth scrolling carousels
+function InfiniteSlider({
+  children,
+  gap = 16,
+  duration = 25,
+  durationOnHover,
+  direction = 'horizontal',
+  reverse = false,
+  className,
+}: InfiniteSliderProps) {
+  const [currentDuration, setCurrentDuration] = useState(duration);
+  const [ref, { width, height }] = useMeasure();
+  const translation = useMotionValue(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    let controls;
+    const size = direction === 'horizontal' ? width : height;
+    const contentSize = size + gap;
+    const from = reverse ? -contentSize / 2 : 0;
+    const to = reverse ? 0 : -contentSize / 2;
+
+    if (isTransitioning) {
+      controls = animate(translation, [translation.get(), to], {
+        ease: 'linear',
+        duration:
+          currentDuration * Math.abs((translation.get() - to) / contentSize),
+        onComplete: () => {
+          setIsTransitioning(false);
+          setKey((prevKey) => prevKey + 1);
+        },
+      });
+    } else {
+      controls = animate(translation, [from, to], {
+        ease: 'linear',
+        duration: currentDuration,
+        repeat: Infinity,
+        repeatType: 'loop',
+        repeatDelay: 0,
+        onRepeat: () => {
+          translation.set(from);
+        },
+      });
+    }
+
+    return controls?.stop;
+  }, [
+    key,
+    translation,
+    currentDuration,
+    width,
+    height,
+    gap,
+    isTransitioning,
+    direction,
+    reverse,
+  ]);
+
+  const hoverProps = durationOnHover
+    ? {
+        onHoverStart: () => {
+          setIsTransitioning(true);
+          setCurrentDuration(durationOnHover);
+        },
+        onHoverEnd: () => {
+          setIsTransitioning(true);
+          setCurrentDuration(duration);
+        },
+      }
+    : {};
+
+  return (
+    <div className={`overflow-hidden ${className}`}>
+      <motion.div
+        className='flex w-max'
+        style={{
+          ...(direction === 'horizontal'
+            ? { x: translation }
+            : { y: translation }),
+          gap: `${gap}px`,
+          flexDirection: direction === 'horizontal' ? 'row' : 'column',
+        }}
+        ref={ref}
+        {...hoverProps}
+      >
+        {children}
+        {children}
+      </motion.div>
+    </div>
+  );
+}
 
 const integrationTools = [
   {
@@ -88,62 +189,36 @@ const bottomRowTools = integrationTools.slice(6, 12);
 
 const Integration = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
-  const topCarouselRef = useRef<HTMLDivElement | null>(null);
-  const bottomCarouselRef = useRef<HTMLDivElement | null>(null);
   const { isDarkMode } = useTheme();
+  const [isVisible, setIsVisible] = useState(false);
   
   useEffect(() => {
-    // Animation for seamless scrolling on both carousels
-    let animationFrameId: number;
-    let topPosition = 0;
-    let bottomPosition = 0;
-    
-    const animateCarousels = () => {
-      if (topCarouselRef.current && bottomCarouselRef.current) {
-        // Top carousel scrolls from left to right
-        topPosition -= 0.5;
-        if (topPosition <= -topCarouselRef.current.scrollWidth / 2) {
-          topPosition = 0;
-        }
-        topCarouselRef.current.style.transform = `translateX(${topPosition}px)`;
-        
-        // Bottom carousel scrolls from right to left
-        bottomPosition += 0.5;
-        if (bottomPosition >= bottomCarouselRef.current.scrollWidth / 2) {
-          bottomPosition = 0;
-        }
-        bottomCarouselRef.current.style.transform = `translateX(${bottomPosition}px)`;
-      }
-      
-      animationFrameId = requestAnimationFrame(animateCarousels);
-    };
-
-    // Intersection Observer to start animation when section is in view
+    // Create an intersection observer to detect when the section is visible
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            animationFrameId = requestAnimationFrame(animateCarousels);
-          } else {
-            cancelAnimationFrame(animationFrameId);
-          }
-        });
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
       },
       { threshold: 0.1 }
     );
     
+    // Start observing the section
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
     
     return () => {
-      observer.disconnect();
-      cancelAnimationFrame(animationFrameId);
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
     };
   }, []);
 
   return (
-    <section id="integrations" className={`section-padding relative overflow-hidden transition-colors ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/5 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
+    <section id="integrations" className="section-padding relative overflow-hidden bg-gradient-to-b from-background via-purple-900/5 to-background" ref={sectionRef}>
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-60 h-60 bg-blue-400/10 rounded-full blur-3xl"></div>
@@ -152,7 +227,7 @@ const Integration = () => {
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className={`inline-block px-4 py-2 rounded-full ${isDarkMode ? 'bg-secondary' : 'bg-secondary/50'} text-sm font-medium mb-6`}>
+          <span className="inline-block px-4 py-2 rounded-full bg-secondary text-sm font-medium mb-6">
             Integrations
           </span>
           <h2 className="headline text-4xl md:text-5xl mb-6">
@@ -164,111 +239,63 @@ const Integration = () => {
         </div>
         
         {/* Top row - scrolling from left to right */}
-        <div className="overflow-hidden mb-12 py-8">
-          <div 
-            className="flex space-x-16 py-4 whitespace-nowrap"
-            style={{ width: "200%" }}
-            ref={topCarouselRef}
-          >
-            {[...topRowTools, ...topRowTools].map((tool, index) => (
-              <div 
-                key={`${tool.id}-${index}`} 
-                className="flex flex-col items-center group cursor-pointer"
-              >
-                <div className={`w-24 h-24 md:w-32 md:h-32 flex items-center justify-center rounded-2xl p-4 transition-all duration-300 group-hover:scale-110 ${isDarkMode ? 'bg-secondary/30' : 'bg-white/80 shadow-md'}`}>
-                  <img 
-                    src={tool.icon} 
-                    alt={tool.name} 
-                    className="w-16 h-16 md:w-20 md:h-20 object-contain" 
-                  />
+        {isVisible && (
+          <div className="py-8">
+            <InfiniteSlider
+              duration={30}
+              reverse={false}
+              className="py-4"
+              gap={24}
+            >
+              {topRowTools.map((tool) => (
+                <div 
+                  key={tool.id}
+                  className="flex flex-col items-center group cursor-pointer"
+                >
+                  <div className="w-32 h-32 flex items-center justify-center rounded-2xl p-4 transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-secondary/80 to-secondary/20 backdrop-blur-sm border border-secondary/50">
+                    <img 
+                      src={tool.icon} 
+                      alt={tool.name} 
+                      className="w-16 h-16 md:w-20 md:h-20 object-contain" 
+                    />
+                  </div>
+                  <p className="mt-3 text-center font-medium">{tool.name}</p>
+                  <span className="text-sm text-muted-foreground">{tool.category}</span>
                 </div>
-                <p className="mt-3 text-center font-medium">{tool.name}</p>
-                <span className="text-sm text-muted-foreground">{tool.category}</span>
-              </div>
-            ))}
+              ))}
+            </InfiniteSlider>
           </div>
-        </div>
+        )}
         
         {/* Bottom row - scrolling from right to left */}
-        <div className="overflow-hidden mb-16 py-8">
-          <div 
-            className="flex space-x-16 py-4 whitespace-nowrap"
-            style={{ width: "200%" }}
-            ref={bottomCarouselRef}
-          >
-            {[...bottomRowTools, ...bottomRowTools].map((tool, index) => (
-              <div 
-                key={`${tool.id}-${index}`} 
-                className="flex flex-col items-center group cursor-pointer"
-              >
-                <div className={`w-24 h-24 md:w-32 md:h-32 flex items-center justify-center rounded-2xl p-4 transition-all duration-300 group-hover:scale-110 ${isDarkMode ? 'bg-secondary/30' : 'bg-white/80 shadow-md'}`}>
-                  <img 
-                    src={tool.icon} 
-                    alt={tool.name} 
-                    className="w-16 h-16 md:w-20 md:h-20 object-contain" 
-                  />
+        {isVisible && (
+          <div className="py-8">
+            <InfiniteSlider
+              duration={30}
+              reverse={true}
+              className="py-4"
+              gap={24}
+            >
+              {bottomRowTools.map((tool) => (
+                <div 
+                  key={tool.id}
+                  className="flex flex-col items-center group cursor-pointer"
+                >
+                  <div className="w-32 h-32 flex items-center justify-center rounded-2xl p-4 transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-purple-900/30 to-secondary/20 backdrop-blur-sm border border-secondary/50">
+                    <img 
+                      src={tool.icon} 
+                      alt={tool.name} 
+                      className="w-16 h-16 md:w-20 md:h-20 object-contain" 
+                    />
+                  </div>
+                  <p className="mt-3 text-center font-medium">{tool.name}</p>
+                  <span className="text-sm text-muted-foreground">{tool.category}</span>
                 </div>
-                <p className="mt-3 text-center font-medium">{tool.name}</p>
-                <span className="text-sm text-muted-foreground">{tool.category}</span>
-              </div>
-            ))}
+              ))}
+            </InfiniteSlider>
           </div>
-        </div>
-        
-        {/* Integration CTA */}
-        <div className={`max-w-4xl mx-auto rounded-2xl p-10 overflow-hidden relative ${
-          isDarkMode 
-            ? 'border border-purple-800/30 bg-gradient-to-r from-purple-900/20 to-blue-900/20 backdrop-blur-md' 
-            : 'border border-purple-100 bg-gradient-to-r from-purple-50 to-blue-50'
-        }`}>
-          <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-            <div className="md:w-2/3">
-              <h3 className="headline text-2xl md:text-3xl mb-4">Ready to integrate with your tech stack?</h3>
-              <p className="mb-6 text-muted-foreground">
-                We work with all modern technologies and can build custom integrations for your specific needs.
-                Our solutions are flexible, scalable, and designed to grow with your business.
-              </p>
-              <a href="#contact" className="btn-primary inline-flex items-center group relative overflow-hidden">
-                <span className="relative z-10">Get Started</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14"></path>
-                  <path d="M12 5l7 7-7 7"></path>
-                </svg>
-                <span className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full transition-transform duration-700 ease-in-out group-hover:translate-x-full"></span>
-              </a>
-            </div>
-            <div className="md:w-1/3 flex items-center justify-center">
-              <div className="relative w-32 h-32">
-                <div className="absolute inset-0 bg-blue-500/30 rounded-full animate-pulse"></div>
-                <div className="absolute inset-3 bg-purple-500/30 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
-                <div className="absolute inset-6 bg-pink-500/30 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-                <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 20V10"></path>
-                    <path d="M12 20V4"></path>
-                    <path d="M6 20v-6"></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
-      
-      <style>
-        {`
-        @keyframes float {
-          0% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
-          50% { transform: translateY(-20px) rotate(5deg); opacity: 1; }
-          100% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
-        }
-        
-        @keyframes pulse-gradient {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        `}
-      </style>
     </section>
   );
 };

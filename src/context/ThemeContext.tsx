@@ -1,32 +1,24 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+
+import React, { createContext, useContext } from 'react';
 
 type ThemeContextType = {
   isDarkMode: boolean;
-  toggleDarkMode: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  // Always use dark mode
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  // Always use dark mode - no toggle functionality
+  const isDarkMode = true;
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Always set to dark mode
     document.documentElement.classList.add('dark');
     localStorage.setItem('theme', 'dark');
   }, []);
 
-  // Toggle function still exists but effectively does nothing
-  const toggleDarkMode = () => {
-    // Always keeping dark mode
-    setIsDarkMode(true);
-    document.documentElement.classList.add('dark');
-    localStorage.setItem('theme', 'dark');
-  };
-
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+    <ThemeContext.Provider value={{ isDarkMode }}>
       {children}
     </ThemeContext.Provider>
   );

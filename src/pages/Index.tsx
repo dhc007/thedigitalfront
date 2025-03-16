@@ -10,6 +10,7 @@ import Testimonials from '@/components/Testimonials';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { useTheme } from '@/context/ThemeContext';
+import '../styles/gradient-button.css';
 
 const Index = () => {
   const { isDarkMode } = useTheme();
@@ -74,7 +75,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-background dark:bg-background overflow-hidden transition-colors`}>
+    <div className="min-h-screen bg-background dark:bg-background overflow-hidden transition-colors">
       <TubeNavbar currentSection={currentSection} />
       <Hero />
       <Services />

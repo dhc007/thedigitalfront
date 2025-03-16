@@ -1,7 +1,79 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from "@/lib/utils";
 import { useTheme } from '@/context/ThemeContext';
+
+// Counter animation component that only triggers when visible
+const AnimatedCounter = ({ 
+  end, 
+  duration = 2000, 
+  label, 
+  suffix = "" 
+}: { 
+  end: number, 
+  duration?: number, 
+  label: string, 
+  suffix?: string 
+}) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !hasAnimated) {
+          setIsVisible(true);
+          setHasAnimated(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (countRef.current) {
+      observer.observe(countRef.current);
+    }
+
+    return () => {
+      if (countRef.current) {
+        observer.unobserve(countRef.current);
+      }
+    };
+  }, [hasAnimated]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number;
+    let animationFrame: number;
+    
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      setCount(Math.floor(progress * end));
+      
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(step);
+      }
+    };
+    
+    animationFrame = requestAnimationFrame(step);
+    
+    return () => cancelAnimationFrame(animationFrame);
+  }, [end, duration, isVisible]);
+
+  return (
+    <div className="text-center p-6 rounded-2xl bg-secondary/40 backdrop-blur-md border border-secondary/30 transform hover:scale-105 transition-transform duration-300" ref={countRef}>
+      <h3 className="headline text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">
+        {count}{suffix}
+      </h3>
+      <p className="text-sm text-muted-foreground">{label}</p>
+    </div>
+  );
+};
 
 const services = [
   {
@@ -51,7 +123,7 @@ const Services = () => {
   }, []);
   
   return (
-    <section id="services" className={`section-padding relative ${isDarkMode ? 'bg-gradient-to-b from-background via-purple-900/10 to-background' : 'bg-gradient-to-b from-white via-purple-50 to-white'}`} ref={sectionRef}>
+    <section id="services" className="section-padding relative bg-gradient-to-b from-background via-purple-900/10 to-background" ref={sectionRef}>
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-60 h-60 bg-blue-400/40 rounded-full blur-3xl"></div>
@@ -61,7 +133,7 @@ const Services = () => {
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
-          <span className="inline-block px-4 py-2 rounded-full bg-background dark:bg-secondary/80 text-sm font-medium mb-6 animate-pulse">
+          <span className="inline-block px-4 py-2 rounded-full bg-secondary/80 text-sm font-medium mb-6 animate-pulse">
             Our Services
           </span>
           <h2 className="headline text-4xl md:text-5xl mb-6">
@@ -79,9 +151,7 @@ const Services = () => {
               key={index} 
               className={cn(
                 "p-8 rounded-2xl transition-all duration-500 hover:translate-y-[-8px] reveal-on-scroll group relative overflow-hidden",
-                isDarkMode 
-                  ? "bg-secondary/40 backdrop-blur-md border border-secondary/30 hover:shadow-lg hover:shadow-purple-500/30" 
-                  : "bg-white shadow-lg hover:shadow-xl border border-gray-100"
+                "bg-secondary/40 backdrop-blur-md border border-secondary/30 hover:shadow-lg hover:shadow-purple-500/30"
               )}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -129,27 +199,15 @@ const Services = () => {
           ))}
         </div>
 
-        {/* Stats Counter Section - Moved from Hero */}
+        {/* Stats Counter Section - with animation on scroll */}
         <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-6 reveal-on-scroll">
-          {[
-            { label: "Client Satisfaction", value: 98, suffix: "%" },
-            { label: "Projects Delivered", value: 120, suffix: "+" },
-            { label: "Years Experience", value: 8, suffix: "" },
-            { label: "Customer Rating", value: 4.9, suffix: "/5" }
-          ].map((stat, index) => (
-            <div 
-              key={index} 
-              className={cn(
-                "p-6 rounded-2xl text-center counter-item",
-                isDarkMode 
-                  ? "bg-secondary/40 backdrop-blur-md border border-secondary/30" 
-                  : "bg-white shadow-lg border border-gray-100"
-              )}
-            >
-              <div className="text-3xl md:text-4xl font-bold mb-2 counter-value bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300" data-target={stat.value}>{stat.value}{stat.suffix}</div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
-            </div>
-          ))}
+          <AnimatedCounter end={98} label="Client Satisfaction" suffix="%" />
+          <AnimatedCounter end={150} label="Projects Delivered" suffix="+" />
+          <AnimatedCounter end={12} label="Years Experience" suffix="+" />
+          <div className="text-center p-6 rounded-2xl bg-secondary/40 backdrop-blur-md border border-secondary/30 transform hover:scale-105 transition-transform duration-300">
+            <h3 className="headline text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">4.9<span className="text-2xl">/5</span></h3>
+            <p className="text-sm text-muted-foreground">Customer Rating</p>
+          </div>
         </div>
       </div>
 
@@ -167,44 +225,6 @@ const Services = () => {
           background-size: 30px 30px;
         }
       `}} />
-
-      {/* Counter Animation Script */}
-      <script dangerouslySetInnerHTML={{ __html: `
-        document.addEventListener('DOMContentLoaded', () => {
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                const counterItems = entry.target.querySelectorAll('.counter-value');
-                counterItems.forEach(counter => {
-                  const target = parseFloat(counter.getAttribute('data-target'));
-                  const suffix = counter.textContent.replace(/[0-9.]/g, '');
-                  let count = 0;
-                  const increment = target / 50;
-                  
-                  const updateCounter = () => {
-                    if (count < target) {
-                      count += increment;
-                      counter.textContent = Number.isInteger(target) 
-                        ? Math.ceil(count) + suffix 
-                        : count.toFixed(1) + suffix;
-                      requestAnimationFrame(updateCounter);
-                    } else {
-                      counter.textContent = target + suffix;
-                    }
-                  };
-                  
-                  updateCounter();
-                });
-              }
-            });
-          }, { threshold: 0.1 });
-          
-          const counterSections = document.querySelectorAll('.counter-item');
-          counterSections.forEach(section => {
-            observer.observe(section);
-          });
-        });
-      ` }} />
     </section>
   );
 };

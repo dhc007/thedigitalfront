@@ -1,70 +1,7 @@
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTheme } from '@/context/ThemeContext';
-
-// Counter animation component that triggers on scroll
-const AnimatedCounter = ({ end, duration = 2000, label, suffix = "", delay = 0 }: { end: number, duration?: number, label: string, suffix?: string, delay?: number }) => {
-  const [count, setCount] = useState(0);
-  const countRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting && !hasAnimated) {
-          setTimeout(() => {
-            setIsVisible(true);
-            setHasAnimated(true);
-          }, delay);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (countRef.current) {
-      observer.observe(countRef.current);
-    }
-
-    return () => {
-      if (countRef.current) {
-        observer.unobserve(countRef.current);
-      }
-    };
-  }, [delay, hasAnimated]);
-
-  useEffect(() => {
-    if (!isVisible) return;
-
-    let startTime: number;
-    let animationFrame: number;
-    
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      setCount(Math.floor(progress * end));
-      
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(step);
-      }
-    };
-    
-    animationFrame = requestAnimationFrame(step);
-    
-    return () => cancelAnimationFrame(animationFrame);
-  }, [end, duration, isVisible]);
-
-  return (
-    <div className="text-center transform hover:scale-105 transition-transform duration-300" ref={countRef}>
-      <h3 className="headline text-4xl md:text-5xl mb-2">
-        {count}{suffix}
-      </h3>
-      <p className="text-sm text-muted-foreground">{label}</p>
-    </div>
-  );
-};
+import { GradientButton } from './ui/gradient-button';
 
 const Hero = () => {
   const heroRef = useRef<HTMLElement>(null);
@@ -159,9 +96,11 @@ const Hero = () => {
           
           <div className="flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <a href="#contact" className="btn-primary group relative overflow-hidden">
-              <span className="relative z-10">Start Your Project</span>
-              <span className="absolute inset-0 bg-white dark:bg-gray-800 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 opacity-10"></span>
+              <GradientButton>
+                Let's Connect
+              </GradientButton>
             </a>
+            
             <a href="#case-studies" className="btn-outline group">
               <span>Explore Our Work</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -169,16 +108,6 @@ const Hero = () => {
                 <path d="M12 5l7 7-7 7"></path>
               </svg>
             </a>
-          </div>
-
-          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 reveal-on-scroll" id="stats-counter">
-            <AnimatedCounter end={98} label="Client Satisfaction" suffix="%" delay={100} />
-            <AnimatedCounter end={150} label="Projects Delivered" suffix="+" delay={200} />
-            <AnimatedCounter end={12} label="Years Experience" suffix="+" delay={300} />
-            <div className="text-center transform hover:scale-105 transition-transform duration-300 customer-rating">
-              <h3 className="headline text-4xl md:text-5xl mb-2">4.9<span className="text-2xl">/5</span></h3>
-              <p className="text-sm text-muted-foreground">Customer Rating</p>
-            </div>
           </div>
         </div>
       </div>

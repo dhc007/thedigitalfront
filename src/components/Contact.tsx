@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { useTheme } from '@/context/ThemeContext';
@@ -8,7 +7,6 @@ import { toast } from '@/components/ui/use-toast';
 import { GradientButton } from '@/components/ui/gradient-button';
 import { ChevronDown } from 'lucide-react';
 
-// More complete country codes list
 const countryCodes = [
   { code: "+1", country: "United States" },
   { code: "+7", country: "Russia" },
@@ -208,7 +206,7 @@ const Contact = () => {
     name: '',
     email: '',
     company: '',
-    countryCode: '+91', // Default country code
+    countryCode: '+91',
     phone: '',
     message: ''
   });
@@ -222,7 +220,6 @@ const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useTheme();
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
@@ -236,7 +233,6 @@ const Contact = () => {
     };
   }, []);
 
-  // Filter country codes when search query changes
   useEffect(() => {
     if (searchQuery) {
       const filtered = countryCodes.filter(
@@ -250,14 +246,12 @@ const Contact = () => {
     }
   }, [searchQuery]);
 
-  // Focus search input when dropdown opens
   useEffect(() => {
     if (isCountryDropdownOpen && searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, [isCountryDropdownOpen]);
 
-  // Handle Input Change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
@@ -266,7 +260,6 @@ const Contact = () => {
     }));
   };
 
-  // Set country code
   const selectCountryCode = (code: string) => {
     setFormData(prevData => ({
       ...prevData,
@@ -276,31 +269,29 @@ const Contact = () => {
     setSearchQuery('');
   };
 
-  // Handle Form Submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const basinEndpoint = "https://usebasin.com/f/43f785c099d7"; // Your Basin Form ID
+    const basinEndpoint = "https://usebasin.com/f/43f785c099d7";
 
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("company", formData.company);
-    formDataToSend.append("phone", `${formData.countryCode} ${formData.phone}`); // Send phone with country code
+    formDataToSend.append("phone", `${formData.countryCode} ${formData.phone}`);
     formDataToSend.append("message", formData.message);
 
     try {
       const response = await fetch(basinEndpoint, {
         method: "POST",
-        body: formDataToSend, // ✅ Send as FormData
+        body: formDataToSend,
       });
 
       if (!response.ok) {
         throw new Error(`Failed to submit: ${response.statusText}`);
       }
 
-      // Show success message
       setIsSubmitted(true);
       toast({
         title: "Message Sent!",
@@ -308,12 +299,10 @@ const Contact = () => {
         duration: 3000,
       });
 
-      // Reset form after submission
       setTimeout(() => {
         setFormData({ name: "", email: "", company: "", countryCode: "+91", phone: "", message: "" });
         setIsSubmitted(false);
       }, 5000);
-
     } catch (error) {
       console.error("Form submission error:", error);
       toast({
@@ -327,7 +316,6 @@ const Contact = () => {
     }
   };
 
-  // Animation Effect
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -366,12 +354,10 @@ const Contact = () => {
 
         <div className="max-w-5xl mx-auto bg-secondary/20 border border-secondary/30 rounded-2xl shadow-xl overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* Left side - Decorative gradient with text */}
             <div className="bg-gradient-to-br from-purple-700 to-blue-600 text-white p-12 flex flex-col justify-center">
               <h2 className="headline text-3xl md:text-4xl mb-6">Let's Work Together</h2>
               <p className="mb-8 text-white/90">Have a project in mind? We'd love to hear about it. Drop us a message and we'll get back to you as soon as possible.</p>
               
-              {/* Added features section */}
               <div className="space-y-4 mt-8">
                 <div className="flex items-start space-x-3">
                   <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
@@ -419,7 +405,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Right side - Contact form */}
             <div className="p-10 transition-colors bg-background/50 backdrop-blur-md">
               <h2 className="headline text-3xl mb-6 text-primary">Get in Touch</h2>
 
@@ -434,7 +419,6 @@ const Contact = () => {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Name field with improved styling */}
                   <div className="group">
                     <label htmlFor="name" className="block text-sm font-medium mb-1 text-foreground/70">Your Name</label>
                     <Input 
@@ -449,7 +433,6 @@ const Contact = () => {
                     />
                   </div>
                   
-                  {/* Email field */}
                   <div className="group">
                     <label htmlFor="email" className="block text-sm font-medium mb-1 text-foreground/70">Email Address</label>
                     <Input 
@@ -464,7 +447,6 @@ const Contact = () => {
                     />
                   </div>
                   
-                  {/* Company field */}
                   <div className="group">
                     <label htmlFor="company" className="block text-sm font-medium mb-1 text-foreground/70">Company (Optional)</label>
                     <Input 
@@ -478,7 +460,6 @@ const Contact = () => {
                     />
                   </div>
 
-                  {/* Phone Number with Country Code - Improved dropdown */}
                   <div className="group">
                     <label htmlFor="phone" className="block text-sm font-medium mb-1 text-foreground/70">Phone Number</label>
                     <div className="grid grid-cols-12 gap-2">
@@ -545,7 +526,6 @@ const Contact = () => {
                     </div>
                   </div>
 
-                  {/* Message field */}
                   <div className="group">
                     <label htmlFor="message" className="block text-sm font-medium mb-1 text-foreground/70">Your Message</label>
                     <Textarea 
@@ -560,7 +540,6 @@ const Contact = () => {
                     />
                   </div>
 
-                  {/* Submit button */}
                   <GradientButton type="submit" className="w-full py-3" disabled={isSubmitting}>
                     {isSubmitting ? (
                       <div className="flex items-center justify-center">
@@ -579,14 +558,13 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Background elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Animation styles */}
-      <style jsx>{`
+      <style>
+        {`
         .reveal-on-scroll {
           opacity: 0;
           transform: translateY(20px);
@@ -603,7 +581,8 @@ const Contact = () => {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
-      `}</style>
+        `}
+      </style>
     </section>
   );
 };

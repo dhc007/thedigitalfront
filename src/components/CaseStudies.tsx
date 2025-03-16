@@ -6,7 +6,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useQuery } from '@tanstack/react-query';
 import { GradientButton } from './ui/gradient-button';
 
-// Using the provided project descriptions with correct image paths
+// Using the provided project descriptions with correct image paths and error handling
 const projects = [
   {
     id: 1,
@@ -60,7 +60,7 @@ const projects = [
     id: 7,
     title: "E-Zamindar",
     category: "Blockchain",
-    image: "/media/e-zamindar.jpg", // Fixed path to match media directory
+    image: "/media/e-zamindar.jpg", 
     description: "India's first blockchain-backed property ledger providing digital solutions for land records management.",
     url: "https://ezamindar.com"
   },
@@ -91,6 +91,7 @@ const fetchProjects = (category: string) => {
 
 const CaseStudies = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
   const sectionRef = useRef<HTMLDivElement>(null);
   const { isDarkMode } = useTheme();
   const isMobile = useIsMobile();
@@ -120,6 +121,12 @@ const CaseStudies = () => {
       elements.forEach((el) => observer.unobserve(el));
     };
   }, []);
+
+  // Handle image loading errors
+  const handleImageError = (projectId: number) => {
+    console.error(`Failed to load image for project ID: ${projectId}`);
+    setImageErrors(prev => ({ ...prev, [projectId]: true }));
+  };
   
   return (
     <section id="case-studies" className={`section-padding relative transition-colors bg-gradient-to-b from-background via-purple-900/5 to-background`} ref={sectionRef}>
@@ -183,11 +190,19 @@ const CaseStudies = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="relative h-56 overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                  />
+                  {imageErrors[project.id] ? (
+                    <div className="w-full h-full flex items-center justify-center bg-muted/20">
+                      <p className="text-muted-foreground text-sm">Image unavailable</p>
+                    </div>
+                  ) : (
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                      onError={() => handleImageError(project.id)}
+                      loading="lazy"
+                    />
+                  )}
                   <div className="absolute top-4 right-4 bg-primary/70 text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
                     {project.category}
                   </div>

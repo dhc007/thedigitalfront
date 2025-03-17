@@ -68,7 +68,7 @@ const projects = [
     id: 8,
     title: "Souza Lopes Comforts",
     category: "Hospitality",
-    image: "/media/SouzaLopesComforts.jpg",
+    image: "/media/SouzaLopesComforts.png",
     description: "Property booking and management system for a luxury Airbnb-style accommodations business.",
     url: "https://souzalopescomforts.com"
   }

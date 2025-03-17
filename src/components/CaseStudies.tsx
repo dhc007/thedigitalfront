@@ -60,7 +60,7 @@ const projects = [
     id: 7,
     title: "E-Zamindar",
     category: "Blockchain",
-    image: "/media/ezamindar.jpg", 
+    image: "/media/ezamindar.png", 
     description: "India's first blockchain-backed property ledger providing digital solutions for land records management.",
     url: "https://ezamindar.com"
   },

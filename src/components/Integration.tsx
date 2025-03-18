@@ -5,40 +5,40 @@ import { cn } from '@/lib/utils';
 
 const integrations = [
   {
-    name: 'Shopify',
-    logo: '/integrations/shopify.svg'
+    name: 'Firebase',
+    logo: '/media/firebasegoogle.png'
   },
   {
     name: 'Stripe',
-    logo: '/integrations/stripe.svg'
+    logo: '/media/stripe.png'
   },
   {
     name: 'WordPress',
-    logo: '/integrations/wordpress.svg'
+    logo: '/media/wordpress.png'
   },
   {
-    name: 'Webflow',
-    logo: '/integrations/webflow.svg'
+    name: 'Twilio',
+    logo: '/media/twilio.png'
   },
   {
-    name: 'React',
-    logo: '/integrations/react.svg'
+    name: 'Mailchimp',
+    logo: '/media/mailchimp.png'
   },
   {
     name: 'Figma',
-    logo: '/integrations/figma.svg'
+    logo: '/integrations/figma.png'
   },
   {
-    name: 'Slack',
-    logo: '/integrations/slack.svg'
+    name: 'Hubspot',
+    logo: '/media/hubspot.png'
   },
   {
-    name: 'AWS',
-    logo: '/integrations/aws.svg'
+    name: 'WhatsAPP',
+    logo: '/media/whatsapp.png'
   },
   {
-    name: 'Google Cloud',
-    logo: '/integrations/gcp.svg'
+    name: 'Lottie Files',
+    logo: '/media/lottiefiles.png'
   }
 ];
 

@@ -30,7 +30,7 @@ const integrations = [
   },
   {
     name: 'Figma',
-    logo: '/integrations/figma.png',
+    logo: '/media/figma.png',
     summary: 'Collaborative interface design tool for teams'
   },
   {

@@ -113,7 +113,7 @@ const Integration = () => {
         
           <div className="my-16 reveal-on-scroll overflow-hidden">
           <InfiniteSlider
-            duration={30}
+            duration={45}
             durationOnHover={60}
             reverse={false}
             className="py-4"

@@ -10,12 +10,12 @@ const integrations = [
   },
   {
     name: 'Stripe',
-    logo: '/media/stripe.png',
+    logo: '/media/stripe-2.png',
     summary: 'Online payment processing for internet businesses'
   },
   {
     name: 'WordPress',
-    logo: '/media/wordpress.png',
+    logo: '/media/wordpress-2.png',
     summary: 'Popular CMS powering millions of websites'
   },
   {

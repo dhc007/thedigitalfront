@@ -111,8 +111,13 @@ const Integration = () => {
           </p>
         </div>
         
-        <div className="my-16 reveal-on-scroll overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto max-w-7xl">
+          <div className="my-16 reveal-on-scroll overflow-hidden">
+          <InfiniteSlider
+            duration={30}
+            durationOnHover={60}
+            reverse={false}
+            className="py-4"
+          >
             {integrations.map((integration, i) => (
               <IntegrationCard 
                 key={i} 
@@ -121,7 +126,7 @@ const Integration = () => {
                 summary={integration.summary}
               />
             ))}
-          </div>
+          </InfiniteSlider>
         </div>
       </div>
     </section>

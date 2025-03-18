@@ -1,4 +1,3 @@
-
 import { useRef, useEffect } from 'react';
 import { InfiniteSlider } from './ui/infinite-slider';
 import { cn } from '@/lib/utils';
@@ -6,51 +5,64 @@ import { cn } from '@/lib/utils';
 const integrations = [
   {
     name: 'Firebase',
-    logo: '/media/firebasegoogle.png'
+    logo: '/media/firebasegoogle.png',
+    summary: 'Google\'s platform for mobile and web'
   },
   {
     name: 'Stripe',
-    logo: '/media/stripe.png'
+    logo: '/media/stripe.png',
+    summary: 'Online payment processing for internet businesses'
   },
   {
     name: 'WordPress',
-    logo: '/media/wordpress.png'
+    logo: '/media/wordpress.png',
+    summary: 'Popular CMS powering millions of websites'
   },
   {
     name: 'Twilio',
-    logo: '/media/twilio.png'
+    logo: '/media/twilio.png',
+    summary: 'Communication APIs for SMS and voice'
   },
   {
     name: 'Mailchimp',
-    logo: '/media/mailchimp.png'
+    logo: '/media/mailchimp.png',
+    summary: 'Marketing automation platform and email service'
   },
   {
     name: 'Figma',
-    logo: '/integrations/figma.png'
+    logo: '/integrations/figma.png',
+    summary: 'Collaborative interface design tool for teams'
   },
   {
     name: 'Hubspot',
-    logo: '/media/hubspot.png'
+    logo: '/media/hubspot.png',
+    summary: 'CRM platform for marketing and sales'
   },
   {
-    name: 'WhatsAPP',
-    logo: '/media/whatsapp.png'
+    name: 'WhatsApp',
+    logo: '/media/whatsapp.png',
+    summary: 'Messaging app with business integration capabilities'
   },
   {
     name: 'Lottie Files',
-    logo: '/media/lottiefiles.png'
+    logo: '/media/lottiefiles.png',
+    summary: 'Lightweight animations for web and apps'
   }
 ];
 
-// Create a separate file for this component
-const IntegrationLogo = ({ name, logo }: { name: string; logo: string }) => {
+// Integration card component
+const IntegrationCard = ({ name, logo, summary }: { name: string; logo: string; summary: string }) => {
   return (
-    <div className="min-w-32 h-20 flex items-center justify-center p-4 rounded-xl border border-secondary/30 bg-secondary/20 backdrop-blur-sm mx-2">
-      <img 
-        src={logo} 
-        alt={`${name} logo`}
-        className="h-10 max-w-[100px] object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-      />
+    <div className="min-w-[280px] h-auto flex flex-col items-center p-6 rounded-xl border border-secondary/30 bg-secondary/20 backdrop-blur-sm mx-3 transition-all duration-300 hover:border-purple-500/40 hover:shadow-[0_0_15px_rgba(124,58,237,0.1)] group">
+      <div className="w-full h-16 flex items-center justify-center mb-4">
+        <img 
+          src={logo} 
+          alt={`${name} logo`}
+          className="h-12 max-w-[120px] object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+        />
+      </div>
+      <h3 className="text-lg font-medium mb-2">{name}</h3>
+      <p className="text-sm text-muted-foreground text-center">{summary}</p>
     </div>
   );
 };
@@ -79,7 +91,7 @@ const Integration = () => {
   }, []);
   
   return (
-    <section id="integrations" className="section-padding relative bg-gradient-to-b from-background via-purple-900/5 to-background" ref={sectionRef}>
+    <section id="integrations" className="section-padding relative bg-gradient-to-b from-background via-purple-900/5 to-background py-20" ref={sectionRef}>
       {/* Decorative elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/4 -right-16 w-64 h-64 rounded-full bg-blue-400/10 blur-3xl"></div>
@@ -99,21 +111,17 @@ const Integration = () => {
           </p>
         </div>
         
-        <div className="my-16 reveal-on-scroll">
-          <InfiniteSlider
-            duration={30}
-            durationOnHover={60}
-            reverse={false}
-            className="py-4"
-          >
+        <div className="my-16 reveal-on-scroll overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto max-w-7xl">
             {integrations.map((integration, i) => (
-              <IntegrationLogo 
+              <IntegrationCard 
                 key={i} 
                 name={integration.name} 
-                logo={integration.logo} 
+                logo={integration.logo}
+                summary={integration.summary}
               />
             ))}
-          </InfiniteSlider>
+          </div>
         </div>
       </div>
     </section>

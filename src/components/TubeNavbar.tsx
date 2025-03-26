@@ -135,7 +135,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="fixed inset-0 top-16 bg-background/95 backdrop-blur-md z-40 md:hidden transition-all duration-300">
-          <div className="container mx-auto px-6 py-8">
+          <div className="container mx-auto px-6 py-8 bg-black">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (
                 <a

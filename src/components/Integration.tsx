@@ -1,3 +1,4 @@
+
 import { useRef, useEffect } from 'react';
 import { InfiniteSlider } from './ui/infinite-slider';
 import { cn } from '@/lib/utils';
@@ -50,15 +51,20 @@ const integrations = [
   }
 ];
 
-// Integration card component
+// Integration card component - Updated with improved container styling
 const IntegrationCard = ({ name, logo, summary }: { name: string; logo: string; summary: string }) => {
   return (
-    <div className="min-w-[280px] h-auto flex flex-col items-center p-6 rounded-xl border border-secondary/30 bg-secondary/20 backdrop-blur-sm mx-3 transition-all duration-300 hover:border-purple-500/40 hover:shadow-[0_0_15px_rgba(124,58,237,0.1)] group">
-      <div className="w-full h-16 flex items-center justify-center mb-4">
+    <div className="min-w-[280px] h-[180px] flex flex-col items-center p-6 rounded-xl border border-purple-500/30 bg-secondary/40 backdrop-blur-sm mx-3 transition-all duration-300 hover:border-purple-500/70 hover:shadow-[0_0_15px_rgba(124,58,237,0.2)] group">
+      <div className="w-full h-16 flex items-center justify-center mb-4 bg-background/40 rounded-lg p-3">
         <img 
           src={logo} 
           alt={`${name} logo`}
-          className="h-12 max-w-[120px] object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+          className="h-12 max-w-[120px] object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = '/placeholder.svg';
+            console.error(`Failed to load image: ${logo}`);
+          }}
         />
       </div>
       <h3 className="text-lg font-medium mb-2">{name}</h3>
@@ -111,7 +117,7 @@ const Integration = () => {
           </p>
         </div>
         
-          <div className="my-16 reveal-on-scroll overflow-hidden">
+        <div className="my-16 reveal-on-scroll overflow-hidden">
           <InfiniteSlider
             duration={45}
             durationOnHover={60}

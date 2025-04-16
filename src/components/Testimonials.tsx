@@ -1,15 +1,19 @@
 
 import { useRef, useEffect } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { motion } from 'framer-motion';
 
-// Replace emoji icons with premium images in Services
+// Updated testimonials with more professional details
 const testimonials = [
   {
     id: 1,
     name: "Sarah Johnson",
-    position: "CEO at TechFlow",
+    position: "CEO",
     company: "TechFlow",
     text: "Working with this agency has been a game-changer for our business. Their attention to detail and innovative approach resulted in a website that perfectly represents our brand and has significantly increased our conversions.",
-    image: "/testimonials/person1.jpg"
+    image: "/testimonials/person1.jpg",
+    project: "E-commerce Platform"
   },
   {
     id: 2,
@@ -17,7 +21,8 @@ const testimonials = [
     position: "Founder",
     company: "Innovate Solutions",
     text: "The team's expertise in both design and development enabled us to launch our product ahead of schedule. Their collaborative approach and technical knowledge made the entire process smooth and successful.",
-    image: "/testimonials/person2.jpg"
+    image: "/testimonials/person2.jpg",
+    project: "SaaS Application"
   },
   {
     id: 3,
@@ -25,7 +30,8 @@ const testimonials = [
     position: "Marketing Director",
     company: "Brand Elevate",
     text: "From concept to execution, the agency delivered beyond our expectations. Our website now perfectly captures our brand essence while providing an exceptional user experience for our customers.",
-    image: "/testimonials/person3.jpg"
+    image: "/testimonials/person3.jpg",
+    project: "Brand Website"
   },
   {
     id: 4,
@@ -33,7 +39,8 @@ const testimonials = [
     position: "CTO",
     company: "Future Systems",
     text: "I've worked with many digital agencies, but none have matched their level of technical expertise and creativity. They don't just build websites; they craft digital experiences that drive growth.",
-    image: "/testimonials/person4.jpg"
+    image: "/testimonials/person4.jpg",
+    project: "Enterprise Portal"
   }
 ];
 
@@ -83,10 +90,13 @@ const Testimonials = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 reveal-on-scroll">
           {testimonials.map((testimonial, index) => (
-            <div 
+            <motion.div 
               key={testimonial.id} 
               className="p-8 rounded-2xl border border-secondary/30 bg-secondary/20 backdrop-blur-sm shadow-lg group hover:bg-secondary/30 transition-all duration-300"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <div className="mb-6">
                 <p className="text-lg text-foreground/90 relative">
@@ -96,15 +106,39 @@ const Testimonials = () => {
                 </p>
               </div>
               
-              <div className="flex items-center mt-4">
-                <div className="w-12 h-12 rounded-full overflow-hidden mr-4 flex-shrink-0">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.name} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
+              <div className="flex items-center mt-8 pt-4 border-t border-secondary/30">
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <div className="flex-shrink-0 cursor-pointer">
+                      <Avatar className="w-16 h-16 border-2 border-purple-500/30">
+                        <AvatarImage 
+                          src={testimonial.image} 
+                          alt={testimonial.name}
+                          className="object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            console.error(`Failed to load testimonial image: ${testimonial.image}`);
+                          }}
+                        />
+                        <AvatarFallback className="bg-secondary text-primary text-lg">
+                          {testimonial.name.split(' ').map(name => name[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-80">
+                    <div className="flex justify-between space-x-4">
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-semibold">{testimonial.project}</h4>
+                        <p className="text-xs text-muted-foreground">
+                          Delivered a complete {testimonial.project.toLowerCase()} solution that increased engagement by 45%.
+                        </p>
+                      </div>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+                
+                <div className="ml-4">
                   <h4 className="font-medium text-lg">{testimonial.name}</h4>
                   <p className="text-sm text-foreground/70">{testimonial.position}, {testimonial.company}</p>
                 </div>
@@ -112,7 +146,7 @@ const Testimonials = () => {
               
               {/* Decorative element */}
               <div className="absolute bottom-0 right-0 bg-gradient-to-tl from-purple-500/20 to-transparent w-32 h-32 rounded-tl-3xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

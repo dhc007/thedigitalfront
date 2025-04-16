@@ -6,6 +6,7 @@ import Services from '@/components/Services';
 import CaseStudies from '@/components/CaseStudies';
 import Process from '@/components/Process';
 import Integration from '@/components/Integration';
+import PartnerOfferings from '@/components/PartnerOfferings';
 import Testimonials from '@/components/Testimonials';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
@@ -20,6 +21,7 @@ const Index = () => {
     services: null,
     caseStudies: null,
     process: null,
+    partnerOfferings: null,
     integration: null,
     testimonials: null,
     contact: null
@@ -46,7 +48,10 @@ const Index = () => {
     
     // Observe all sections
     Object.keys(sectionRefs.current).forEach(sectionKey => {
-      const sectionElement = document.getElementById(sectionKey === 'caseStudies' ? 'case-studies' : sectionKey);
+      const sectionElement = document.getElementById(
+        sectionKey === 'caseStudies' ? 'case-studies' : 
+        sectionKey === 'partnerOfferings' ? 'partner-offerings' : sectionKey
+      );
       if (sectionElement) {
         observer.observe(sectionElement);
         sectionRefs.current[sectionKey] = sectionElement;
@@ -67,6 +72,7 @@ const Index = () => {
       services: document.getElementById('services'),
       caseStudies: document.getElementById('case-studies'),
       process: document.getElementById('process'),
+      partnerOfferings: document.getElementById('partner-offerings'),
       integration: document.getElementById('integrations'),
       testimonials: document.getElementById('testimonials'),
       contact: document.getElementById('contact')
@@ -80,6 +86,7 @@ const Index = () => {
       <Services />
       <CaseStudies />
       <Process />
+      <PartnerOfferings />
       <Integration />
       <Testimonials />
       <Contact />

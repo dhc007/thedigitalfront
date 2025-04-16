@@ -29,6 +29,8 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
   const navItems: NavItem[] = [
     { name: 'Services', href: '#services' },
     { name: 'Our Work', href: '#case-studies' },
+    { name: 'Process', href: '#process' },
+    { name: 'Integrations', href: '#integrations' },
     { name: 'Testimonials', href: '#testimonials' },
     { name: 'Contact', href: '#contact' }
   ];
@@ -62,7 +64,15 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
       if (currentSection === 'case-studies') {
         setActiveTab('Our Work');
       } else if (currentSection === 'integrations') {
+        setActiveTab('Integrations');
+      } else if (currentSection === 'testimonials') {
+        setActiveTab('Testimonials');
+      } else if (currentSection === 'process') {
+        setActiveTab('Process');
+      } else if (currentSection === 'services') {
         setActiveTab('Services');
+      } else if (currentSection === 'contact') {
+        setActiveTab('Contact');
       } else {
         // Capitalize first letter
         const capitalizedSection = currentSection.charAt(0).toUpperCase() + currentSection.slice(1);

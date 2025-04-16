@@ -7,48 +7,48 @@ import { cn } from '@/lib/utils';
 const integrations = [
   {
     name: 'Firebase',
-    logo: '/media/firebase-logo.png',
+    logo: '/media/firebasegoogle.png',
     summary: 'Google\'s platform for mobile and web'
   },
   {
     name: 'Stripe',
-    logo: '/media/stripe-logo.png',
+    logo: '/media/stripe.png',
     summary: 'Online payment processing for internet businesses'
   },
   {
     name: 'WordPress',
-    logo: '/media/wordpress-logo.png',
+    logo: '/media/wordpress.png',
     summary: 'Popular CMS powering millions of websites'
   },
   {
     name: 'Twilio',
-    logo: '/media/twilio-logo.png',
+    logo: '/media/twilio.png',
     summary: 'Communication APIs for SMS and voice'
   },
   {
     name: 'Mailchimp',
-    logo: '/media/mailchimp-logo.png',
+    logo: '/media/mailchimp.png',
     summary: 'Marketing automation platform and email service'
   },
   {
     name: 'Figma',
-    logo: '/media/figma-logo.png',
+    logo: '/media/figma.png',
     summary: 'Collaborative interface design tool for teams'
   },
   {
     name: 'Hubspot',
-    logo: '/media/hubspot-logo.png',
+    logo: '/media/hubspot.png',
     summary: 'CRM platform for marketing and sales'
   },
   {
     name: 'WhatsApp',
-    logo: '/media/whatsapp-logo.png',
+    logo: '/media/whatsapp.png',
     summary: 'Messaging app with business integration capabilities'
   },
   {
-    name: 'Lottie Files',
-    logo: '/media/lottiefiles-logo.png',
-    summary: 'Lightweight animations for web and apps'
+    name: 'Google Analytics',
+    logo: '/media/googleanalytics.png',
+    summary: 'Website traffic analytics and insights'
   }
 ];
 

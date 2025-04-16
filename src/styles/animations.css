@@ -167,3 +167,52 @@
   width: calc(100% + 1.3px);
   height: 71px;
 }
+
+/* Integration card styling */
+.integration-card {
+  transform: translateY(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.integration-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar animation */
+.nav-indicator {
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+}
+
+.nav-active .nav-indicator {
+  transform: scaleX(1);
+}
+
+.nav-item:not(.nav-active) .nav-indicator {
+  transform: scaleX(0);
+}
+
+/* Tube navbar effects */
+.tube-nav-container {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+}
+
+.tube-nav-item {
+  position: relative;
+  z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.tube-nav-active-indicator {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}

@@ -22,6 +22,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
   const [activeTab, setActiveTab] = useState<string>('hero');
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { isDarkMode } = useTheme();
 
   // Updated nav items to match requested structure
@@ -37,9 +38,22 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
       setIsMobile(window.innerWidth < 768);
     };
 
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("scroll", handleScroll);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Update activeTab when currentSection prop changes
@@ -64,11 +78,11 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
   return (
     <nav className={cn(
       "fixed top-0 left-0 w-full z-50 transition-all duration-300",
-      'bg-background/80 backdrop-blur-lg border-b border-gray-800/30',
+      scrolled ? 'glass-effect border-b border-white/5 backdrop-blur-xl py-2' : 'bg-transparent py-4',
       className
     )}>
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16">
           {/* Logo - clickable to go to hero section */}
           <a href="#hero" className="focus:outline-none">
             <Logo />
@@ -77,7 +91,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
           <div className="flex items-center gap-2">
             {/* Desktop Navigation */}
             <div className="hidden md:block">
-              <div className="flex items-center gap-3 bg-background/5 border border-border py-1 px-1 rounded-full shadow-lg">
+              <div className="flex items-center gap-3 glass-effect border border-white/5 py-1 px-1 rounded-full shadow-lg">
                 {navItems.map((item) => {
                   const isActive = activeTab === item.name;
                   
@@ -96,7 +110,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
                       {isActive && (
                         <motion.div
                           layoutId="lamp"
-                          className="absolute inset-0 w-full bg-secondary rounded-full -z-0"
+                          className="absolute inset-0 w-full bg-white/10 rounded-full -z-0"
                           initial={false}
                           transition={{
                             type: "spring",
@@ -106,8 +120,6 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
                         >
                           <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-t-full">
                             <div className="absolute w-12 h-6 bg-primary/20 rounded-full blur-md -top-2 -left-2" />
-                            <div className="absolute w-8 h-6 bg-primary/20 rounded-full blur-md -top-1" />
-                            <div className="absolute w-4 h-4 bg-primary/20 rounded-full blur-sm top-0 left-2" />
                           </div>
                         </motion.div>
                       )}
@@ -115,6 +127,15 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
                   );
                 })}
               </div>
+            </div>
+            
+            {/* CTA Button - Desktop */}
+            <div className="hidden md:block ml-4">
+              <a href="#contact">
+                <GradientButton className="py-2 px-4 text-sm">
+                  Let's Talk
+                </GradientButton>
+              </a>
             </div>
             
             {/* Mobile menu button */}
@@ -134,8 +155,14 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 top-16 bg-background/95 backdrop-blur-md z-40 md:hidden transition-all duration-300">
-          <div className="container mx-auto px-6 py-8 bg-black">
+        <motion.div 
+          className="fixed inset-0 top-16 glass-effect backdrop-blur-xl z-40 md:hidden transition-all duration-300 border-t border-white/5"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="container mx-auto px-6 py-8">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (
                 <a
@@ -148,8 +175,8 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
                   className={cn(
                     "py-3 px-4 text-lg rounded-lg transition-colors",
                     activeTab === item.name
-                      ? "bg-secondary text-primary"
-                      : "hover:bg-secondary/50"
+                      ? "glass-effect text-primary border border-white/10"
+                      : "hover:bg-white/5"
                   )}
                 >
                   {item.name}
@@ -168,7 +195,7 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </nav>
   );

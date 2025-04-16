@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { cn } from "@/lib/utils";
 import { useTheme } from '@/context/ThemeContext';
 import { motion } from 'framer-motion';
+import { Paintbrush, Code, Smartphone, Lightbulb } from 'lucide-react';
 
 // Counter animation component that only triggers when visible
 const AnimatedCounter = ({ 
@@ -67,34 +68,45 @@ const AnimatedCounter = ({
   }, [end, duration, isVisible]);
 
   return (
-    <div className="text-center p-6 rounded-2xl bg-secondary/40 backdrop-blur-md border border-secondary/30 transform hover:scale-105 transition-transform duration-300" ref={countRef}>
+    <motion.div 
+      className="text-center p-6 rounded-xl glass-effect border border-white/5 transform hover:scale-105 transition-transform duration-300"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      ref={countRef}
+    >
       <h3 className="headline text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">
         {count}{suffix}
       </h3>
       <p className="text-sm text-muted-foreground">{label}</p>
-    </div>
+    </motion.div>
   );
 };
 
-// More premium service icons and descriptions
+// Service data with icons and images
 const services = [
   {
-    icon: "/services/ui-design.svg", // Replace with your uploaded icon paths
+    icon: <Paintbrush className="w-8 h-8" />,
+    image: "/media/service-design.jpg",
     title: "UI/UX Design",
     description: "Intuitive, beautiful interfaces that guide users to take action while delighting them at every step."
   },
   {
-    icon: "/services/web-dev.svg", // Replace with your uploaded icon paths
+    icon: <Code className="w-8 h-8" />,
+    image: "/media/service-webdev.jpg",
     title: "Web Development",
     description: "Fast, responsive, and accessible websites and web applications built with the latest technologies."
   },
   {
-    icon: "/services/app-dev.svg", // Replace with your uploaded icon paths
+    icon: <Smartphone className="w-8 h-8" />,
+    image: "/media/service-mobileapp.jpg",
     title: "Mobile App Development",
     description: "Native and cross-platform mobile applications that provide seamless experiences across all devices."
   },
   {
-    icon: "/services/digital-transform.svg", // Replace with your uploaded icon paths
+    icon: <Lightbulb className="w-8 h-8" />,
+    image: "/media/service-digital.jpg",
     title: "Digital Transformation",
     description: "End-to-end digital solutions that help businesses adapt, evolve, and thrive in the digital landscape."
   }
@@ -125,139 +137,131 @@ const Services = () => {
   }, []);
   
   return (
-    <section id="services" className="section-padding relative bg-gradient-to-b from-background via-purple-900/10 to-background" ref={sectionRef}>
-      {/* Decorative background elements */}
+    <section id="services" className="section-padding relative py-28" ref={sectionRef}>
+      {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-60 h-60 bg-blue-400/40 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/3 -right-20 w-80 h-80 bg-purple-400/40 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/3 w-40 h-40 bg-pink-400/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('/media/grid-pattern.svg')] bg-repeat opacity-5"></div>
+        <div className="absolute top-1/4 -left-20 w-60 h-60 bg-blue-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/3 -right-20 w-80 h-80 bg-purple-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/3 w-40 h-40 bg-pink-400/10 rounded-full blur-3xl"></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
-          <span className="inline-block px-4 py-2 rounded-full bg-secondary/80 text-sm font-medium mb-6 animate-pulse">
+        <div className="text-center max-w-3xl mx-auto mb-20 reveal-on-scroll">
+          <motion.span 
+            className="inline-block px-4 py-2 rounded-full glass-effect bg-white/5 text-sm font-medium mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             Our Services
-          </span>
-          <h2 className="headline text-4xl md:text-5xl mb-6">
-            Full-Spectrum <span className="text-primary bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">Digital</span> Services
-          </h2>
-          <p className="text-muted-foreground">
+          </motion.span>
+          <motion.h2 
+            className="headline text-4xl md:text-5xl font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Full-Spectrum <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">Digital</span> Services
+          </motion.h2>
+          <motion.p 
+            className="text-muted-foreground text-lg"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             We offer comprehensive digital solutions to design, develop, and optimize 
             applications and websites that drive business growth and innovation.
-          </p>
+          </motion.p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {services.map((service, index) => (
             <motion.div 
               key={index} 
-              className={cn(
-                "p-8 rounded-2xl transition-all duration-500 reveal-on-scroll group relative overflow-hidden",
-                "bg-secondary/40 backdrop-blur-md border border-secondary/30 hover:shadow-lg hover:shadow-purple-500/30"
-              )}
+              className="glass-effect border border-white/5 rounded-xl overflow-hidden relative group"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
-              {/* Gradient background that appears on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Animated background pattern */}
-              <div className="absolute inset-0 bg-grid-pattern opacity-5 group-hover:opacity-10 transition-opacity"></div>
-              
-              {/* Service icon with gradient background */}
-              <motion.div 
-                className={cn(
-                  "w-16 h-16 rounded-xl flex items-center justify-center mb-6 relative z-10",
-                  index % 2 === 0 
-                    ? "bg-gradient-to-br from-purple-500/40 to-blue-500/40"
-                    : "bg-gradient-to-br from-blue-500/40 to-pink-500/40"
-                )}
-                whileHover={{ scale: 1.05, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <img src={service.icon} alt={service.title} className="w-8 h-8 object-contain" />
-                
-                {/* Animated glow effect */}
-                <div className="absolute inset-0 rounded-xl bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </motion.div>
-              
-              <h3 className="headline text-2xl mb-4 relative z-10 group-hover:text-primary">{service.title}</h3>
-              <p className="text-muted-foreground relative z-10">{service.description}</p>
-              
-              {/* Decorative corner accent */}
-              <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-purple-500/10 to-transparent rounded-tl-full"></div>
-              
-              {/* Learn more button */}
-              <div className="mt-6 relative z-10">
-                <a href="#contact" className="inline-flex items-center text-sm font-medium text-primary group/link">
-                  Learn more
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transform group-hover/link:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14"></path>
-                    <path d="M12 5l7 7-7 7"></path>
-                  </svg>
-                </a>
+              {/* Background image */}
+              <div className="h-40 w-full relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 z-10"></div>
+                <img 
+                  src={service.image} 
+                  alt={service.title}
+                  className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-300 transform group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/placeholder.svg';
+                    console.error(`Failed to load image: ${service.image}`);
+                  }}
+                />
               </div>
               
-              {/* Floating particles - animated with framer-motion */}
-              <motion.div 
-                className="absolute top-1/2 left-1/4 w-2 h-2 rounded-full bg-purple-500/30 opacity-0 group-hover:opacity-100"
-                animate={{ 
-                  y: [-10, 10, -10],
-                  x: [-5, 5, -5],
-                  opacity: [0, 1, 0] 
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 3,
-                  ease: "easeInOut"
-                }}
-              />
-              <motion.div 
-                className="absolute top-1/4 right-1/4 w-2 h-2 rounded-full bg-blue-500/30 opacity-0 group-hover:opacity-100"
-                animate={{ 
-                  y: [10, -10, 10],
-                  x: [5, -5, 5],
-                  opacity: [0, 1, 0] 
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 4,
-                  ease: "easeInOut",
-                  delay: 1
-                }}
-              />
+              {/* Content */}
+              <div className="p-8 relative">
+                <div className="absolute top-0 -mt-12 left-8 w-16 h-16 rounded-xl glass-effect flex items-center justify-center text-white bg-gradient-to-br from-purple-600/90 to-blue-600/90 shadow-lg">
+                  {service.icon}
+                </div>
+                
+                <div className="mt-8">
+                  <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
+                  <p className="text-muted-foreground">{service.description}</p>
+                </div>
+                
+                {/* Learn more button */}
+                <div className="mt-6 pt-4 border-t border-white/10 flex justify-between items-center">
+                  <span className="text-sm font-medium">Learn more</span>
+                  <motion.div 
+                    className="w-8 h-8 rounded-full glass-effect flex items-center justify-center"
+                    whileHover={{ 
+                      rotate: 45,
+                      backgroundColor: "rgba(139, 92, 246, 0.2)",
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 5v14M5 12h14"></path>
+                    </svg>
+                  </motion.div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
 
         {/* Stats Counter Section - with animation on scroll */}
-        <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-6 reveal-on-scroll">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 reveal-on-scroll">
           <AnimatedCounter end={98} label="Client Satisfaction" suffix="%" />
           <AnimatedCounter end={150} label="Projects Delivered" suffix="+" />
           <AnimatedCounter end={12} label="Years Experience" suffix="+" />
-          <div className="text-center p-6 rounded-2xl bg-secondary/40 backdrop-blur-md border border-secondary/30 transform hover:scale-105 transition-transform duration-300">
-            <h3 className="headline text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">4.9<span className="text-2xl">/5</span></h3>
+          <motion.div 
+            className="text-center p-6 rounded-xl glass-effect border border-white/5 transform hover:scale-105 transition-transform duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <h3 className="headline text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">
+              4.9<span className="text-2xl">/5</span>
+            </h3>
             <p className="text-sm text-muted-foreground">Customer Rating</p>
-          </div>
+          </motion.div>
         </div>
       </div>
-
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes float {
-          0% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(5deg); }
-          100% { transform: translateY(0px) rotate(0deg); }
-        }
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-        .bg-grid-pattern {
-          background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
-          background-size: 30px 30px;
-        }
-      `}} />
+      
+      {/* Bottom curve */}
+      <div className="curve-divider">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" fill="rgba(255,255,255,0.02)">
+          <path d="M600,112.77C268.63,112.77,0,65.52,0,7.23V120H1200V7.23C1200,65.52,931.37,112.77,600,112.77Z"></path>
+        </svg>
+      </div>
     </section>
   );
 };

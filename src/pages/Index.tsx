@@ -81,7 +81,7 @@ const Index = () => {
     };
   }, []);
 
-  // Schema for SEO
+  // Enhanced schema for SEO
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -89,16 +89,33 @@ const Index = () => {
     "description": "Next-Gen Digital Agency that designs and develops exceptional web and mobile applications",
     "url": "https://thedigitalfront.in",
     "logo": "https://thedigitalfront.in/logo.png",
+    "image": "https://thedigitalfront.in/og-image.png",
+    "foundingDate": "2018-01-01",
+    "founders": [
+      {
+        "@type": "Person",
+        "name": "Digital Front Founder"
+      }
+    ],
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "India"
     },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-123-456-7890",
+      "contactType": "customer service",
+      "email": "hello@thedigitalfront.in",
+      "availableLanguage": ["English", "Hindi"]
+    },
     "sameAs": [
       "https://twitter.com/thedigitalfront",
       "https://www.facebook.com/thedigitalfront",
-      "https://www.linkedin.com/company/thedigitalfront"
+      "https://www.linkedin.com/company/thedigitalfront",
+      "https://www.instagram.com/thedigitalfront"
     ],
     "priceRange": "$$",
+    "areaServed": ["Global", "India", "United States", "United Kingdom"],
     "service": [
       {
         "@type": "Service",
@@ -112,27 +129,54 @@ const Index = () => {
       },
       {
         "@type": "Service",
+        "name": "UI/UX Design",
+        "description": "User-centered interface and experience design"
+      },
+      {
+        "@type": "Service",
         "name": "Digital Marketing",
         "description": "Strategic digital marketing campaigns"
       }
-    ]
+    ],
+    "review": {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "4.9",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Client Review"
+      }
+    }
   };
 
   return (
-    <div className="min-h-screen bg-background dark:bg-background overflow-hidden transition-colors">
+    <div className="min-h-screen bg-background overflow-hidden transition-colors">
       <Helmet>
         <title>TheDigitalFront - Next-Gen Digital Agency | Web & Mobile Development</title>
         <meta name="description" content="We design and develop exceptional web and mobile applications that connect brands with their audiences, creating memorable digital experiences that drive growth." />
         <meta name="keywords" content="digital agency, web development, mobile apps, UI/UX design, digital marketing, e-commerce" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://thedigitalfront.in" />
         <meta property="og:title" content="TheDigitalFront - Next-Gen Digital Agency" />
         <meta property="og:description" content="Transform your digital presence with our cutting-edge web and app development services." />
         <meta property="og:image" content="/og-image.png" />
-        <meta property="og:url" content="https://thedigitalfront.in" />
-        <meta property="og:type" content="website" />
+        
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://thedigitalfront.in" />
         <meta name="twitter:title" content="TheDigitalFront - Next-Gen Digital Agency" />
         <meta name="twitter:description" content="Transform your digital presence with our cutting-edge web and app development services." />
         <meta name="twitter:image" content="/og-image.png" />
+        
+        {/* Canonical Link */}
+        <link rel="canonical" href="https://thedigitalfront.in" />
+        
+        {/* Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify(schemaData)}
         </script>

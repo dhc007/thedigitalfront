@@ -34,6 +34,48 @@
   }
 }
 
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+@keyframes scale-up-center {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fade-in-bottom {
+  0% { transform: translateY(50px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
 .animate-reveal {
   animation: reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
@@ -46,7 +88,29 @@
   animation: pulse 3s ease-in-out infinite;
 }
 
-/* Scroll reveal animations */
+.animate-gradient-shift {
+  animation: gradient-shift 10s ease infinite;
+  background-size: 200% 200%;
+}
+
+.animate-text-shimmer {
+  animation: text-shimmer 3s linear infinite;
+  background-size: 200% auto;
+}
+
+.animate-spotlight {
+  animation: spotlight 2s ease forwards;
+}
+
+.animate-scale-up {
+  animation: scale-up-center 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+.animate-fade-in-bottom {
+  animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+/* Reveal on scroll animations */
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(40px);
@@ -56,6 +120,22 @@
 .reveal-on-scroll.revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Glass morphism effect */
+.glass-effect {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18);
+}
+
+.text-gradient-primary {
+  background: linear-gradient(to right, #a78bfa, #818cf8, #60a5fa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
 }
 
 /* Mobile optimizations */
@@ -69,4 +149,21 @@
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
+}
+
+/* Curve dividers */
+.curve-divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.curve-divider svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 71px;
 }

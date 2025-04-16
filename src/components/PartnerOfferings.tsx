@@ -7,37 +7,37 @@ import { cn } from '@/lib/utils';
 const offerings = [
   {
     title: "Digital Marketing",
-    description: "Strategic campaigns that drive traffic, engagement, and conversions through targeted digital channels.",
+    description: "Data-driven campaigns that increase visibility and conversions through targeted channels.",
     icon: <LineChart className="w-6 h-6" />,
-    image: "/media/firebasegoogle.png",
+    image: "/media/digital-marketing.jpg",
     color: "from-blue-600 to-blue-400"
   },
   {
-    title: "Rapid Graphic Design",
-    description: "Fast-turnaround visual assets for businesses needing professional design with quick delivery.",
+    title: "Rapid Design Sprint",
+    description: "48-hour design sprints delivering stunning visuals and assets when you need them most.",
     icon: <PencilRuler className="w-6 h-6" />,
-    image: "/media/stripe-2.png",
+    image: "/media/rapid-design.jpg",
     color: "from-green-600 to-green-400"
   },
   {
-    title: "Product Marketing",
-    description: "Comprehensive strategies to position, promote, and sell your products to the right audience.",
+    title: "Product Launch",
+    description: "End-to-end launch strategies that position your product for maximum market impact.",
     icon: <Rocket className="w-6 h-6" />,
-    image: "/media/wordpress-2.png",
+    image: "/media/product-launch.jpg",
     color: "from-purple-600 to-purple-400"
   },
   {
-    title: "Infographic Animations",
-    description: "Engaging motion graphics that explain complex concepts and captivate your audience.",
+    title: "Motion Graphics",
+    description: "Captivating animations and explainer videos that simplify complex concepts for your audience.",
     icon: <Film className="w-6 h-6" />,
-    image: "/media/lottiefiles.png",
+    image: "/media/motion-graphics.jpg",
     color: "from-orange-600 to-orange-400"
   },
   {
-    title: "24-Hour Prototype Website",
-    description: "Functional website prototypes delivered in less than a day for immediate testing and feedback.",
+    title: "24h MVP Website",
+    description: "From concept to live site in under 24 hours so you can test ideas and iterate quickly.",
     icon: <Clock className="w-6 h-6" />,
-    image: "/media/figma.png",
+    image: "/media/mvp-website.jpg",
     color: "from-pink-600 to-pink-400"
   },
 ];
@@ -66,38 +66,61 @@ const PartnerOfferings = () => {
   }, []);
   
   return (
-    <section id="partner-offerings" className="section-padding relative bg-gradient-to-b from-background via-purple-900/5 to-background py-20" ref={sectionRef}>
-      {/* Decorative elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <section id="partner-offerings" className="section-padding relative py-28" ref={sectionRef}>
+      {/* Background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('/media/grid-pattern.svg')] bg-repeat opacity-5"></div>
         <div className="absolute top-1/3 -right-16 w-64 h-64 rounded-full bg-purple-400/10 blur-3xl"></div>
         <div className="absolute bottom-1/3 -left-20 w-72 h-72 rounded-full bg-blue-400/10 blur-3xl"></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
-          <span className="inline-block px-4 py-2 rounded-full bg-secondary/30 text-sm font-medium mb-6">
+        <div className="text-center max-w-3xl mx-auto mb-20 reveal-on-scroll">
+          <motion.span 
+            className="inline-block px-4 py-2 rounded-full glass-effect bg-white/5 text-sm font-medium mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             Partner Offerings
-          </span>
-          <h2 className="headline text-4xl md:text-5xl mb-6">
+          </motion.span>
+          <motion.h2 
+            className="headline text-4xl md:text-5xl font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             Specialized <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">Solutions</span>
-          </h2>
-          <p className="text-muted-foreground">
+          </motion.h2>
+          <motion.p 
+            className="text-muted-foreground text-lg"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             Beyond our core services, we offer specialized partner solutions to meet your specific business needs.
-          </p>
+          </motion.p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-on-scroll">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-on-scroll">
           {offerings.map((offering, index) => (
             <motion.div 
               key={index}
-              className="rounded-2xl overflow-hidden border border-secondary/30 backdrop-blur-sm relative group h-full"
+              className="rounded-xl overflow-hidden glass-effect relative group h-full cursor-pointer"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
             >
-              {/* Image background */}
-              <div className="h-48 w-full overflow-hidden">
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 z-10"></div>
+              
+              {/* Background image */}
+              <div className="h-full w-full absolute">
                 <div className={cn(
                   "absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300",
                   `bg-gradient-to-r ${offering.color}`
@@ -105,7 +128,7 @@ const PartnerOfferings = () => {
                 <img 
                   src={offering.image} 
                   alt={offering.title}
-                  className="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-300"
+                  className="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-300"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = '/placeholder.svg';
@@ -115,26 +138,37 @@ const PartnerOfferings = () => {
               </div>
               
               {/* Content */}
-              <div className="p-6 relative bg-background/80 backdrop-blur-md h-56">
+              <div className="p-8 relative z-20">
                 <div className={cn(
-                  "w-14 h-14 rounded-full flex items-center justify-center mb-4 text-white",
+                  "w-14 h-14 rounded-full flex items-center justify-center mb-6 text-white",
                   `bg-gradient-to-r ${offering.color}`
                 )}>
                   {offering.icon}
                 </div>
                 
-                <h3 className="text-xl font-medium mb-2">{offering.title}</h3>
-                <p className="text-muted-foreground text-sm">{offering.description}</p>
+                <h3 className="text-2xl font-bold mb-3">{offering.title}</h3>
+                <p className="text-muted-foreground mb-6">{offering.description}</p>
                 
-                <div className="absolute bottom-6 right-6">
-                  <div className="p-2 rounded-full bg-secondary/60 group-hover:bg-primary/20 transition-colors duration-300">
-                    <ArrowRight className="w-5 h-5 text-foreground/70 group-hover:text-primary transition-colors duration-300" />
+                <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/10">
+                  <span className="text-sm font-medium text-white/70">Learn more</span>
+                  <div className="p-2 rounded-full bg-white/10 group-hover:bg-primary/20 transition-colors duration-300">
+                    <ArrowRight className="w-5 h-5 text-white/70 group-hover:text-primary transition-colors duration-300" />
                   </div>
                 </div>
               </div>
+              
+              {/* Hover effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
             </motion.div>
           ))}
         </div>
+      </div>
+      
+      {/* Bottom curve */}
+      <div className="curve-divider">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" fill="rgba(255,255,255,0.02)">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+        </svg>
       </div>
     </section>
   );

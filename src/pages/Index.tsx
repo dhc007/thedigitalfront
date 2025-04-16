@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import TubeNavbar from '@/components/TubeNavbar';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
@@ -27,7 +28,7 @@ const Index = () => {
     contact: null
   });
 
-  // Setup intersection observer
+  // Setup intersection observer for section detection
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -50,7 +51,8 @@ const Index = () => {
     Object.keys(sectionRefs.current).forEach(sectionKey => {
       const sectionElement = document.getElementById(
         sectionKey === 'caseStudies' ? 'case-studies' : 
-        sectionKey === 'partnerOfferings' ? 'partner-offerings' : sectionKey
+        sectionKey === 'partnerOfferings' ? 'partner-offerings' : 
+        sectionKey === 'integration' ? 'integrations' : sectionKey
       );
       if (sectionElement) {
         observer.observe(sectionElement);
@@ -79,8 +81,63 @@ const Index = () => {
     };
   }, []);
 
+  // Schema for SEO
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "TheDigitalFront",
+    "description": "Next-Gen Digital Agency that designs and develops exceptional web and mobile applications",
+    "url": "https://thedigitalfront.in",
+    "logo": "https://thedigitalfront.in/logo.png",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "India"
+    },
+    "sameAs": [
+      "https://twitter.com/thedigitalfront",
+      "https://www.facebook.com/thedigitalfront",
+      "https://www.linkedin.com/company/thedigitalfront"
+    ],
+    "priceRange": "$$",
+    "service": [
+      {
+        "@type": "Service",
+        "name": "Web Development",
+        "description": "Professional web application development"
+      },
+      {
+        "@type": "Service",
+        "name": "Mobile App Development",
+        "description": "Custom mobile application development for iOS and Android"
+      },
+      {
+        "@type": "Service",
+        "name": "Digital Marketing",
+        "description": "Strategic digital marketing campaigns"
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background dark:bg-background overflow-hidden transition-colors">
+      <Helmet>
+        <title>TheDigitalFront - Next-Gen Digital Agency | Web & Mobile Development</title>
+        <meta name="description" content="We design and develop exceptional web and mobile applications that connect brands with their audiences, creating memorable digital experiences that drive growth." />
+        <meta name="keywords" content="digital agency, web development, mobile apps, UI/UX design, digital marketing, e-commerce" />
+        <meta property="og:title" content="TheDigitalFront - Next-Gen Digital Agency" />
+        <meta property="og:description" content="Transform your digital presence with our cutting-edge web and app development services." />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:url" content="https://thedigitalfront.in" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="TheDigitalFront - Next-Gen Digital Agency" />
+        <meta name="twitter:description" content="Transform your digital presence with our cutting-edge web and app development services." />
+        <meta name="twitter:image" content="/og-image.png" />
+        <script type="application/ld+json">
+          {JSON.stringify(schemaData)}
+        </script>
+      </Helmet>
+
       <TubeNavbar currentSection={currentSection} />
       <Hero />
       <Services />

@@ -1,5 +1,6 @@
 
 import { useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { InfiniteSlider } from './ui/infinite-slider';
 import { cn } from '@/lib/utils';
 
@@ -51,15 +52,21 @@ const integrations = [
   }
 ];
 
-// Integration card component - Updated with improved container styling
+// Integration card component with improved container styling
 const IntegrationCard = ({ name, logo, summary }: { name: string; logo: string; summary: string }) => {
   return (
-    <div className="min-w-[280px] h-[180px] flex flex-col items-center p-6 rounded-xl border border-purple-500/30 bg-secondary/40 backdrop-blur-sm mx-3 transition-all duration-300 hover:border-purple-500/70 hover:shadow-[0_0_15px_rgba(124,58,237,0.2)] group">
-      <div className="w-full h-16 flex items-center justify-center mb-4 bg-background/40 rounded-lg p-3">
+    <motion.div 
+      className="min-w-[280px] h-[200px] flex flex-col items-center p-6 rounded-xl border border-purple-500/30 bg-secondary/40 backdrop-blur-sm mx-3 transition-all duration-300 hover:border-purple-500/70 hover:shadow-[0_0_15px_rgba(124,58,237,0.2)] group"
+      whileHover={{ 
+        y: -5,
+        transition: { duration: 0.2 }
+      }}
+    >
+      <div className="w-full h-20 flex items-center justify-center mb-4 bg-background/40 rounded-lg p-3">
         <img 
           src={logo} 
           alt={`${name} logo`}
-          className="h-12 max-w-[120px] object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+          className="h-14 max-w-[140px] object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.src = '/placeholder.svg';
@@ -69,7 +76,7 @@ const IntegrationCard = ({ name, logo, summary }: { name: string; logo: string; 
       </div>
       <h3 className="text-lg font-medium mb-2">{name}</h3>
       <p className="text-sm text-muted-foreground text-center">{summary}</p>
-    </div>
+    </motion.div>
   );
 };
 
@@ -105,7 +112,13 @@ const Integration = () => {
       </div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          className="text-center max-w-3xl mx-auto mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+        >
           <span className="inline-block px-4 py-2 rounded-full bg-secondary/30 text-sm font-medium mb-6">
             Integrations
           </span>
@@ -115,24 +128,40 @@ const Integration = () => {
           <p className="text-muted-foreground">
             We integrate with the tools you already use, making your workflows smoother and more efficient.
           </p>
-        </div>
+        </motion.div>
         
         <div className="my-16 reveal-on-scroll overflow-hidden">
-          <InfiniteSlider
-            duration={45}
-            durationOnHover={60}
-            reverse={false}
-            className="py-4"
+          <div className="bg-background/50 backdrop-blur-md p-6 rounded-2xl border border-secondary/40 shadow-lg mb-8">
+            <InfiniteSlider
+              duration={45}
+              durationOnHover={60}
+              reverse={false}
+              className="py-4"
+            >
+              {integrations.map((integration, i) => (
+                <IntegrationCard 
+                  key={i} 
+                  name={integration.name} 
+                  logo={integration.logo}
+                  summary={integration.summary}
+                />
+              ))}
+            </InfiniteSlider>
+          </div>
+          
+          <motion.div 
+            className="flex items-center justify-center"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
-            {integrations.map((integration, i) => (
-              <IntegrationCard 
-                key={i} 
-                name={integration.name} 
-                logo={integration.logo}
-                summary={integration.summary}
-              />
-            ))}
-          </InfiniteSlider>
+            <div className="text-center max-w-xl">
+              <p className="text-muted-foreground">
+                <span className="font-medium text-foreground">30+ integrations</span> available to keep your tech stack connected and your business running smoothly.
+              </p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

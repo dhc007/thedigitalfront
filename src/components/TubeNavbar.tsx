@@ -174,29 +174,29 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
           />
           
           {/* Menu Content */}
-          <motion.div 
+        <motion.div 
             className="fixed inset-x-0 top-[64px] min-h-[calc(100vh-64px)] bg-background/95 backdrop-blur-xl z-40 md:hidden border-t border-white/5 overflow-y-auto"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="container mx-auto px-6 py-8">
-              <div className="flex flex-col space-y-4">
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="container mx-auto px-6 py-8">
+            <div className="flex flex-col space-y-4">
                 {navItems.map((item, index) => (
                   <motion.a
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => {
-                      setActiveTab(item.name);
-                      setIsMenuOpen(false);
-                    }}
-                    className={cn(
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => {
+                    setActiveTab(item.name);
+                    setIsMenuOpen(false);
+                  }}
+                  className={cn(
                       "py-4 px-6 text-lg rounded-xl transition-all duration-200 flex items-center justify-between",
-                      activeTab === item.name
+                    activeTab === item.name
                         ? "bg-white/10 text-primary border border-white/20 shadow-lg"
                         : "hover:bg-white/5 hover:border hover:border-white/10"
-                    )}
+                  )}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -213,28 +213,28 @@ const TubeNavbar = ({ currentSection, className }: TubeNavbarProps) => {
                       />
                     )}
                   </motion.a>
-                ))}
-                
-                {/* CTA in Mobile Menu */}
+              ))}
+              
+              {/* CTA in Mobile Menu */}
                 <motion.div 
                   className="mt-8 pb-8"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <a 
-                    href="#contact"
-                    onClick={() => setIsMenuOpen(false)}
+              <a 
+                href="#contact"
+                onClick={() => setIsMenuOpen(false)}
                     className="block w-full"
-                  >
+              >
                     <GradientButton className="w-full py-4 text-lg font-medium">
-                      Let's Connect
-                    </GradientButton>
-                  </a>
+                  Let's Connect
+                </GradientButton>
+              </a>
                 </motion.div>
-              </div>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
         </>
       )}
     </nav>

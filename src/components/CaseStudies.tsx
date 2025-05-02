@@ -8,48 +8,16 @@ import { GradientButton } from './ui/gradient-button';
 
 // Using the provided project descriptions with correct image paths and error handling
 const projects = [
-  {
+   {
     id: 1,
-    title: "Protein Box",
-    category: "E-commerce",
-    image: "/media/ProteinBox.png",
-    description: "We helped Protein Box, a startup providing healthy protein meals, achieve its goals by capturing leads and increasing profitability.",
-    url: "https://protein-box.com"
-  },
-  {
-    id: 2,
-    title: "Flexibus",
-    category: "Travel",
-    image: "/media/cover.png",
-    description: "We developed a stunning app and website for Flexibus, a startup in Goa aiming to enhance the experience of people traveling via public transport.",
-    url: "https://flexibus.in"
-  },
-  {
-    id: 3,
-    title: "Kisai Technologies",
-    category: "SaaS",
-    image: "/media/Kisai.png",
-    description: "Brand identity and website design for an AI-focused SaaS company, showcasing their platform seamlessly.",
-    url: "https://kis.ai"
-  },
-  {
-    id: 4,
-    title: "Travelite",
-    category: "Mobile App",
-    image: "/media/Travelite.png",
-    description: "We crafted a Gen-Z, head-turning prototype for Travlite, a startup aiming to provide personalized itineraries using AI.",
-    url: "#"
-  },
-  {
-    id: 5,
     title: "BSRTC",
     category: "Government",
     image: "/media/BSRTC_Logo.jpg",
     description: "Transport management and booking system for the Bihar State Road Transport Corporation.",
     url: "https://bsrtc.org"
   },
-  {
-    id: 6,
+   {
+    id: 2,
     title: "E-Zamindar",
     category: "Blockchain",
     image: "/media/ezamindar.png", 

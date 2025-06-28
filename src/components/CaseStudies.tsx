@@ -1,45 +1,47 @@
 
 import { motion } from 'framer-motion';
-import { ArrowRight, TrendingUp, Users, DollarSign } from 'lucide-react';
+import { ArrowRight, TrendingUp, Clock, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const caseStudies = [
   {
-    title: "Fortune 500 Financial Services",
-    industry: "Banking & Finance",
-    challenge: "Manual fraud detection processes causing $2M+ annual losses",
-    solution: "AI-powered fraud detection system with real-time analysis",
-    results: {
-      savings: "$8.5M",
-      efficiency: "75%",
-      timeframe: "6 months"
-    },
-    icon: <DollarSign className="w-6 h-6" />
+    industry: 'Manufacturing',
+    title: 'Global Manufacturing Leader',
+    subtitle: 'Predictive Maintenance Revolution',
+    challenge: 'Reducing unplanned downtime across 50+ production facilities worldwide',
+    solution: 'AI-powered predictive maintenance system with IoT integration',
+    results: [
+      { metric: '40%', label: 'Reduction in Unplanned Downtime' },
+      { metric: '$12M', label: 'Annual Cost Savings' },
+      { metric: '6 Months', label: 'Implementation Timeline' }
+    ],
+    tags: ['IoT', 'Predictive Analytics', 'Machine Learning']
   },
   {
-    title: "Global Manufacturing Leader",
-    industry: "Manufacturing",
-    challenge: "Inefficient supply chain management and inventory optimization",
-    solution: "Predictive analytics and AI-driven demand forecasting",
-    results: {
-      savings: "$12M",
-      efficiency: "60%",
-      timeframe: "8 months"
-    },
-    icon: <TrendingUp className="w-6 h-6" />
+    industry: 'Financial Services',
+    title: 'International Banking Group',
+    subtitle: 'Fraud Detection Transformation',
+    challenge: 'Improving fraud detection accuracy while reducing false positives',
+    solution: 'Advanced ML algorithms with real-time transaction analysis',
+    results: [
+      { metric: '75%', label: 'Improvement in Detection Rate' },
+      { metric: '$8.5M', label: 'Prevented Fraud Losses' },
+      { metric: '60%', label: 'Reduction in False Positives' }
+    ],
+    tags: ['Machine Learning', 'Real-time Analytics', 'Risk Management']
   },
   {
-    title: "Healthcare Enterprise",
-    industry: "Healthcare",
-    challenge: "Patient data analysis and treatment optimization",
-    solution: "AI-powered patient insights and treatment recommendation engine",
-    results: {
-      savings: "$5.2M",
-      efficiency: "45%",
-      timeframe: "10 months"
-    },
-    icon: <Users className="w-6 h-6" />
+    industry: 'Healthcare',
+    title: 'Major Hospital Network',
+    subtitle: 'Patient Care Optimization',
+    challenge: 'Optimizing patient flow and resource allocation across facilities',
+    solution: 'AI-driven patient scheduling and resource management platform',
+    results: [
+      { metric: '30%', label: 'Faster Patient Processing' },
+      { metric: '$15M', label: 'Annual Operational Savings' },
+      { metric: '95%', label: 'Staff Satisfaction Increase' }
+    ],
+    tags: ['Healthcare AI', 'Optimization', 'Resource Management']
   }
 ];
 
@@ -55,10 +57,10 @@ const CaseStudies = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Proven Results for Enterprise Clients
+            Real Results from Real Enterprises
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Real case studies from Fortune 500 companies that achieved measurable ROI through strategic AI implementation
+            Discover how we've helped industry leaders transform their operations and achieve measurable ROI through strategic AI implementation
           </p>
         </motion.div>
 
@@ -70,61 +72,57 @@ const CaseStudies = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
+              className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
             >
-              <Card className="h-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-sm font-medium">
-                      {study.industry}
+              <div className="mb-6">
+                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full mb-4">
+                  {study.industry}
+                </span>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {study.title}
+                </h3>
+                <h4 className="text-lg font-semibold text-blue-600 mb-4">
+                  {study.subtitle}
+                </h4>
+              </div>
+
+              <div className="mb-6">
+                <h5 className="font-semibold text-gray-900 mb-2">Challenge:</h5>
+                <p className="text-gray-600 text-sm mb-4">{study.challenge}</p>
+                
+                <h5 className="font-semibold text-gray-900 mb-2">Solution:</h5>
+                <p className="text-gray-600 text-sm">{study.solution}</p>
+              </div>
+
+              <div className="mb-6">
+                <h5 className="font-semibold text-gray-900 mb-4">Key Results:</h5>
+                <div className="space-y-3">
+                  {study.results.map((result, idx) => (
+                    <div key={idx} className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                      <span className="text-2xl font-bold text-blue-600">{result.metric}</span>
+                      <span className="text-sm text-gray-700 text-right">{result.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <div className="flex flex-wrap gap-2">
+                  {study.tags.map((tag, idx) => (
+                    <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md">
+                      {tag}
                     </span>
-                    <div className="text-blue-600">
-                      {study.icon}
-                    </div>
-                  </div>
-                  <CardTitle className="text-xl font-bold text-gray-900 leading-tight">
-                    {study.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Challenge:</h4>
-                      <p className="text-gray-600 text-sm">{study.challenge}</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Solution:</h4>
-                      <p className="text-gray-600 text-sm">{study.solution}</p>
-                    </div>
-                    
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="font-semibold text-gray-900 mb-3">Results:</h4>
-                      <div className="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                          <p className="text-2xl font-bold text-green-600">{study.results.savings}</p>
-                          <p className="text-xs text-gray-600">Savings</p>
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-blue-600">{study.results.efficiency}</p>
-                          <p className="text-xs text-gray-600">Efficiency</p>
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-purple-600">{study.results.timeframe}</p>
-                          <p className="text-xs text-gray-600">Timeline</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <Button 
-                      variant="outline" 
-                      className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 mt-4"
-                    >
-                      View Full Case Study
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                  ))}
+                </div>
+              </div>
+
+              <Button 
+                variant="outline" 
+                className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300"
+              >
+                View Full Case Study
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
             </motion.div>
           ))}
         </div>
@@ -133,15 +131,15 @@ const CaseStudies = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.8 }}
           className="text-center"
         >
           <Button 
             size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg rounded-full"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg rounded-full"
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            See How We Can Help Your Enterprise
+            Discuss Your AI Transformation
             <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
         </motion.div>

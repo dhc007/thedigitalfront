@@ -1,14 +1,35 @@
 
 import { motion } from 'framer-motion';
-import { Calendar, Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
+import { Calendar, Mail, Phone, MapPin, Clock, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    title: '',
+    employees: '',
+    timeline: '',
+    message: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission
+    console.log('Form submitted:', formData);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   return (
-    <section id="contact" className="py-24 bg-gray-900 text-white">
+    <section id="contact" className="py-24 bg-white">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -17,178 +38,220 @@ const Contact = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Schedule Your Strategic AI Consultation
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Ready to transform your enterprise with AI? Let's discuss your specific challenges and opportunities.
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Ready to transform your enterprise with AI? Let's discuss your unique challenges and explore how our proven methodology can deliver measurable results for your organization.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="bg-gray-50 rounded-3xl p-8"
           >
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-white">
-                  Get Your AI Readiness Assessment
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      First Name *
-                    </label>
-                    <Input 
-                      placeholder="John"
-                      className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Last Name *
-                    </label>
-                    <Input 
-                      placeholder="Smith"
-                      className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                    />
-                  </div>
-                </div>
-                
+            <div className="flex items-center mb-6">
+              <Calendar className="w-8 h-8 text-blue-600 mr-3" />
+              <h3 className="text-2xl font-bold text-gray-900">Book Your Assessment</h3>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Company Email *
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name *
                   </label>
-                  <Input 
-                    type="email"
-                    placeholder="john.smith@company.com"
-                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="John Smith"
                   />
                 </div>
-                
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Business Email *
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="john@company.com"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Company Name *
                   </label>
-                  <Input 
-                    placeholder="Your Company"
-                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  <input
+                    type="text"
+                    name="company"
+                    required
+                    value={formData.company}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Your Company Inc."
                   />
                 </div>
-                
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Job Title
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Job Title *
                   </label>
-                  <Input 
-                    placeholder="CTO, VP of Innovation, etc."
-                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  <input
+                    type="text"
+                    name="title"
+                    required
+                    value={formData.title}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Chief Technology Officer"
                   />
                 </div>
-                
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Company Size
                   </label>
-                  <select className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
-                    <option>Select company size</option>
-                    <option>50-200 employees</option>
-                    <option>200-1000 employees</option>
-                    <option>1000-5000 employees</option>
-                    <option>5000+ employees</option>
+                  <select
+                    name="employees"
+                    value={formData.employees}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select size</option>
+                    <option value="100-1000">100 - 1,000 employees</option>
+                    <option value="1000-5000">1,000 - 5,000 employees</option>
+                    <option value="5000-10000">5,000 - 10,000 employees</option>
+                    <option value="10000+">10,000+ employees</option>
                   </select>
                 </div>
-                
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Current AI Challenges
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Project Timeline
                   </label>
-                  <Textarea 
-                    placeholder="Describe your current challenges with AI implementation or what you're hoping to achieve..."
-                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 min-h-[100px]"
-                  />
+                  <select
+                    name="timeline"
+                    value={formData.timeline}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select timeline</option>
+                    <option value="immediate">Immediate (within 30 days)</option>
+                    <option value="quarter">This quarter</option>
+                    <option value="next-quarter">Next quarter</option>
+                    <option value="exploring">Just exploring</option>
+                  </select>
                 </div>
-                
-                <Button 
-                  size="lg"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg rounded-full"
-                >
-                  Schedule Free Consultation
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </CardContent>
-            </Card>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tell us about your AI challenges and goals
+                </label>
+                <textarea
+                  name="message"
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Describe your current challenges, AI initiatives, and what you hope to achieve..."
+                ></textarea>
+              </div>
+
+              <Button 
+                type="submit"
+                size="lg"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 text-lg rounded-full"
+              >
+                Schedule My Consultation
+              </Button>
+
+              <div className="flex items-center justify-center text-sm text-gray-500">
+                <Shield className="w-4 h-4 mr-2" />
+                All information is kept strictly confidential
+              </div>
+            </form>
           </motion.div>
 
-          {/* Contact Information & Calendar */}
+          {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            {/* Quick Contact */}
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-white flex items-center">
-                  <Calendar className="w-6 h-6 mr-2 text-blue-400" />
-                  Book a Call Directly
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-300 mb-6">
-                  Prefer to speak directly? Schedule a 30-minute strategic consultation to discuss your AI transformation goals.
-                </p>
-                <Button 
-                  size="lg"
-                  variant="outline"
-                  className="w-full border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white"
-                >
-                  <Calendar className="w-5 h-5 mr-2" />
-                  Schedule Call Now
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Contact Details */}
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-white">
-                  Get in Touch
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center">
-                  <Phone className="w-5 h-5 text-blue-400 mr-3" />
-                  <span className="text-gray-300">+1 (555) 123-4567</span>
-                </div>
-                <div className="flex items-center">
-                  <Mail className="w-5 h-5 text-blue-400 mr-3" />
-                  <span className="text-gray-300">hello@thedigitalfront.com</span>
-                </div>
-                <div className="flex items-center">
-                  <MapPin className="w-5 h-5 text-blue-400 mr-3" />
-                  <span className="text-gray-300">New York, NY & San Francisco, CA</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Response Time */}
-            <div className="bg-blue-900/30 p-6 rounded-lg border border-blue-800">
-              <h3 className="text-lg font-bold text-white mb-2">
-                Quick Response Guarantee
+            <div>
+              <h3 className="text-3xl font-bold text-gray-900 mb-6">
+                Get in Touch
               </h3>
-              <p className="text-blue-200 text-sm">
-                We respond to all enterprise inquiries within 2 business hours. 
-                For urgent matters, call us directly for immediate assistance.
+              <p className="text-gray-600 mb-8">
+                Prefer to speak directly? Our AI strategy experts are available to discuss your specific needs and answer any questions about our methodology.
               </p>
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex items-start">
+                <Mail className="w-6 h-6 text-blue-600 mr-4 mt-1" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
+                  <p className="text-gray-600">hello@thedigitalfront.com</p>
+                  <p className="text-sm text-gray-500">We respond within 2 hours during business hours</p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <Phone className="w-6 h-6 text-blue-600 mr-4 mt-1" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Phone</h4>
+                  <p className="text-gray-600">+1 (555) 123-4567</p>
+                  <p className="text-sm text-gray-500">Direct line to our senior consultants</p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <MapPin className="w-6 h-6 text-blue-600 mr-4 mt-1" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Offices</h4>
+                  <p className="text-gray-600">New York, NY & San Francisco, CA</p>
+                  <p className="text-sm text-gray-500">Serving clients globally</p>
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <Clock className="w-6 h-6 text-blue-600 mr-4 mt-1" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Business Hours</h4>
+                  <p className="text-gray-600">Monday - Friday: 8:00 AM - 7:00 PM EST</p>
+                  <p className="text-sm text-gray-500">Emergency support available 24/7</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 rounded-xl p-6">
+              <h4 className="font-bold text-gray-900 mb-3">What Happens Next?</h4>
+              <div className="space-y-2 text-sm text-gray-700">
+                <p>• <strong>Initial Call (30 min):</strong> Discuss your challenges and objectives</p>
+                <p>• <strong>Custom Proposal:</strong> Tailored approach and timeline</p>
+                <p>• <strong>Stakeholder Alignment:</strong> Present to your leadership team</p>
+                <p>• <strong>Project Kickoff:</strong> Begin your AI transformation journey</p>
+              </div>
             </div>
           </motion.div>
         </div>

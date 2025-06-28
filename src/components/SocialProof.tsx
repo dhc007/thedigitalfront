@@ -1,25 +1,46 @@
 
 import { motion } from 'framer-motion';
-
-const clientLogos = [
-  { name: "Fortune 500 Bank", logo: "/media/client-bank.png" },
-  { name: "Global Manufacturer", logo: "/media/client-manufacturing.png" },
-  { name: "Healthcare Leader", logo: "/media/client-healthcare.png" },
-  { name: "Tech Enterprise", logo: "/media/client-tech.png" },
-  { name: "Retail Giant", logo: "/media/client-retail.png" },
-  { name: "Energy Corp", logo: "/media/client-energy.png" }
-];
+import { Award, Users, DollarSign, TrendingUp } from 'lucide-react';
 
 const stats = [
-  { number: "$50M+", label: "In Documented Savings" },
-  { number: "100+", label: "Companies Transformed" },
-  { number: "95%", label: "Client Satisfaction Rate" },
-  { number: "4.9/5", label: "Average Rating" }
+  {
+    icon: <DollarSign className="w-8 h-8" />,
+    value: '$50M+',
+    label: 'Documented Savings Generated',
+    description: 'Total cost savings delivered to our enterprise clients'
+  },
+  {
+    icon: <Users className="w-8 h-8" />,
+    value: '100+',
+    label: 'Fortune 500 Companies',
+    description: 'Successfully transformed with our AI solutions'
+  },
+  {
+    icon: <TrendingUp className="w-8 h-8" />,
+    value: '340%',
+    label: 'Average ROI Achieved',
+    description: 'Return on investment within first 18 months'
+  },
+  {
+    icon: <Award className="w-8 h-8" />,
+    value: '95%',
+    label: 'Client Satisfaction Rate',
+    description: 'Based on post-engagement surveys and testimonials'
+  }
+];
+
+const clientLogos = [
+  { name: 'Global Manufacturing Corp', width: 'w-32' },
+  { name: 'Enterprise Financial Services', width: 'w-28' },
+  { name: 'International Healthcare Group', width: 'w-36' },
+  { name: 'Tech Innovation Leaders', width: 'w-30' },
+  { name: 'Strategic Consulting Firm', width: 'w-34' },
+  { name: 'Advanced Analytics Co', width: 'w-32' }
 ];
 
 const SocialProof = () => {
   return (
-    <section id="social-proof" className="py-24 bg-white">
+    <section id="social-proof" className="py-24 bg-slate-900">
       <div className="container mx-auto px-6">
         {/* Stats Section */}
         <motion.div
@@ -29,107 +50,96 @@ const SocialProof = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Trusted by Industry Leaders
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Proven Results That Speak for Themselves
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-12">
-            Join the Fortune 500 companies that have transformed their operations with our AI expertise
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Our track record of success with Fortune 500 companies demonstrates our commitment to delivering measurable business impact
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
+            >
+              <div className="text-blue-400 mb-4 flex justify-center">
+                {stat.icon}
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-2">
+                {stat.value}
+              </h3>
+              <h4 className="text-lg font-semibold text-blue-300 mb-3">
+                {stat.label}
+              </h4>
+              <p className="text-gray-400 text-sm">
+                {stat.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Client Logos Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center"
+        >
+          <h3 className="text-2xl font-bold text-white mb-8">
+            Trusted by Industry Leaders
+          </h3>
+          <p className="text-gray-400 mb-12">
+            *Client names anonymized for confidentiality - references available upon request
           </p>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            {stats.map((stat, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center opacity-60">
+            {clientLogos.map((client, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 0.6, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                className="text-center"
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`${client.width} h-16 bg-white/10 rounded-lg flex items-center justify-center`}
               >
-                <h3 className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">
-                  {stat.number}
-                </h3>
-                <p className="text-gray-600 font-medium">{stat.label}</p>
+                <div className="text-white/60 text-xs font-medium text-center px-2">
+                  {client.name}
+                </div>
               </motion.div>
             ))}
           </div>
         </motion.div>
 
-        {/* Client Logos */}
+        {/* Certifications & Awards */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mb-16"
+          transition={{ duration: 0.8 }}
+          className="mt-20 text-center"
         >
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
-            Trusted by Fortune 500 Companies
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center opacity-60">
-            {clientLogos.map((client, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-center h-16 px-4 grayscale hover:grayscale-0 transition-all duration-300"
-              >
-                <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500 text-sm font-medium text-center">
-                    {client.name}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Testimonial */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="bg-gray-50 rounded-2xl p-8 md:p-12 text-center max-w-4xl mx-auto"
-        >
-          <blockquote className="text-2xl md:text-3xl font-medium text-gray-900 mb-8 leading-relaxed">
-            "TheDigitalFront didn't just implement AI solutions – they transformed our entire approach to data-driven decision making. The ROI exceeded our expectations by 300%."
-          </blockquote>
-          <div className="flex items-center justify-center">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
-              JS
+          <div className="inline-flex items-center space-x-8 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+            <div className="flex items-center text-white">
+              <Award className="w-6 h-6 text-blue-400 mr-2" />
+              <span className="text-sm font-medium">ISO 27001 Certified</span>
             </div>
-            <div className="text-left">
-              <p className="font-bold text-gray-900">John Smith</p>
-              <p className="text-gray-600">Chief Technology Officer</p>
-              <p className="text-gray-500">Fortune 500 Financial Services</p>
+            <div className="w-px h-6 bg-white/20"></div>
+            <div className="flex items-center text-white">
+              <Award className="w-6 h-6 text-blue-400 mr-2" />
+              <span className="text-sm font-medium">SOC 2 Type II Compliant</span>
             </div>
-          </div>
-        </motion.div>
-
-        {/* Security Badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex justify-center items-center space-x-8 mt-16 opacity-60"
-        >
-          <div className="text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-2 mx-auto">
-              <span className="text-green-600 text-sm font-bold">SOC 2</span>
+            <div className="w-px h-6 bg-white/20"></div>
+            <div className="flex items-center text-white">
+              <Award className="w-6 h-6 text-blue-400 mr-2" />
+              <span className="text-sm font-medium">AI Ethics Board Certified</span>
             </div>
-            <p className="text-sm text-gray-600">Compliant</p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-2 mx-auto">
-              <span className="text-blue-600 text-sm font-bold">ISO</span>
-            </div>
-            <p className="text-sm text-gray-600">Certified</p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-2 mx-auto">
-              <span className="text-purple-600 text-sm font-bold">GDPR</span>
-            </div>
-            <p className="text-sm text-gray-600">Ready</p>
           </div>
         </motion.div>
       </div>

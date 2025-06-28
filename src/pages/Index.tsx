@@ -1,12 +1,12 @@
+
 import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import TubeNavbar from '@/components/TubeNavbar';
+import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
+import Pricing from '@/components/Pricing';
 import CaseStudies from '@/components/CaseStudies';
-import Process from '@/components/Process';
-import Integration from '@/components/Integration';
-import Testimonials from '@/components/Testimonials';
+import SocialProof from '@/components/SocialProof';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { useTheme } from '@/context/ThemeContext';
@@ -18,10 +18,9 @@ const Index = () => {
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({
     hero: null,
     services: null,
+    pricing: null,
     caseStudies: null,
-    process: null,
-    integration: null,
-    testimonials: null,
+    socialProof: null,
     contact: null
   });
 
@@ -48,7 +47,7 @@ const Index = () => {
     Object.keys(sectionRefs.current).forEach(sectionKey => {
       const sectionElement = document.getElementById(
         sectionKey === 'caseStudies' ? 'case-studies' : 
-        sectionKey === 'integration' ? 'integrations' : sectionKey
+        sectionKey === 'socialProof' ? 'social-proof' : sectionKey
       );
       if (sectionElement) {
         observer.observe(sectionElement);
@@ -63,74 +62,44 @@ const Index = () => {
     };
   }, []);
 
-  // Initialize section refs
-  useEffect(() => {
-    sectionRefs.current = {
-      hero: document.getElementById('hero'),
-      services: document.getElementById('services'),
-      caseStudies: document.getElementById('case-studies'),
-      process: document.getElementById('process'),
-      integration: document.getElementById('integrations'),
-      testimonials: document.getElementById('testimonials'),
-      contact: document.getElementById('contact')
-    };
-  }, []);
-
   // Enhanced schema for SEO
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "name": "TheDigitalFront",
-    "description": "Next-Gen Digital Agency that designs and develops exceptional web and mobile applications",
-    "url": "https://thedigitalfront.in",
-    "logo": "https://thedigitalfront.in/logo.png",
-    "image": "https://thedigitalfront.in/og-image.png",
+    "description": "AI Consulting & Transformation agency specializing in enterprise AI strategy and implementation",
+    "url": "https://thedigitalfront.com",
+    "logo": "https://thedigitalfront.com/logo.png",
+    "image": "https://thedigitalfront.com/og-image.png",
     "foundingDate": "2018-01-01",
-    "founders": [
-      {
-        "@type": "Person",
-        "name": "Digital Front Founder"
-      }
-    ],
     "address": {
       "@type": "PostalAddress",
-      "addressCountry": "India"
+      "addressCountry": "United States"
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+91-123-456-7890",
+      "telephone": "+1-555-123-4567",
       "contactType": "customer service",
-      "email": "hello@thedigitalfront.in",
-      "availableLanguage": ["English", "Hindi"]
+      "email": "hello@thedigitalfront.com",
+      "availableLanguage": ["English"]
     },
-    "sameAs": [
-      "https://twitter.com/thedigitalfront",
-      "https://www.facebook.com/thedigitalfront",
-      "https://www.linkedin.com/company/thedigitalfront",
-      "https://www.instagram.com/thedigitalfront"
-    ],
-    "priceRange": "$$",
-    "areaServed": ["Global", "India", "United States", "United Kingdom"],
+    "priceRange": "$45,000+",
+    "areaServed": ["Global", "United States", "Europe"],
     "service": [
       {
         "@type": "Service",
-        "name": "Web Development",
-        "description": "Professional web application development"
+        "name": "AI Strategy & Roadmap",
+        "description": "Comprehensive AI implementation strategy for enterprise clients"
       },
       {
         "@type": "Service",
-        "name": "Mobile App Development",
-        "description": "Custom mobile application development for iOS and Android"
+        "name": "Enterprise AI Training",
+        "description": "Professional AI training programs for enterprise teams"
       },
       {
         "@type": "Service",
-        "name": "UI/UX Design",
-        "description": "User-centered interface and experience design"
-      },
-      {
-        "@type": "Service",
-        "name": "Digital Marketing",
-        "description": "Strategic digital marketing campaigns"
+        "name": "Custom AI Solutions",
+        "description": "Tailored AI development and integration services"
       }
     ],
     "review": {
@@ -141,35 +110,35 @@ const Index = () => {
         "bestRating": "5"
       },
       "author": {
-        "@type": "Person",
-        "name": "Client Review"
+        "@type": "Organization",
+        "name": "Fortune 500 Client"
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-hidden transition-colors">
+    <div className="min-h-screen bg-white text-gray-900 overflow-hidden">
       <Helmet>
-        <title>TheDigitalFront - Next-Gen Digital Agency | Web & Mobile Development</title>
-        <meta name="description" content="We design and develop exceptional web and mobile applications that connect brands with their audiences, creating memorable digital experiences that drive growth." />
-        <meta name="keywords" content="digital agency, web development, mobile apps, UI/UX design, digital marketing, e-commerce" />
+        <title>TheDigitalFront - AI Strategy That Drives Results, Not Hype</title>
+        <meta name="description" content="Transform your enterprise with strategic AI implementation. We help Fortune 500 companies identify, implement, and scale AI solutions that deliver measurable ROI." />
+        <meta name="keywords" content="AI consulting, enterprise AI, AI strategy, digital transformation, AI implementation, Fortune 500" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://thedigitalfront.in" />
-        <meta property="og:title" content="TheDigitalFront - Next-Gen Digital Agency" />
-        <meta property="og:description" content="Transform your digital presence with our cutting-edge web and app development services." />
-        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:url" content="https://thedigitalfront.com" />
+        <meta property="og:title" content="TheDigitalFront - AI Strategy That Drives Results" />
+        <meta property="og:description" content="Transform your enterprise with strategic AI implementation. $50M+ in documented savings." />
+        <meta property="og:image" content="/media/og-image.jpg" />
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://thedigitalfront.in" />
-        <meta name="twitter:title" content="TheDigitalFront - Next-Gen Digital Agency" />
-        <meta name="twitter:description" content="Transform your digital presence with our cutting-edge web and app development services." />
-        <meta name="twitter:image" content="/og-image.png" />
+        <meta name="twitter:url" content="https://thedigitalfront.com" />
+        <meta name="twitter:title" content="TheDigitalFront - AI Strategy That Drives Results" />
+        <meta name="twitter:description" content="Transform your enterprise with strategic AI implementation." />
+        <meta name="twitter:image" content="/media/og-image.jpg" />
         
         {/* Canonical Link */}
-        <link rel="canonical" href="https://thedigitalfront.in" />
+        <link rel="canonical" href="https://thedigitalfront.com" />
         
         {/* Structured Data */}
         <script type="application/ld+json">
@@ -177,13 +146,12 @@ const Index = () => {
         </script>
       </Helmet>
 
-      <TubeNavbar currentSection={currentSection} />
+      <Navbar currentSection={currentSection} />
       <Hero />
       <Services />
+      <Pricing />
       <CaseStudies />
-      <Process />
-      <Integration />
-      <Testimonials />
+      <SocialProof />
       <Contact />
       <Footer />
     </div>

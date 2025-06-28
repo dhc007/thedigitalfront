@@ -1,181 +1,150 @@
 
-import { useState, useEffect, useRef } from 'react';
-import { cn } from "@/lib/utils";
-import { useTheme } from '@/context/ThemeContext';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { useQuery } from '@tanstack/react-query';
-import { GradientButton } from './ui/gradient-button';
+import { motion } from 'framer-motion';
+import { ArrowRight, TrendingUp, Users, DollarSign } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-// Using the provided project descriptions with correct image paths and error handling
-const projects = [
-   {
-    id: 1,
-    title: "BSRTC",
-    category: "Government",
-    image: "/media/BSRTC_Logo.jpg",
-    description: "Transport management and booking system for the Bihar State Road Transport Corporation.",
-    url: "https://bsrtc.org"
+const caseStudies = [
+  {
+    title: "Fortune 500 Financial Services",
+    industry: "Banking & Finance",
+    challenge: "Manual fraud detection processes causing $2M+ annual losses",
+    solution: "AI-powered fraud detection system with real-time analysis",
+    results: {
+      savings: "$8.5M",
+      efficiency: "75%",
+      timeframe: "6 months"
+    },
+    icon: <DollarSign className="w-6 h-6" />
   },
-   {
-    id: 2,
-    title: "E-Zamindar",
-    category: "Blockchain",
-    image: "/media/ezamindar.png", 
-    description: "India's first blockchain-backed property ledger providing digital solutions for land records management.",
-    url: "https://ezamindar.com"
+  {
+    title: "Global Manufacturing Leader",
+    industry: "Manufacturing",
+    challenge: "Inefficient supply chain management and inventory optimization",
+    solution: "Predictive analytics and AI-driven demand forecasting",
+    results: {
+      savings: "$12M",
+      efficiency: "60%",
+      timeframe: "8 months"
+    },
+    icon: <TrendingUp className="w-6 h-6" />
   },
+  {
+    title: "Healthcare Enterprise",
+    industry: "Healthcare",
+    challenge: "Patient data analysis and treatment optimization",
+    solution: "AI-powered patient insights and treatment recommendation engine",
+    results: {
+      savings: "$5.2M",
+      efficiency: "45%",
+      timeframe: "10 months"
+    },
+    icon: <Users className="w-6 h-6" />
+  }
 ];
 
-// Simplified categories
-const categories = ["All", "E-commerce", "SaaS", "Travel", "Mobile App", "Blockchain", "Government"];
-
-const fetchProjects = (category: string) => {
-  return new Promise<typeof projects>((resolve) => {
-    setTimeout(() => {
-      if (category === 'All') {
-        resolve(projects);
-      } else {
-        resolve(projects.filter(project => project.category === category));
-      }
-    }, 300);
-  });
-};
-
 const CaseStudies = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { isDarkMode } = useTheme();
-  const isMobile = useIsMobile();
-
-  const { data: visibleProjects, isLoading } = useQuery({
-    queryKey: ['projects', activeCategory],
-    queryFn: () => fetchProjects(activeCategory),
-    initialData: projects
-  });
-  
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    const elements = document.querySelectorAll('.reveal-on-scroll');
-    elements.forEach((el) => observer.observe(el));
-    
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
-    };
-  }, []);
-
-  // Handle image loading errors
-  const handleImageError = (projectId: number) => {
-    console.error(`Failed to load image for project ID: ${projectId}`);
-    setImageErrors(prev => ({ ...prev, [projectId]: true }));
-  };
-  
   return (
-    <section id="case-studies" className={`section-padding relative transition-colors bg-gradient-to-b from-background via-purple-900/5 to-background`} ref={sectionRef}>
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-40 h-40 bg-blue-400/40 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/3 -right-20 w-60 h-60 bg-purple-400/40 rounded-full blur-3xl"></div>
-        <div className="absolute opacity-30 top-10 left-10 transform rotate-12">
-          <div className="w-4 h-4 rounded-full bg-blue-400"></div>
-        </div>
-        <div className="absolute opacity-30 bottom-20 right-20 transform -rotate-12">
-          <div className="w-3 h-3 rounded-full bg-purple-400"></div>
-        </div>
-      </div>
-      
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-block px-4 py-2 rounded-full bg-secondary text-sm font-medium mb-6">
-            Our Work
-          </span>
-          <h2 className="headline text-4xl md:text-5xl mb-6">
-            Results That <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300">Speak</span> for Themselves
+    <section id="case-studies" className="py-24 bg-gray-50">
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Proven Results for Enterprise Clients
           </h2>
-          <p className="text-muted-foreground">
-            Take a look at some of our recent projects and the impressive results we've achieved for our clients.
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Real case studies from Fortune 500 companies that achieved measurable ROI through strategic AI implementation
           </p>
-        </div>
-        
-        <div className="flex justify-center mb-12 overflow-x-auto pb-4">
-          <div className={`flex flex-wrap ${isMobile ? 'justify-start' : 'justify-center'} gap-2 bg-secondary/30 p-1.5 rounded-full`}>
-            {categories.map((category) => (
-              <button
-                key={category}
-                className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap",
-                  activeCategory === category
-                    ? "bg-secondary text-secondary-foreground shadow-sm" 
-                    : "hover:bg-secondary/70"
-                )}
-                onClick={() => setActiveCategory(category)}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-        
-        {isLoading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12">
-            {visibleProjects.map((project, index) => (
-              <a 
-                key={project.id}
-                href={project.url}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={`rounded-2xl overflow-hidden bg-secondary/20 border border-secondary/30 shadow-lg transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl group`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="relative h-56 overflow-hidden">
-                  {imageErrors[project.id] ? (
-                    <div className="w-full h-full flex items-center justify-center bg-muted/20">
-                      <p className="text-muted-foreground text-sm">Image unavailable</p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          {caseStudies.map((study, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+            >
+              <Card className="h-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-sm font-medium">
+                      {study.industry}
+                    </span>
+                    <div className="text-blue-600">
+                      {study.icon}
                     </div>
-                  ) : (
-                    <img 
-                      src={project.image} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                      onError={() => handleImageError(project.id)}
-                      loading="lazy"
-                    />
-                  )}
-                  <div className="absolute top-4 right-4 bg-primary/70 text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                    {project.category}
                   </div>
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="headline text-xl mb-3">{project.title}</h3>
-                  <p className="text-muted-foreground">{project.description}</p>
-                </div>
-              </a>
-            ))}
-          </div>
-        )}
-        
-        <div className="text-center mt-8">
-          <a href="#contact">
-            <GradientButton className="py-3 px-8 text-base">
-              Let's Connect
-            </GradientButton>
-          </a>
+                  <CardTitle className="text-xl font-bold text-gray-900 leading-tight">
+                    {study.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Challenge:</h4>
+                      <p className="text-gray-600 text-sm">{study.challenge}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Solution:</h4>
+                      <p className="text-gray-600 text-sm">{study.solution}</p>
+                    </div>
+                    
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <h4 className="font-semibold text-gray-900 mb-3">Results:</h4>
+                      <div className="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                          <p className="text-2xl font-bold text-green-600">{study.results.savings}</p>
+                          <p className="text-xs text-gray-600">Savings</p>
+                        </div>
+                        <div>
+                          <p className="text-2xl font-bold text-blue-600">{study.results.efficiency}</p>
+                          <p className="text-xs text-gray-600">Efficiency</p>
+                        </div>
+                        <div>
+                          <p className="text-2xl font-bold text-purple-600">{study.results.timeframe}</p>
+                          <p className="text-xs text-gray-600">Timeline</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 mt-4"
+                    >
+                      View Full Case Study
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-center"
+        >
+          <Button 
+            size="lg"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg rounded-full"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            See How We Can Help Your Enterprise
+            <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
+        </motion.div>
       </div>
     </section>
   );

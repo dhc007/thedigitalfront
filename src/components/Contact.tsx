@@ -1,7 +1,9 @@
-
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Calendar, ArrowRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState } from 'react';
 
 const Contact = () => {
@@ -9,186 +11,160 @@ const Contact = () => {
     name: '',
     email: '',
     company: '',
+    phone: '',
+    budget: '',
     message: ''
   });
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (value: string) => {
+    setFormData(prev => ({ ...prev, budget: value }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
     console.log('Form submitted:', formData);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
   return (
-    <section id="contact" className="py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-slate-50 to-blue-50">
+    <section id="contact" className="py-16 lg:py-24 bg-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-12 lg:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-            Schedule Your Strategic AI Consultation
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            Let's Create Something Amazing Together
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Ready to transform your enterprise with AI? Let's discuss your specific needs and create a customized strategy.
+            Share your idea with us. We'll respond within 24 hours. If urgent, mention 'Priority' in your message.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
-          {/* Contact Information */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="space-y-6 sm:space-y-8"
+            className="bg-white rounded-2xl p-6 lg:p-8 shadow-lg"
           >
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">
-                Get in Touch
-              </h3>
-              <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-6 sm:mb-8">
-                Our team of AI experts is ready to help you navigate your digital transformation journey. 
-                Contact us to start your AI assessment today.
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Input
+                  type="text"
+                  name="name"
+                  placeholder="Name *"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                  className="h-12"
+                />
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Email *"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  className="h-12"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Input
+                  type="text"
+                  name="company"
+                  placeholder="Company (optional)"
+                  value={formData.company}
+                  onChange={handleInputChange}
+                  className="h-12"
+                />
+                <Input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone (optional)"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="h-12"
+                />
+              </div>
+
+              <Select onValueChange={handleSelectChange}>
+                <SelectTrigger className="h-12">
+                  <SelectValue placeholder="Project Budget" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="<2L">{"<₹2L / <$3k"}</SelectItem>
+                  <SelectItem value="2-5L">{"₹2–5L / $3k–$7k"}</SelectItem>
+                  <SelectItem value="5L+">{"₹5L+ / $7k+"}</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Textarea
+                name="message"
+                placeholder="Tell us about your project idea..."
+                value={formData.message}
+                onChange={handleInputChange}
+                rows={5}
+                className="resize-none"
+              />
+
+              <p className="text-sm text-gray-500 text-center">
+                We respect your privacy. Data shared stays confidential.
               </p>
-            </div>
-
-            <div className="space-y-4 sm:space-y-6">
-              <div className="flex items-start">
-                <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mr-3 sm:mr-4 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 text-base sm:text-lg">Email</h4>
-                  <a href="mailto:team@thedigitalfront.in" className="text-blue-600 hover:text-blue-700 transition-colors text-sm sm:text-base">
-                    team@thedigitalfront.in
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mr-3 sm:mr-4 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 text-base sm:text-lg">Phone</h4>
-                  <a href="tel:+919284613155" className="text-blue-600 hover:text-blue-700 transition-colors text-sm sm:text-base">
-                    +91 9284613155
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mr-3 sm:mr-4 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 text-base sm:text-lg">Office</h4>
-                  <p className="text-gray-600 text-sm sm:text-base">
-                    India (Remote Office)<br />
-                    Serving clients globally
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-blue-50 rounded-xl p-4 sm:p-6 border border-blue-200">
-              <div className="flex items-center mb-3">
-                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mr-2" />
-                <h4 className="font-semibold text-gray-900 text-base sm:text-lg">Response Time</h4>
-              </div>
-              <p className="text-gray-700 text-sm sm:text-base">
-                We typically respond to all inquiries within 24 hours. For urgent matters, please call directly.
-              </p>
-            </div>
+              
+              <Button 
+                type="submit"
+                size="lg"
+                className="w-full bg-primary hover:bg-primary/90 text-white py-4 text-lg rounded-full"
+              >
+                Let's Connect
+                <Send className="ml-2 w-5 h-5" />
+              </Button>
+            </form>
           </motion.div>
 
-          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-100"
+            className="bg-white rounded-2xl p-6 lg:p-8 shadow-lg"
           >
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h3>
+            <div className="space-y-6">
+              <div className="flex items-center space-x-4 text-gray-600">
+                <Mail className="w-5 h-5 text-primary" />
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
-                    placeholder="Your full name"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
-                    placeholder="your.email@company.com"
-                  />
+                  <p className="font-medium">Email</p>
+                  <p>team@thedigitalfront.in</p>
                 </div>
               </div>
               
-              <div>
-                <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                  Company Name *
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  required
-                  value={formData.company}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
-                  placeholder="Your company name"
-                />
+              <div className="flex items-center space-x-4 text-gray-600">
+                <Phone className="w-5 h-5 text-primary" />
+                <div>
+                  <p className="font-medium">Phone</p>
+                  <p>+91 9284613155</p>
+                </div>
               </div>
               
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Message *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base resize-vertical"
-                  placeholder="Tell us about your AI transformation goals and current challenges..."
-                ></textarea>
+              <div className="flex items-center space-x-4 text-gray-600">
+                <MapPin className="w-5 h-5 text-primary" />
+                <div>
+                  <p className="font-medium">Location</p>
+                  <p>Goa, India</p>
+                </div>
               </div>
-              
-              <Button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 sm:py-4 text-base sm:text-lg rounded-full font-medium shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
-              >
-                Send Message
-                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-              </Button>
-            </form>
+            </div>
           </motion.div>
         </div>
       </div>

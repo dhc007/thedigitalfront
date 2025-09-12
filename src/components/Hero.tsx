@@ -1,11 +1,11 @@
 
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle, TrendingUp } from 'lucide-react';
+import { ArrowRight, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
   return (
-    <section id="hero" className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-16 lg:pt-20">
+    <section id="hero" className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-700 to-blue-600 pt-16 lg:pt-20">
       <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left Column - Content */}
@@ -13,41 +13,29 @@ const Hero = () => {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center lg:text-left"
+            className="text-center lg:text-left text-white"
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-100 text-blue-800 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6"
+              className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6"
             >
-              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-              AI Strategy That Drives Results, Not Hype
+              <Zap className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
+              Founder-led Product Studio
             </motion.div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-4 sm:mb-6">
-              Transform Your Enterprise with{' '}
-              <span className="text-blue-600 bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
-                Strategic AI Implementation
-              </span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 sm:mb-6">
+              We build and launch{' '}
+              <span className="text-yellow-300">
+                scalable products
+              </span>{' '}
+              — fast.
             </h1>
             
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              We help Fortune 500 companies identify, implement, and scale AI solutions that deliver measurable ROI. 
-              Our proven methodology has generated <span className="font-semibold text-blue-600">$50M+ in documented savings</span>.
+            <p className="text-lg sm:text-xl lg:text-2xl text-purple-100 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              From SaaS MVPs to AI-powered apps, TheDigitalFront helps startups and businesses go from idea to launch with lean, expert-driven teams.
             </p>
-            
-            {/* Trust Indicators */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-6 mb-6 sm:mb-8">
-              <div className="flex items-center text-gray-600 text-sm sm:text-base">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2" />
-                100+ Fortune 500 Companies
-              </div>
-              <div className="flex items-center text-gray-600 text-sm sm:text-base">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2" />
-                340% Average ROI
-              </div>
-            </div>
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center lg:justify-start">
@@ -56,17 +44,17 @@ const Hero = () => {
                 className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full font-medium shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Get Your AI Readiness Assessment
+                Build Your MVP
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
               
               <Button 
                 variant="outline"
                 size="lg"
-                className="w-full sm:w-auto border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full font-medium transition-all"
-                onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+                className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-purple-600 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full font-medium transition-all"
+                onClick={() => window.location.href = '/services'}
               >
-                View Pricing
+                See Our Work
               </Button>
             </div>
           </motion.div>
@@ -78,27 +66,19 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="relative"
           >
-            <div className="relative bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl p-6 sm:p-8 shadow-2xl">
-              <div className="bg-white/10 rounded-xl p-4 sm:p-6 backdrop-blur-sm">
-                <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
-                  <div className="bg-white/20 rounded-lg p-3 sm:p-4 text-center">
-                    <div className="text-xl sm:text-2xl font-bold text-white">$50M+</div>
-                    <div className="text-xs sm:text-sm text-blue-100">Savings Generated</div>
-                  </div>
-                  <div className="bg-white/20 rounded-lg p-3 sm:p-4 text-center">
-                    <div className="text-xl sm:text-2xl font-bold text-white">340%</div>
-                    <div className="text-xs sm:text-sm text-blue-100">Average ROI</div>
-                  </div>
-                </div>
-                <div className="text-center text-white">
-                  <div className="text-lg sm:text-xl font-semibold mb-2">Enterprise AI Transformation</div>
-                  <div className="text-sm sm:text-base text-blue-100">Proven Results Across Industries</div>
-                </div>
+            <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/20">
+              <div className="text-center text-white">
+                <div className="text-6xl sm:text-8xl mb-4">🚀</div>
+                <div className="text-lg sm:text-xl font-semibold mb-2">Product Development Studio</div>
+                <div className="text-sm sm:text-base text-purple-100">Fast • Expert • Results-Driven</div>
               </div>
               
               {/* Floating Elements */}
-              <div className="absolute -top-3 -right-3 w-12 h-12 sm:w-16 sm:h-16 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
-                <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-800" />
+              <div className="absolute -top-3 -right-3 w-12 h-12 sm:w-16 sm:h-16 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-float">
+                <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-800" />
+              </div>
+              <div className="absolute -bottom-3 -left-3 w-10 h-10 sm:w-12 sm:h-12 bg-green-400 rounded-full flex items-center justify-center shadow-lg animate-float" style={{ animationDelay: '1s' }}>
+                <span className="text-lg sm:text-xl">✨</span>
               </div>
             </div>
           </motion.div>

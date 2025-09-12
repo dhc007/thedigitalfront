@@ -3,10 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import ValueProposition from '@/components/ValueProposition';
 import Services from '@/components/Services';
-import Pricing from '@/components/Pricing';
-import CaseStudies from '@/components/CaseStudies';
-import SocialProof from '@/components/SocialProof';
+import Process from '@/components/Process';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { useTheme } from '@/context/ThemeContext';
@@ -17,10 +16,9 @@ const Index = () => {
   
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({
     hero: null,
+    valueProposition: null,
     services: null,
-    pricing: null,
-    caseStudies: null,
-    socialProof: null,
+    process: null,
     contact: null
   });
 
@@ -46,8 +44,7 @@ const Index = () => {
     // Observe all sections
     Object.keys(sectionRefs.current).forEach(sectionKey => {
       const sectionElement = document.getElementById(
-        sectionKey === 'caseStudies' ? 'case-studies' : 
-        sectionKey === 'socialProof' ? 'social-proof' : sectionKey
+        sectionKey === 'valueProposition' ? 'value-proposition' : sectionKey
       );
       if (sectionElement) {
         observer.observe(sectionElement);
@@ -67,39 +64,45 @@ const Index = () => {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "name": "TheDigitalFront",
-    "description": "AI Consulting & Transformation agency specializing in enterprise AI strategy and implementation",
-    "url": "https://thedigitalfront.com",
-    "logo": "https://thedigitalfront.com/logo.png",
-    "image": "https://thedigitalfront.com/og-image.png",
-    "foundingDate": "2018-01-01",
+    "description": "Product development studio specializing in MVP launch, AI-powered apps, and mobile-first products for startups and businesses",
+    "url": "https://thedigitalfront.in",
+    "logo": "https://thedigitalfront.in/logo.png",
+    "image": "https://thedigitalfront.in/og-image.png",
+    "foundingDate": "2020-01-01",
     "address": {
       "@type": "PostalAddress",
-      "addressCountry": "United States"
+      "addressCountry": "India",
+      "addressRegion": "Goa"
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+1-555-123-4567",
+      "telephone": "+91 9284613155",
       "contactType": "customer service",
-      "email": "hello@thedigitalfront.com",
+      "email": "team@thedigitalfront.in",
       "availableLanguage": ["English"]
     },
-    "priceRange": "$45,000+",
-    "areaServed": ["Global", "United States", "Europe"],
+    "priceRange": "₹3L+",
+    "areaServed": ["Global", "India", "United States", "Europe"],
     "service": [
       {
         "@type": "Service",
-        "name": "AI Strategy & Roadmap",
-        "description": "Comprehensive AI implementation strategy for enterprise clients"
+        "name": "MVP Launch",
+        "description": "Complete SaaS development from concept to launch"
       },
       {
         "@type": "Service",
-        "name": "Enterprise AI Training",
-        "description": "Professional AI training programs for enterprise teams"
+        "name": "AI-Powered Applications",
+        "description": "AI/ML integration for smarter products"
       },
       {
         "@type": "Service",
-        "name": "Custom AI Solutions",
-        "description": "Tailored AI development and integration services"
+        "name": "Mobile-First Products",
+        "description": "Cross-platform mobile app development"
+      },
+      {
+        "@type": "Service",
+        "name": "Dedicated Product Squad",
+        "description": "Remote product development teams on retainer"
       }
     ],
     "review": {
@@ -111,7 +114,7 @@ const Index = () => {
       },
       "author": {
         "@type": "Organization",
-        "name": "Fortune 500 Client"
+        "name": "Startup Client"
       }
     }
   };
@@ -119,26 +122,26 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900 overflow-hidden">
       <Helmet>
-        <title>TheDigitalFront - AI Strategy That Drives Results, Not Hype</title>
-        <meta name="description" content="Transform your enterprise with strategic AI implementation. We help Fortune 500 companies identify, implement, and scale AI solutions that deliver measurable ROI." />
-        <meta name="keywords" content="AI consulting, enterprise AI, AI strategy, digital transformation, AI implementation, Fortune 500" />
+        <title>TheDigitalFront - We build and launch scalable products — fast</title>
+        <meta name="description" content="From SaaS MVPs to AI-powered apps, TheDigitalFront helps startups and businesses go from idea to launch with lean, expert-driven teams." />
+        <meta name="keywords" content="MVP development, startup development, AI apps, mobile apps, product studio, SaaS development, Flutter apps" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://thedigitalfront.com" />
-        <meta property="og:title" content="TheDigitalFront - AI Strategy That Drives Results" />
-        <meta property="og:description" content="Transform your enterprise with strategic AI implementation. $50M+ in documented savings." />
+        <meta property="og:url" content="https://thedigitalfront.in" />
+        <meta property="og:title" content="TheDigitalFront - Product Development Studio" />
+        <meta property="og:description" content="We build and launch scalable products — fast. From SaaS MVPs to AI-powered apps." />
         <meta property="og:image" content="/media/og-image.jpg" />
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://thedigitalfront.com" />
-        <meta name="twitter:title" content="TheDigitalFront - AI Strategy That Drives Results" />
-        <meta name="twitter:description" content="Transform your enterprise with strategic AI implementation." />
+        <meta name="twitter:url" content="https://thedigitalfront.in" />
+        <meta name="twitter:title" content="TheDigitalFront - Product Development Studio" />
+        <meta name="twitter:description" content="We build and launch scalable products — fast." />
         <meta name="twitter:image" content="/media/og-image.jpg" />
         
         {/* Canonical Link */}
-        <link rel="canonical" href="https://thedigitalfront.com" />
+        <link rel="canonical" href="https://thedigitalfront.in" />
         
         {/* Structured Data */}
         <script type="application/ld+json">
@@ -148,10 +151,9 @@ const Index = () => {
 
       <Navbar currentSection={currentSection} />
       <Hero />
+      <ValueProposition />
       <Services />
-      <Pricing />
-      <CaseStudies />
-      <SocialProof />
+      <Process />
       <Contact />
       <Footer />
     </div>

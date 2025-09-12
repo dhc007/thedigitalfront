@@ -6,42 +6,35 @@ import { Button } from '@/components/ui/button';
 const services = [
   {
     icon: <Brain className="w-10 h-10 sm:w-12 sm:h-12" />,
-    title: 'AI Strategy & Roadmap',
-    subtitle: 'Executive Clarity & Direction',
-    description: 'Transform uncertainty into actionable strategy. We work with C-suite executives to develop comprehensive AI implementation roadmaps that align with business objectives.',
-    features: [
-      'AI Readiness Assessment',
-      'Strategic Planning Sessions',
-      'ROI Projections & Business Cases',
-      'Technology Stack Recommendations'
-    ],
-    deliverables: '4-week comprehensive audit + 12-month roadmap'
+    title: 'MVP Launch',
+    subtitle: 'From idea to product in 8–12 weeks',
+    description: 'Complete SaaS development from concept to launch with full strategy, design, and development.',
+    price: 'Starting from ₹3.5L / $4,000',
+    cta: 'Request MVP Quote'
   },
   {
     icon: <GraduationCap className="w-10 h-10 sm:w-12 sm:h-12" />,
-    title: 'Enterprise AI Training',
-    subtitle: 'Workforce Transformation',
-    description: 'Bridge the AI skills gap across your organization. Our training programs equip teams with practical AI knowledge and implementation capabilities.',
-    features: [
-      'Executive AI Workshops',
-      'Technical Team Training',
-      'Change Management Support',
-      'Ongoing Mentorship Programs'
-    ],
-    deliverables: 'Custom curriculum + hands-on workshops + certification'
+    title: 'AI-Powered Apps',
+    subtitle: 'Add AI features that drive real value',
+    description: 'Integrate cutting-edge AI/ML capabilities into your products for smarter workflows and enhanced user experiences.',
+    price: 'Starting from ₹4L / $5,000',
+    cta: 'Discuss AI Use-Cases'
   },
   {
     icon: <Cog className="w-10 h-10 sm:w-12 sm:h-12" />,
-    title: 'Custom AI Solutions',
-    subtitle: 'Development & Integration',
-    description: 'From proof-of-concept to full-scale deployment. We build and integrate AI solutions that solve real business problems and deliver measurable results.',
-    features: [
-      'Custom AI Development',
-      'System Integration',
-      'Performance Optimization',
-      'Ongoing Support & Maintenance'
-    ],
-    deliverables: 'Production-ready AI systems + full documentation'
+    title: 'Mobile-First Products',
+    subtitle: 'Flutter apps with scalable backends',
+    description: 'Cross-platform mobile applications with robust backend infrastructure and admin dashboards.',
+    price: 'Starting from ₹3L / $3,500',
+    cta: 'Start Mobile Project'
+  },
+  {
+    icon: <CheckCircle className="w-10 h-10 sm:w-12 sm:h-12" />,
+    title: 'Dedicated Product Squad',
+    subtitle: 'Remote dev team on retainer',
+    description: 'Your dedicated product development team with continuous delivery and weekly sprint cycles.',
+    price: 'Starting from ₹3L/month / $3,500/month',
+    cta: 'Book a Squad Call'
   }
 ];
 
@@ -57,64 +50,48 @@ const Services = () => {
           className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
-            Three Pillars of AI Transformation
+            Core Services
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Our proven methodology combines strategic planning, workforce development, and technical implementation 
-            to ensure sustainable AI adoption across your enterprise.
+            We don't just build — we define product strategy, ship working software, and help you scale.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {services.map((service, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 group"
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
             >
-              <div className="text-blue-600 mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="text-primary mb-4 sm:mb-6">
                 {service.icon}
               </div>
               
               <div className="mb-4 sm:mb-6">
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
                   {service.title}
                 </h3>
-                <h4 className="text-base sm:text-lg font-semibold text-blue-600 mb-3 sm:mb-4">
+                <h4 className="text-sm sm:text-base font-medium text-primary mb-3">
                   {service.subtitle}
                 </h4>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+                <p className="text-gray-600 text-sm leading-relaxed mb-4">
                   {service.description}
+                </p>
+                <p className="text-lg font-bold text-gray-900">
+                  {service.price}
                 </p>
               </div>
 
-              <div className="mb-4 sm:mb-6">
-                <h5 className="font-semibold text-gray-900 mb-3 text-sm sm:text-base">Key Features:</h5>
-                <ul className="space-y-2">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start text-sm sm:text-base">
-                      <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-blue-50 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6 border border-blue-100">
-                <h5 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">Deliverables:</h5>
-                <p className="text-gray-700 text-xs sm:text-sm font-medium">{service.deliverables}</p>
-              </div>
-
               <Button 
-                variant="outline"
-                className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 py-2.5 sm:py-3 text-sm sm:text-base font-medium rounded-full group-hover:shadow-lg"
+                className="w-full bg-primary hover:bg-primary/90 text-white py-3 text-sm font-medium rounded-full"
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Learn More
-                <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4" />
+                {service.cta}
+                <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
           ))}
@@ -125,21 +102,15 @@ const Services = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white"
+          className="text-center"
         >
-          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
-            Ready to Start Your AI Journey?
-          </h3>
-          <p className="text-blue-100 mb-6 sm:mb-8 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Get a comprehensive AI readiness assessment and discover your organization's transformation potential.
-          </p>
           <Button 
             size="lg"
-            className="bg-white text-blue-600 hover:bg-gray-100 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full font-medium shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
-            onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg rounded-full font-medium shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
+            onClick={() => window.location.href = '/services'}
           >
-            Get Your Assessment
-            <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+            View All Services
+            <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
         </motion.div>
       </div>
